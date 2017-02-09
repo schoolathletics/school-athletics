@@ -1,0 +1,351 @@
+<?php 
+
+
+class SA_Core {
+
+	/**
+	 * Hook in methods.
+	 */
+	public static function init() {
+		add_action( 'init', array( __CLASS__, 'register_taxonomies' ), 5 );
+		add_action( 'init', array( __CLASS__, 'register_post_types' ), 5 );
+		add_action( 'init', array( __CLASS__, 'register_post_status' ), 9 );
+	}
+
+
+	/**
+	 * Register core taxonomies
+	 * Sport, Person, Season
+	 */
+	public static function register_taxonomies() {
+		if ( taxonomy_exists( 'sa_sport' ) ) {
+			return;
+		}
+
+		// Register Sport Taxonomy
+		register_taxonomy( 'sa_sport',
+			array(
+				'post',
+				'sa_person',
+				'sa_event',
+				'sa_roster',
+				'sa_schedule'
+			),
+			array(
+			'hierarchical'          => false,
+			'labels'                => array(
+						'name'              => __( 'Sports', 'school-athletics' ),
+						'singular_name'     => __( 'Sport', 'school-athletics' ),
+						'menu_name'         => __( 'Sports', 'school-athletics' ),
+						'search_items'      => __( 'Search Sports', 'school-athletics' ),
+						'all_items'         => __( 'All Sports', 'school-athletics' ),
+						'edit_item'         => __( 'Edit Sport', 'school-athletics' ),
+						'update_item'       => __( 'Update Sports', 'school-athletics' ),
+						'add_new_item'      => __( 'Add New Sport', 'school-athletics' ),
+						'new_item_name'     => __( 'New Sport Name', 'school-athletics' ),
+						'not_found'         => __( 'No Sport found', 'school-athletics' ),
+			),
+			'show_ui'               => SchoolAthletics::debug(),
+			'show_in_menu'          => false,
+			'show_in_nav_menus'     => true,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => false,
+			'show_in_quick_edit'    => false,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var'             => is_admin(),
+			'public'                => false,
+	        'rewrite'               => false,
+			)
+		);
+		register_taxonomy_for_object_type( 'sa_sport', 'post' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_event' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_roster' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_schedule' );
+
+		// Register People Taxonomy
+		register_taxonomy( 'sa_person_type',
+			array(
+				'sa_person',
+			),
+			array(
+			'hierarchical'          => false,
+			'labels'                => array(
+						'name'              => __( 'Person Types', 'school-athletics' ),
+						'singular_name'     => __( 'Person Type', 'school-athletics' ),
+						'menu_name'         => __( 'Person Types', 'school-athletics' ),
+						'search_items'      => __( 'Search Person Types', 'school-athletics' ),
+						'all_items'         => __( 'All Person Types', 'school-athletics' ),
+						'edit_item'         => __( 'Edit Person Types', 'school-athletics' ),
+						'update_item'       => __( 'Update Person Types', 'school-athletics' ),
+						'add_new_item'      => __( 'Add New Person Types', 'school-athletics' ),
+						'new_item_name'     => __( 'New Person Type Name', 'school-athletics' ),
+						'not_found'         => __( 'No Person Types found', 'school-athletics' ),
+			),
+			'show_ui'               => SchoolAthletics::debug(),
+			'show_in_menu'          => false,
+			'show_in_nav_menus'     => true,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => false,
+			'show_in_quick_edit'    => false,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var'             => false,
+			'public'                => false,
+	        'rewrite'               => false,
+			)
+		);
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_person' );
+
+		// Register People Taxonomy
+		register_taxonomy( 'sa_person',
+			array(
+				'post',
+				'sa_person',
+				'sa_roster',
+			),
+			array(
+			'hierarchical'          => false,
+			'labels'                => array(
+						'name'              => __( 'Persons', 'school-athletics' ),
+						'singular_name'     => __( 'Person', 'school-athletics' ),
+						'menu_name'         => __( 'Persons', 'school-athletics' ),
+						'search_items'      => __( 'Search Persons', 'school-athletics' ),
+						'all_items'         => __( 'All Persons', 'school-athletics' ),
+						'edit_item'         => __( 'Edit Person', 'school-athletics' ),
+						'update_item'       => __( 'Update Person', 'school-athletics' ),
+						'add_new_item'      => __( 'Add New Person', 'school-athletics' ),
+						'new_item_name'     => __( 'New Person Name', 'school-athletics' ),
+						'not_found'         => __( 'No Persons found', 'school-athletics' ),
+			),
+			'show_ui'               => SchoolAthletics::debug(),
+			'show_in_menu'          => false,
+			'show_in_nav_menus'     => true,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => false,
+			'show_in_quick_edit'    => false,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var'             => false,
+			'public'                => false,
+	        'rewrite'               => false,
+			)
+		);
+		register_taxonomy_for_object_type( 'sa_sport', 'post' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_roster' );
+
+		// Register Season Taxonomy
+		register_taxonomy( 'sa_season',
+			array(
+				'sa_schedule',
+				'sa_roster',
+			),
+			array(
+			'hierarchical'          => false,
+			'labels'                => array(
+						'name'              => __( 'Seasons', 'school-athletics' ),
+						'singular_name'     => __( 'Season', 'school-athletics' ),
+						'menu_name'         => __( 'Seasons', 'school-athletics' ),
+						'search_items'      => __( 'Search Season', 'school-athletics' ),
+						'all_items'         => __( 'All Seasons', 'school-athletics' ),
+						'edit_item'         => __( 'Edit Season', 'school-athletics' ),
+						'update_item'       => __( 'Update Season', 'school-athletics' ),
+						'add_new_item'      => __( 'Add New Season', 'school-athletics' ),
+						'new_item_name'     => __( 'New Season Name', 'school-athletics' ),
+						'not_found'         => __( 'No Seasons found', 'school-athletics' ),
+			),
+			'show_ui'               => SchoolAthletics::debug(),
+			'show_in_menu'          => false,
+			'show_in_nav_menus'     => false,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => false,
+			'show_in_quick_edit'    => false,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var'             => false,
+			'public'                => false,
+	        'rewrite'               => false,
+			)
+		);
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_event' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_roster' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_schedule' );
+
+		// Register Event Type Taxonomy
+		register_taxonomy( 'sa_event_type',
+			array(
+				'sa_event',
+			),
+			array(
+			'hierarchical'          => false,
+			'labels'                => array(
+						'name'              => __( 'Event Types', 'school-athletics' ),
+						'singular_name'     => __( 'Event Type', 'school-athletics' ),
+						'menu_name'         => __( 'Event Types', 'school-athletics' ),
+						'search_items'      => __( 'Search Event Types', 'school-athletics' ),
+						'all_items'         => __( 'All Event Types', 'school-athletics' ),
+						'edit_item'         => __( 'Edit Event Types', 'school-athletics' ),
+						'update_item'       => __( 'Update Event Types', 'school-athletics' ),
+						'add_new_item'      => __( 'Add New Event Types', 'school-athletics' ),
+						'new_item_name'     => __( 'New Event Type Name', 'school-athletics' ),
+						'not_found'         => __( 'No Event Types found', 'school-athletics' ),
+			),
+			'show_ui'               => SchoolAthletics::debug(),
+			'show_in_menu'          => 'sa_debug',
+			'show_in_nav_menus'     => false,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => false,
+			'show_in_quick_edit'    => false,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var'             => false,
+			'public'                => false,
+	        'rewrite'               => false,
+			)
+		);
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_event' );
+
+	}
+
+	/**
+	 * Register core post types.
+	 * Pages, Athletes, Staff, Events, Schedules, Rosters
+	 */
+	public static function register_post_types() {
+		if ( post_type_exists('sa_page') ) {
+			return;
+		}
+
+		// Register Sport Pages
+		register_post_type( 'sa_page',
+			array(
+				'label'               => __( 'sa_page', 'school-athletics' ),
+				'description'         => __( 'Manages Sports Pro Pages.', 'school-athletics' ),
+				'labels'              => array(
+							'name'                => __( 'Pages', 'school-athletics' ),
+							'singular_name'       => __( 'Page', 'school-athletics' ),
+							'menu_name'           => __( 'Sport Pages', 'school-athletics' ),
+							'parent_item_colon'   => __( 'Parent Item:', 'school-athletics' ),
+							'all_items'           => __( 'Sport Pages', 'school-athletics' ),
+							'view_item'           => __( 'View Sports Pro', 'school-athletics' ),
+							'add_new_item'        => __( 'Add New Page', 'school-athletics' ),
+							'add_new'             => __( 'Add New Page', 'school-athletics' ),
+							'edit_item'           => __( 'Edit Page', 'school-athletics' ),
+							'update_item'         => __( 'Update Page', 'school-athletics' ),
+							'search_items'        => __( 'Search Pages', 'school-athletics' ),
+							'not_found'           => __( 'Not found', 'school-athletics' ),
+							'not_found_in_trash'  => __( 'Not found in Trash', 'school-athletics' ),
+				),
+				'supports'            => array( 'title', 'thumbnail', 'editor', 'page-attributes'),
+				'hierarchical'        => true,
+				'public'              => true,
+				'show_ui'             => SchoolAthletics::debug(),
+				'show_in_menu'        => 'sa_debug',
+				'show_in_nav_menus'   => false,
+				'show_in_admin_bar'   => false,
+				'menu_position'       => 5,
+				'can_export'          => true,
+				'has_archive'         => false,
+				'exclude_from_search' => false,
+				'publicly_queryable'  => true,
+				'query_var'           => 'sport',
+				'public'              => true,
+		        'rewrite'             => array( 'slug' => 'sports' ),
+				'capability_type'     => 'page',
+			)
+		);
+
+		// Register Event
+		register_post_type( 'sa_event',
+			array(
+		        'label'               => __( 'event', 'school-athletics' ),
+		        'description'         => __( 'Manage event calendar.', 'school-athletics' ),
+		        'labels'              => array(
+							'name'                => __( 'Event', 'school-athletics' ),
+							'singular_name'       => __( 'Event', 'school-athletics' ),
+							'menu_name'           => __( 'Events', 'school-athletics' ),
+							'parent_item_colon'   => __( 'Parent Item:', 'school-athletics' ),
+							'all_items'           => __( 'Events', 'school-athletics' ),
+							'view_item'           => __( 'View Event', 'school-athletics' ),
+							'add_new_item'        => __( 'Add New Event', 'school-athletics' ),
+							'add_new'             => __( 'Add New Event', 'school-athletics' ),
+							'edit_item'           => __( 'Edit Event', 'school-athletics' ),
+							'update_item'         => __( 'Update Event', 'school-athletics' ),
+							'search_items'        => __( 'Search Events', 'school-athletics' ),
+							'not_found'           => __( 'Not found', 'school-athletics' ),
+							'not_found_in_trash'  => __( 'Not found in Trash', 'school-athletics' ),
+				 ),
+		        'supports'            => array( 'title','editor'),
+		        'hierarchical'        => false,
+		        'public'              => true,
+		        'show_ui'             => true,
+		        'show_in_menu'        => 'sa_event',
+		        'show_in_nav_menus'   => false,
+		        'show_in_admin_bar'   => false,
+		        'menu_position'       => 36,
+		        'can_export'          => true,
+		        'has_archive'         => false,
+		        'exclude_from_search' => false,
+		        'publicly_queryable'  => true,
+		        'rewrite'             => false,
+		        'query_var'           => false,
+		        'capability_type'     => 'post',
+			)
+		);
+
+		// Register Event
+		register_post_type( 'sa_person',
+			array(
+		        'label'               => __( 'person', 'school-athletics' ),
+		        'description'         => __( 'Manage person calendar.', 'school-athletics' ),
+		        'labels'              => array(
+							'name'                => __( 'Persons', 'school-athletics' ),
+							'singular_name'       => __( 'Person', 'school-athletics' ),
+							'menu_name'           => __( 'Persons', 'school-athletics' ),
+							'parent_item_colon'   => __( 'Parent Item:', 'school-athletics' ),
+							'all_items'           => __( 'Persons', 'school-athletics' ),
+							'view_item'           => __( 'View Person', 'school-athletics' ),
+							'add_new_item'        => __( 'Add New Person', 'school-athletics' ),
+							'add_new'             => __( 'Add New Person', 'school-athletics' ),
+							'edit_item'           => __( 'Edit Person', 'school-athletics' ),
+							'update_item'         => __( 'Update Person', 'school-athletics' ),
+							'search_items'        => __( 'Search Persons', 'school-athletics' ),
+							'not_found'           => __( 'Not found', 'school-athletics' ),
+							'not_found_in_trash'  => __( 'Not found in Trash', 'school-athletics' ),
+				 ),
+		        'supports'            => array( 'title','editor'),
+		        'hierarchical'        => false,
+		        'public'              => true,
+		        'show_ui'             => true,
+		        'show_in_menu'        => 'sa_person',
+		        'show_in_nav_menus'   => false,
+		        'show_in_admin_bar'   => false,
+		        'can_export'          => true,
+		        'has_archive'         => false,
+		        'exclude_from_search' => false,
+		        'publicly_queryable'  => true,
+		        'rewrite'             => false,
+		        'query_var'           => false,
+		        'capability_type'     => 'post',
+			)
+		);
+
+	}
+
+	/**
+	 * Register core post status.
+	 */
+	public static function register_post_status() {
+
+		register_post_status( 'event_for_schedule', array(
+			'label'                     => _x( 'Event for Schedule', 'post', 'school-athletics'),
+			'public'                    => false,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => false,
+			'show_in_admin_status_list' => true,//if DEBUG
+			'label_count'               => _n_noop( 'Event for Schedule <span class="count">(%s)</span>', 'Events for Schedule <span class="count">(%s)</span>', 'school-athletics'),
+		) );
+
+	}
+
+}
+
+SA_Core::init();
