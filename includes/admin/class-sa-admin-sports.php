@@ -15,15 +15,39 @@ class SA_Admin_Sports {
 	/**
 	 * Handles output of the settings page in admin.
 	 */
-	public static function default() {
-		include_once( 'views/html-admin-page-sports-default.php' );
+	public static function list() {
+		include_once( 'views/html-admin-page-sports-list.php' );
+	}
+
+	/**
+	 * Handles output of the settings page in admin.
+	 */
+	public static function wizard() {
+		include_once( 'views/html-admin-page-sports-wizard.php' );
 	}
 
 	/**
 	 * Handles output of the settings page in admin.
 	 */
 	public static function edit() {
+		// Save settings if data has been posted
+		if ( ! empty( $_POST ) ) {
+			self::save();
+		}
 		include_once( 'views/html-admin-page-sports-edit.php' );
+	}
+
+	/**
+	 * Save the settings.
+	 */
+	public static function save() {
+
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'schoolathletics-edit-sport' ) ) {
+			die( __( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ) );
+		}
+
+		SA_Admin_Notice::success('Sport has been saved');
+
 	}
 
 	/**
