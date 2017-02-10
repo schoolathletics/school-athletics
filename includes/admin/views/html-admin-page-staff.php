@@ -8,21 +8,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] ) : 'action';
-global $title;
 ?>
 
 <div class="wrap">
-	<h1 class="screen-reader-text">$title</h1>
+	<h1 class="wp-heading-inline"><?php _e('Staff','school-athletics'); ?></h1>
 	<?php
 		switch ( $action ) {
 			case "edit" :
-				echo 'add action';
+				SA_Admin_Staff::edit();
 			break;
 			default :
-				echo 'Default = SA_Admin_Coach::default()';
+				SA_Admin_Staff::default();
 			break;
 		}
 	?>
 </div>
 
-<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-coach.php'); ?>
+<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff.php'); ?>

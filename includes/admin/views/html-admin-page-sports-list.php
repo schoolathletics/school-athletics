@@ -58,10 +58,10 @@ if($action == 'unpublish'){
 <thead>
 	<tr>
 		<th width="20px"></th>
-		<th>Sport</th>
-		<th>Rosters</th>
-		<th>Schedules</th>
-		<th>Coaches</th>
+		<th><?php _e('Sport','school-athletics'); ?></th>
+		<th><?php _e('Rosters','school-athletics'); ?></th>
+		<th><?php _e('Schedules','school-athletics'); ?></th>
+		<th><?php _e('Staff','school-athletics'); ?></th>
 	</tr>
 </thead>
 <tbody id="the-list">
@@ -231,14 +231,19 @@ function get_schedules($term){
 
 function get_staff_members($term){
 	$pages = get_posts(array(
-	  'post_type' => 'sa_staff',
+	  'post_type' => 'sa_person',
 	  'numberposts' => -1,
 	  'tax_query' => array(
 	    array(
 	      'taxonomy' => 'sa_sport',
 	      'field' => 'id',
 	      'terms' => $term->term_id, // Where term_id of Term 1 is "1".
-	    )
+	    ),
+	    array(
+			                'taxonomy' => 'sa_person_type',
+			                'field' => 'name',
+			                'terms' => 'staff',
+	 	)
 	  )
 	));
 	$select = '<ul class="schedules">';
