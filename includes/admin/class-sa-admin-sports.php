@@ -27,7 +27,7 @@ class SA_Admin_Sports {
 	/**
 	 * Handles output of the settings page in admin.
 	 */
-	public static function list() {
+	public static function get_list() {
 		if ( ! empty( $_GET['task'] ) ) {
 
 			if($_GET['task'] == 'publish'){
@@ -320,3 +320,5 @@ class SA_Admin_Sports {
 	}
 
 }
+
+return new SA_Admin_Sports();

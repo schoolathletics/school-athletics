@@ -17,7 +17,7 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 				SA_Admin_Staff::edit();
 			break;
 			default :
-				SA_Admin_Staff::default();
+				SA_Admin_Staff::get_list();
 			break;
 		}
 	?>

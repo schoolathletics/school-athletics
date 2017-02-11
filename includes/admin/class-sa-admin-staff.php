@@ -25,7 +25,7 @@ class SA_Admin_Staff {
 			include_once( 'views/html-admin-page-staff.php' );
 	}
 
-	public static function default() {
+	public static function get_list() {
 			include_once( 'views/html-admin-page-staff-list.php' );
 	}
 
@@ -34,3 +34,5 @@ class SA_Admin_Staff {
 	}
 
 }
+
+return new SA_Admin_Staff();

@@ -18,7 +18,7 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 				SA_Admin_Sports::edit();
 			break;
 			default :
-				SA_Admin_Sports::list();
+				SA_Admin_Sports::get_list();
 			break;
 		}
 	?>
