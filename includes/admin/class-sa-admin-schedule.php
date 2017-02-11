@@ -1,9 +1,21 @@
 <?php 
+/**
+ * Schedule Page.
+ *
+ * @author   Dwayne Parton
+ * @category Admin
+ * @package  School Athletics/Admin
+ * @version  0.0.1
+ */
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * SA_Admin_Schedule Class.
+ */
 class SA_Admin_Schedule {
 
 	/**

@@ -9,11 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] ) : 'action';
-global $title;
 ?>
 
 <div class="wrap">
-	<h1><?php echo $title; ?></h1>
 	<?php
 		switch ( $action ) {
 			case "edit" :

@@ -8,7 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<a class="page-title-action" href="">Add New</a>
+<h1 class="wp-heading-inline"><?php _e('Staff','school-athletics'); ?></h1>
+<a class="page-title-action" href=""><?php _e('Add New'); ?></a>
 <p></p>
 <table class="wp-list-table widefat striped pages">
 <thead>

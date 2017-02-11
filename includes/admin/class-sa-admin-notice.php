@@ -1,8 +1,21 @@
 <?php 
+/**
+ * Admin Notices.
+ *
+ * @author   Dwayne Parton
+ * @category Admin
+ * @package  School Athletics/Admin
+ * @version  0.0.1
+ */
+
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * SA_Admin_Notice Class.
+ */
 class SA_Admin_Notice {
 
 	public static function success($message){

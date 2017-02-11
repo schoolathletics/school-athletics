@@ -1,4 +1,21 @@
-<?php 
+<?php
+/**
+ * Adds installation data. Default term values, and content.
+ *
+ * @author   Dwayne Parton
+ * @category Class
+ * @package  School Athletics
+ * @version  0.0.1
+ */
+
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * SA_Install Class.
+ */
 class SA_Install {
 
 	/**

@@ -11,7 +11,6 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 ?>
 
 <div class="wrap">
-	<h1 class="wp-heading-inline"><?php _e('Staff','school-athletics'); ?></h1>
 	<?php
 		switch ( $action ) {
 			case "edit" :

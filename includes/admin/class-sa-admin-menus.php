@@ -1,4 +1,12 @@
 <?php 
+/**
+ * Setup admin menus.
+ *
+ * @author   Dwayne Parton
+ * @category Admin
+ * @package  SchoolAthletics/Admin
+ * @version  0.0.1
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -6,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'SA_Admin_Menus' ) ) :
 
+/**
+ * SA_Admin_Menus Class.
+ */
 class SA_Admin_Menus {
 
 	/**
@@ -30,6 +41,9 @@ class SA_Admin_Menus {
 		include_once( 'class-sa-admin-settings.php');
 	}
 
+	/**
+	 * Register admin menus.
+	 */
 	public function register_menus(){
 		add_menu_page( 'School Athletics', 'School Athletics', 'manage_options', 'school-athletics', '', plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
 		add_submenu_page( 'school-athletics', 'Settings', 'Settings', 'manage_options', 'sports_settings', array( $this, 'settings_page' ));
@@ -40,6 +54,9 @@ class SA_Admin_Menus {
 		add_submenu_page( 'sports', 'Staff', 'Staff', 'manage_options', 'staff', array( $this, 'staff_page' ));
 	}
 
+	/**
+	 * Register debug menus.
+	 */
 	public function register_debug_menus(){
 		add_menu_page( 'Debug', 'Debug', 'manage_options', 'sa_debug', '', 'dashicons-admin-generic', 35 );
 		add_submenu_page( 'sa_debug', 'Pages', 'Pages', 'manage_options', 'edit.php?post_type=sa_page');

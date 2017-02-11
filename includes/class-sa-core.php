@@ -1,6 +1,21 @@
 <?php 
+/**
+ * Installs the foundation terms, post types, and post status
+ *
+ * @author   Dwayne Parton
+ * @category Class
+ * @package  School Athletics
+ * @version  0.0.1
+ */
 
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * SA_Install Class.
+ */
 class SA_Core {
 
 	/**
@@ -26,6 +41,7 @@ class SA_Core {
 		register_taxonomy( 'sa_sport',
 			array(
 				'post',
+				'sa_page',
 				'sa_person',
 				'sa_event',
 				'sa_roster',
@@ -58,6 +74,7 @@ class SA_Core {
 			)
 		);
 		register_taxonomy_for_object_type( 'sa_sport', 'post' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_page' );
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_person' );
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_event' );
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_roster' );

@@ -1,29 +1,8 @@
 <?php //Short Codes
 /*
 ADD META
-sa_sport_status
-sa_sport_id
-sa_sport_has_roster
-sa_sport_roster_id
-sa_sport_roster_options
-sa_sport_has_schedule
-sa_sport_schedule_id
-sa_sport_schedule_options
-sa_sport_facebook
-sa_sport_instagram
-sa_sport_twitter
+sa_sport_options
 */
-
-function sa_notice($message) {
-    ?>
-	 <div class="notice notice-success is-dismissible"> 
-		<p><strong><?php echo $message ?></strong></p>
-		<button type="button" class="notice-dismiss">
-			<span class="screen-reader-text">Dismiss this notice.</span>
-		</button>
-	</div>
-    <?php
-}
 
 $terms = get_terms( array(
     'taxonomy' => 'sa_sport',
@@ -53,15 +32,15 @@ if($action == 'unpublish'){
 
 
 ?>
-<p>This page manages sports.</p>
+<h1>Sports</h1>
+
 <table class="wp-list-table widefat striped pages">
 <thead>
 	<tr>
-		<th width="20px"></th>
-		<th><?php _e('Sport','school-athletics'); ?></th>
-		<th><?php _e('Rosters','school-athletics'); ?></th>
-		<th><?php _e('Schedules','school-athletics'); ?></th>
-		<th><?php _e('Staff','school-athletics'); ?></th>
+		<th colspan="2"><?php _e('Sport','school-athletics'); ?></th>
+		<th class="border-left"><?php _e('Rosters','school-athletics'); ?></th>
+		<th class="border-left"><?php _e('Schedules','school-athletics'); ?></th>
+		<th class="border-left"><?php _e('Staff','school-athletics'); ?></th>
 	</tr>
 </thead>
 <tbody id="the-list">
@@ -69,32 +48,78 @@ if($action == 'unpublish'){
 
 
 foreach ($terms as $term) {
-	$status = get_term_meta( $term->term_id, 'sa_sport_status', true );
-	if($status == ''){
-		$status = 'unpublish';
-	}
-	$home = get_permalink(get_term_meta( $term->term_id, 'sa_sport_home_id', true ));
+	$options = SA_Admin_Sports::options($term->term_id);
 	$edit = admin_url('admin.php?page=sports').'&action=edit&sport='.$term->term_taxonomy_id;
-	echo '<tr>
+	?>
+	<tr>
 		<td>
-			<a id="publish" class="status '.$status.'" href="'.admin_url('admin.php?page=sports').'&action=publish&sport='.$term->term_taxonomy_id.'"></a>
-			<a id="unpublish" class="status '.$status.'" href="'.admin_url('admin.php?page=sports').'&action=unpublish&sport='.$term->term_taxonomy_id.'"></a>
+	<?php if(empty($options['status'])) : ?>
+			<a id="publish" class="status unpublish" href="<?php echo wp_nonce_url(admin_url('admin.php?page=sports').'&task=publish&sport='.$term->term_taxonomy_id, 'schoolathletics-publish-sport');?>"></a>
+	<?php else: ?>
+			<a id="unpublish" class="status publish" href="<?php echo wp_nonce_url(admin_url('admin.php?page=sports').'&task=unpublish&sport='.$term->term_taxonomy_id, 'schoolathletics-unpublish-sport');?>"></a>
+	<?php endif; ?>
 		</td>
-		<td><span class="row-title">'.$term->name.'</span><div class="row-actions"><span class="options"><a href="'.$home.'" >View</a> | </span> <a href="'.$edit.'">Options</a></div></td>
-		<td>'.get_rosters($term).'</td>
-		<td>'.get_schedules($term).'</td>
-		<td>'.get_staff_members($term).'</td>
-		</tr>';
+		<td>
+			<span class="row-title"><?php echo $term->name; ?></span><div class="row-actions"><span class="options"><a href="<?php echo get_permalink($options['page_id']); ?>" >View</a> | </span> <a href="<?php echo $edit; ?>">Options</a></div>
+		</td>
+	<?php if(!empty($options['roster']) && !empty($options['status'])) : ?>
+		<td class="border-left">
+			<?php echo get_current_rosters($term); ?>
+			<div class="row-actions">
+			<span class="options">
+				<a href="?page=roster&sport=<?php echo $term->term_id; ?>"> New Roster</a>
+			</span>	
+			</div>	
+		</td>
+	<?php else: ?>
+		<td class="border-left">
+			<span class="dashicons dashicons-lock"></span>
+		</td>
+	<?php endif; ?>
+	<?php if(!empty($options['schedule']) && !empty($options['status'])) : ?>
+		<td class="border-left">
+			<?php echo get_current_schedule($term); ?>
+			<div class="row-actions">
+			<span class="options">
+				<a href="?page=schedule&sport=<?php echo $term->term_id; ?>">New Schedule</a>
+			</span>	
+			</div>		
+		</td>
+	<?php else: ?>
+		<td class="border-left">
+			<span class="dashicons dashicons-lock"></span>
+		</td>
+	<?php endif; ?>
+	<?php if(!empty($options['staff']) && !empty($options['status'])) : ?>
+		<td class="border-left">
+			<?php echo get_current_staff($term); ?>
+			<div class="row-actions">
+			<span class="options">
+				<a href="?page=staff&sport=<?php echo $term->term_id; ?>">Add Staff</a>
+			</span>	
+			</div>
+		</td>
+	<?php else: ?>
+		<td class="border-left">
+			<span class="dashicons dashicons-lock"></span>
+		</td>
+	<?php endif; ?>
+	</tr>
+	<?php
 }
 ?>
 </tbody>
 </table>
 
 <style type="text/css">
-	.status{display: block; background-color: #dc3232; height:1em; width:1em; border-radius: .5em;}
+	.true{color:#46b450;}
+	.false{color: #dc3232;}
+	.status{display: block; background-color: #dc3232; margin-top:3px; height:1.1em; width:1.1em; border-radius: .55em;}
 	#publish.publish,#unpublish.unpublish{display:none;}
-	#unpublish.publish{display: block; background-color:#46b450;}
+	#unpublish.publish, .status.true{display: block; background-color:#46b450;}
 	#publish.unpublish{display: block;}
+	td.border-left, th.border-left{border-left:1px solid #ebebeb;}
+	td.border-right, th.border-right{border-right:1px solid #ebebeb;}
 	li.add{background-color:#efefef;line-height:1.75em; position:relative;}
 	li.add .dashicons{float:right;}
 	li.add .select{display: none; background-color:#ffffff; position:absolute; top:1.75em; width: 100%;}
@@ -165,6 +190,85 @@ function insert_sport_subpage($post_id, $parentID, $title, $content){
 				);
 	$id = wp_insert_post($subpage);
 	return $id;
+}
+
+function get_current_rosters($term){
+	$pages = get_posts(array(
+	  'post_type' => 'sa_roster',
+	  'numberposts' => 1,
+	  'tax_query' => array(
+	    array(
+	      'taxonomy' => 'sa_sport',
+	      'field' => 'id',
+	      'terms' => $term->term_id, // Where term_id of Term 1 is "1".
+	    )
+	  ),
+	  'orderby' => 'taxonomy_sa_season',
+	  'order'   => 'DESC',
+	));
+	foreach ($pages as $page) {
+		if(is_object($page)){
+			if(is_object_in_term( $page->ID, 'sa_season')){
+				$season = get_the_terms($page,'sa_season');
+				$content = '<a href="?page=roster&sport='.$term->term_id.'&season='.$season[0]->term_id.'&roster_id='.$page->ID.'">'.$season[0]->name.'</a>';
+			}
+		}
+	}
+	$content = (!empty($content)) ? $content : '- - -';
+	return $content;
+}
+
+function get_current_schedule($term){
+	$pages = get_posts(array(
+	  'post_type' => 'sa_schedule',
+	  'numberposts' => 1,
+	  'tax_query' => array(
+	    array(
+	      'taxonomy' => 'sa_sport',
+	      'field' => 'id',
+	      'terms' => $term->term_id, // Where term_id of Term 1 is "1".
+	    )
+	  ),
+	  'orderby' => 'taxonomy_sa_season',
+	  'order'   => 'DESC',
+	));
+	foreach ($pages as $page) {
+		if(is_object($page)){
+			if(is_object_in_term( $page->ID, 'sa_season')){
+				$season = get_the_terms($page,'sa_season');
+				$content = '<a href="?page=schedule&sport='.$term->term_id.'&season='.$season[0]->term_id.'&schedule_id='.$page->ID.'">'.$season[0]->name.'</a>';
+			}
+		}
+	}
+	$content = (!empty($content)) ? $content : '- - -';
+	return $content;
+}
+
+function get_current_staff($term){
+	$pages = get_posts(array(
+	  'post_type' => 'sa_person',
+	  'numberposts' => -1,
+	  'tax_query' => array(
+	    array(
+	      'taxonomy' => 'sa_sport',
+	      'field' => 'id',
+	      'terms' => $term->term_id,
+	    ),
+	   	array(
+	      'taxonomy' => 'sa_person_type',
+	      'field' => 'slug',
+	      'terms' => 'staff', // Where term_id of Term 1 is "1".
+	    )
+	  )
+	));
+	$content = null;
+	foreach ($pages as $page) {
+		if(is_object($page)){
+			$content .= '<a href="#&roster_id='.$page->ID.'">'.$page->post_title.' <span class="dashicons dashicons-no"></span></a><br />';
+		}
+	}
+	$content = (!empty($content)) ? $content : '- - -';
+	return $content;
 }
 
 function get_rosters($term){

@@ -1,9 +1,21 @@
 <?php 
+/**
+ * Settings Pages.
+ *
+ * @author   Dwayne Parton
+ * @category Admin
+ * @package  School Athletics/Admin
+ * @version  0.0.1
+ */
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * SA_Admin_Settings Class.
+ */
 class SA_Admin_Settings {
 
 	/**
