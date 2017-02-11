@@ -4,7 +4,7 @@
  *
  * @author   Dwayne Parton
  * @category Admin
- * @package  School Athletics/Admin
+ * @package  SchoolAthletics/Admin
  * @version  0.0.1
  */
 

@@ -12,7 +12,7 @@
  * Text Domain: school-athletics
  * Domain Path: 
  *
- * @package Sports Pro
+ * @package SchoolAthletics
  * @category Core
  * @author Dwayne Parton
  */

@@ -4,7 +4,7 @@
  *
  * @author   Dwayne Parton
  * @category Admin
- * @package  School Athletics/Admin
+ * @package  SchoolAthletics/Admin
  * @version  0.0.1
  */
 
@@ -14,18 +14,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * SA_Admin_Sports Class.
+ * Main admin page in wp dashboard.
  */
 class SA_Admin_Sports {
+	
 	/**
-	 * Handles output of the settings page in admin.
+	 * Handles output of the sports page in admin.
 	 */
 	public static function output() {
 		include_once( 'views/html-admin-page-sports.php' );
 	}
 
 	/**
-	 * Handles output of the settings page in admin.
+	 * Default view, and perfom tasks on submit
 	 */
 	public static function get_list() {
 		if ( ! empty( $_GET['task'] ) ) {
@@ -47,14 +48,14 @@ class SA_Admin_Sports {
 	}
 
 	/**
-	 * Handles output of the settings page in admin.
+	 * Form to force season and sport choice.
 	 */
 	public static function wizard() {
 		include_once( 'views/html-admin-page-sports-wizard.php' );
 	}
 
 	/**
-	 * Handles output of the settings page in admin.
+	 * Edit a single sport, and perfom tasks on submit
 	 */
 	public static function edit() {
 		// Save settings if data has been posted
@@ -95,7 +96,7 @@ class SA_Admin_Sports {
 	}
 
 	/**
-	 * Save the settings.
+	 * Publish the sport setting term status to 1.
 	 */
 	public static function publish($sport) {
 
@@ -113,7 +114,7 @@ class SA_Admin_Sports {
 	}
 
 	/**
-	 * Save the settings.
+	 * Unpublish the sport setting term status to 0.
 	 */
 	public static function unpublish($sport) {
 
@@ -131,6 +132,9 @@ class SA_Admin_Sports {
 
 	}
 
+	/**
+	 * Get sport options and parse default values.
+	 */
 	public static function options($sport){
 
 		if(!empty($sport)){
@@ -161,6 +165,9 @@ class SA_Admin_Sports {
 
 	}
 
+	/**
+	 * Force delete all pages in sport of sa_page post type.
+	 */
 	public static function delete_all($sport, $status = null){
 		
 		$pages = get_posts(array(
@@ -195,7 +202,7 @@ class SA_Admin_Sports {
 	}
 
 	/**
-	 * Rebuild Pages.
+	 * Rebuild pages. This deletes all the pages and then readds them.
 	 */
 	public static function rebuild(){
 		
@@ -211,9 +218,11 @@ class SA_Admin_Sports {
 			SA_Admin_Notice::success('Sport has successfully been rebuilt.');
 		}
 
-		//SA_Admin_Notice::success('Sport has successfully been rebuilt.');
 	}
 
+	/**
+	 * Build sport pages.
+	 */
 	public static function build($sport, $status = null){
 
 		$options = self::options($sport);
@@ -265,6 +274,9 @@ class SA_Admin_Sports {
 
 	}
 
+	/**
+	 * Create sport home page.
+	 */
 	public static function build_page($term){
 		if(!is_object($term)){
 			$term = get_term($term);
@@ -282,24 +294,36 @@ class SA_Admin_Sports {
 		return wp_insert_post($home);
 	}
 
+	/**
+	 * Create sport roster page.
+	 */
 	public static function build_roster_page($sport, $home_id){
 		$title = 'Roster';
 		$content = '[roster]';
 		return self::insert_sport_subpage($sport, $home_id, $title, $content);
 	}
 
+	/**
+	 * Create sport schedule page.
+	 */
 	public static function build_schedule_page($sport, $home_id){
 		$title = 'Schedule';
 		$content = '[schedule]';
 		return self::insert_sport_subpage($sport, $home_id, $title, $content);
 	}
 
+	/**
+	 * Create sport staff page.
+	 */
 	public static function build_staff_page($sport, $home_id){
 		$title = 'Staff';
 		$content = '[staff]';
 		return self::insert_sport_subpage($sport, $home_id, $title, $content);
 	}
 
+	/**
+	 * Create a subpage under the sport home page
+	 */
 	public static function insert_sport_subpage($sport, $parentID, $title, $content){
 		if(!is_object($sport)){
 			$sport = get_term($sport);

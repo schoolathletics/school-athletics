@@ -4,7 +4,7 @@
  *
  * @author   Dwayne Parton
  * @category Class
- * @package  School Athletics
+ * @package  SchoolAthletics
  * @version  0.0.1
  */
 
