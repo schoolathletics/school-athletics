@@ -8,17 +8,20 @@
  * @version  0.0.1
  */
 
+namespace SchoolAthletics\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * SA_Admin_Roster Class.
+ * Roster Class.
  */
-class SA_Admin_Roster {
+class Roster extends Page{
 
-	public function __construct() {
+	public function __construct(){
+		parent::__construct();
+		self::output();
 		add_action("admin_enqueue_scripts", array($this,'enqueue_scripts') );
 	}
 
@@ -35,5 +38,3 @@ class SA_Admin_Roster {
 
 
 }
-
-return new SA_Admin_Roster();

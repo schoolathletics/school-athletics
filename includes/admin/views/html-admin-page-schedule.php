@@ -209,9 +209,9 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 }else{
 
-	SA_Admin_Sports::wizard();
+	\SchoolAthletics\Admin\Sports::wizard();
 
 }
 
-SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-schedule.php');
-SchoolAthletics::debug_content($_REQUEST); 
+\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-schedule.php');
+\SchoolAthletics\Debug::content($_REQUEST); 

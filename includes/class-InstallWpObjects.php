@@ -8,15 +8,16 @@
  * @version  0.0.1
  */
 
+namespace SchoolAthletics;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * SA_Install Class.
+ * Install_WP_Objects Class.
  */
-class SA_Core {
+class InstallWpObjects {
 
 	/**
 	 * Hook in methods.
@@ -61,7 +62,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Sport Name', 'school-athletics' ),
 						'not_found'         => __( 'No Sport found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => true,
 			'show_admin_column'     => true,
@@ -99,7 +100,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Person Type Name', 'school-athletics' ),
 						'not_found'         => __( 'No Person Types found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => true,
 			'show_admin_column'     => true,
@@ -132,7 +133,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Athlete Status Name', 'school-athletics' ),
 						'not_found'         => __( 'No Athlete Status found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => true,
 			'show_admin_column'     => true,
@@ -167,7 +168,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Person Name', 'school-athletics' ),
 						'not_found'         => __( 'No Persons found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => true,
 			'show_admin_column'     => true,
@@ -205,7 +206,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Season Name', 'school-athletics' ),
 						'not_found'         => __( 'No Seasons found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => false,
 			'show_admin_column'     => true,
@@ -241,7 +242,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Event Type Name', 'school-athletics' ),
 						'not_found'         => __( 'No Event Types found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => 'sa_debug',
 			'show_in_nav_menus'     => false,
 			'show_admin_column'     => true,
@@ -274,7 +275,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Game Type Name', 'school-athletics' ),
 						'not_found'         => __( 'No Game Types found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => 'sa_debug',
 			'show_in_nav_menus'     => false,
 			'show_admin_column'     => false,
@@ -307,7 +308,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Outcome Name', 'school-athletics' ),
 						'not_found'         => __( 'No Outcomes found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => 'sa_debug',
 			'show_in_nav_menus'     => false,
 			'show_admin_column'     => false,
@@ -340,7 +341,7 @@ class SA_Core {
 						'new_item_name'     => __( 'New Location Name', 'school-athletics' ),
 						'not_found'         => __( 'No Locations found', 'school-athletics' ),
 			),
-			'show_ui'               => SchoolAthletics::debug(),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => 'sa_debug',
 			'show_in_nav_menus'     => false,
 			'show_admin_column'     => false,
@@ -388,7 +389,7 @@ class SA_Core {
 				'supports'            => array( 'title', 'thumbnail', 'editor', 'page-attributes'),
 				'hierarchical'        => true,
 				'public'              => true,
-				'show_ui'             => SchoolAthletics::debug(),
+				'show_ui'             => \SchoolAthletics\Debug::status(),
 				'show_in_menu'        => false,
 				'show_in_nav_menus'   => false,
 				'show_in_admin_bar'   => false,
@@ -427,7 +428,7 @@ class SA_Core {
 		        'supports'            => array( 'title','editor'),
 		        'hierarchical'        => false,
 		        'public'              => true,
-		        'show_ui'             => SchoolAthletics::debug(),
+		        'show_ui'             => \SchoolAthletics\Debug::status(),
 		        'show_in_menu'        => false,
 		        'show_in_nav_menus'   => false,
 		        'show_in_admin_bar'   => false,
@@ -464,7 +465,7 @@ class SA_Core {
 		        'supports'            => array( 'title','editor'),
 		        'hierarchical'        => false,
 		        'public'              => true,
-		        'show_ui'             => SchoolAthletics::debug(),
+		        'show_ui'             => \SchoolAthletics\Debug::status(),
 		        'show_in_menu'        => false,
 		        'show_in_nav_menus'   => false,
 		        'show_in_admin_bar'   => false,
@@ -539,7 +540,7 @@ class SA_Core {
 		        'supports'            => array( 'title','editor'),
 		        'hierarchical'        => false,
 		        'public'              => true,
-		        'show_ui'             => SchoolAthletics::debug(),
+		        'show_ui'             => \SchoolAthletics\Debug::status(),
 		        'show_in_menu'        => false,
 		        'show_in_nav_menus'   => false,
 		        'show_in_admin_bar'   => false,
@@ -573,4 +574,4 @@ class SA_Core {
 
 }
 
-SA_Core::init();
+\SChoolAthletics\InstallWpObjects::init();

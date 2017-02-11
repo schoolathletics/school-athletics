@@ -36,5 +36,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 </div>
 
-<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-settings.php'); ?>
-<?php SchoolAthletics::debug_content($_REQUEST); ?>
+<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-settings.php'); ?>
+<?php \SchoolAthletics\Debug::content($_REQUEST); ?>

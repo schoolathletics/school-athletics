@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php 
 
 if(empty($_GET['sport']) && !empty($_GET['season'])){
-	SA_Admin_Notice::error(__('Please select a sport.'));
+	\SchoolAthletics\Admin\Notice::error(__('Please select a sport.'));
 }
 if(!empty($_GET['sport']) && empty($_GET['season'])){
-	SA_Admin_Notice::error(__('Please select a season.'));
+	\SchoolAthletics\Admin\Notice::error(__('Please select a season.'));
 }
 $sport = (!empty($_GET['sport'])) ? $_GET['sport'] : '';
 $season = (!empty($_GET['season'])) ? $_GET['season'] : '';
@@ -69,4 +69,4 @@ $title = $_GET['page'];
 	<p class="submit"><input id="submit" class="button button-primary" value="Get <?php echo ucwords($title); ?>" type="submit"></p>
 </form>
 
-<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-sports-wizard.php'); ?>
+<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-sports-wizard.php'); ?>

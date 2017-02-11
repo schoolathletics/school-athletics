@@ -1,8 +1,11 @@
 <?php
-/**
- * Admin View: Page - Status
- */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
+/**
+ * Admin View: Staff
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -14,13 +17,13 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 	<?php
 		switch ( $action ) {
 			case "edit" :
-				SA_Admin_Staff::edit();
+				\SchoolAthletics\Admin\Staff::edit();
 			break;
 			default :
-				SA_Admin_Staff::get_list();
+				\SchoolAthletics\Admin\Staff::get_list();
 			break;
 		}
 	?>
 </div>
 
-<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff.php'); ?>
+<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff.php'); ?>

@@ -1,6 +1,6 @@
 <?php 
 /**
- * Settings Pages.
+ * Schedule Page.
  *
  * @author   Dwayne Parton
  * @category Admin
@@ -8,25 +8,27 @@
  * @version  0.0.1
  */
 
+namespace SchoolAthletics\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * SA_Admin_Settings Class.
+ * Schedule Class.
  */
-class SA_Admin_Settings {
+class Schedule extends Page{
+
+	public function __construct(){
+		parent::__construct();
+		self::output();
+	}
 
 	/**
 	 * Handles output of the settings page in admin.
 	 */
 	public static function output() {
-		include_once( 'views/html-admin-page-settings.php' );
-	}
-
-	public static function save(){
-
+		include_once( 'views/html-admin-page-schedule.php' );
 	}
 
 }

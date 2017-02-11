@@ -9,6 +9,7 @@
  * @version  0.0.1
  */
 
+namespace SchoolAthletics;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,13 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * SA_Install Class.
  */
-class SA_Sport {
+class Sport {
 
 	/**
 	 * Hook in methods.
 	 */
 	public function __construct() {
 	}
-
 
 }

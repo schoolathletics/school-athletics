@@ -7,24 +7,24 @@
  * @package  SchoolAthletics/Admin
  * @version  0.0.1
  */
+namespace SchoolAthletics\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'SA_Admin_Menus' ) ) :
 
 /**
- * SA_Admin_Menus Class.
+ * Menus class.
  */
-class SA_Admin_Menus {
+class Menus {
 
 	/**
 	 * Hook in methods.
 	 */
 	public function __construct(){
 		add_action( 'admin_menu', array( $this, 'register_menus' ), 5 );
-		if(SchoolAthletics::debug()){
+		if(\SchoolAthletics\Debug::status()){
 			add_action( 'admin_menu', array( $this, 'register_debug_menus' ), 5 );
 		}
 		$this->includes();
@@ -34,11 +34,12 @@ class SA_Admin_Menus {
 	 * Include any classes we need within admin.
 	 */
 	public function includes(){
-		include_once( 'class-sa-admin-sports.php');
-		include_once( 'class-sa-admin-roster.php');
-		include_once( 'class-sa-admin-schedule.php');
-		include_once( 'class-sa-admin-staff.php');
-		include_once( 'class-sa-admin-settings.php');
+		//include_once( 'class-page.php');
+		//include_once( 'class-sports.php');
+		//include_once( 'class-roster.php');
+		//include_once( 'class-schedule.php');
+		//include_once( 'class-staff.php');
+		//include_once( 'class-settings.php');
 	}
 
 	/**
@@ -76,47 +77,38 @@ class SA_Admin_Menus {
 	}
 
 	/**
-	 * Init the status page.
+	 * Create the sports page
 	 */
 	public function sports_page() {
-		SA_Admin::header();
-		SA_Admin_Sports::output();
+		return new \SchoolAthletics\Admin\Sports();
 	}
 
 	/**
-	 * Init the status page.
+	 * Create the roster page
 	 */
 	public function roster_page() {
-		SA_Admin::header();
-		SA_Admin_Roster::output();
+		return new \SchoolAthletics\Admin\Roster();
 	}
 
 	/**
-	 * Init the status page.
+	 * Create the staff page
 	 */
 	public function staff_page() {
-		SA_Admin::header();
-		SA_Admin_Staff::output();
-	}
-
-		/**
-	 * Init the status page.
-	 */
-	public function schedule_page() {
-		SA_Admin::header();
-		SA_Admin_Schedule::output();
+		return new \SchoolAthletics\Admin\Staff();
 	}
 
 	/**
-	 * Init the status page.
+	 * Create the schedule page
+	 */
+	public function schedule_page() {
+		return new \SchoolAthletics\Admin\Schedule();
+	}
+
+	/**
+	 * Create the settings page
 	 */
 	public function settings_page() {
-		SA_Admin::header();
-		SA_Admin_Settings::output();
+		return new \SchoolAthletics\Admin\Settings();
 	}
 
 }
-
-endif;
-
-return new SA_Admin_Menus();

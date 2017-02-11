@@ -2,7 +2,7 @@
 
 $term_id = $_GET['sport'];
 $term = get_term($term_id);
-$options = SA_Admin_Sports::options($term->term_id);
+$options = \SchoolAthletics\Admin\Sports::options($term->term_id);
 //print_r($term);
 ?>
 <h1><?php echo $term->name; ?></h1>
@@ -178,5 +178,5 @@ $options = SA_Admin_Sports::options($term->term_id);
 	</tbody>
 	</table>
 
-<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-sports-edit.php'); ?>
-<?php SchoolAthletics::debug_content($options);  ?>
+<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-sports-edit.php'); ?>
+<?php \SchoolAthletics\Debug::content($options);  ?>

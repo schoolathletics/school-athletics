@@ -213,9 +213,9 @@ function open_media_uploader_image()
 
 }else{
 
-	SA_Admin_Sports::wizard();
+	\SchoolAthletics\Admin\Sports::wizard();
 
 }
 
-SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-roster.php');
-SchoolAthletics::debug_content($_REQUEST); 
+\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-roster.php');
+\SchoolAthletics\Debug::content($_REQUEST); 

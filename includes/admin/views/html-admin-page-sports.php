@@ -15,10 +15,10 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 	<?php
 		switch ( $action ) {
 			case "edit" :
-				SA_Admin_Sports::edit();
+				\SchoolAthletics\Admin\Sports::edit();
 			break;
 			default :
-				SA_Admin_Sports::get_list();
+				\SchoolAthletics\Admin\Sports::get_list();
 			break;
 		}
 	?>
@@ -26,6 +26,6 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 
 <?php 
 
-SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-sports.php'); 
+\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-sports.php');
 
 ?>

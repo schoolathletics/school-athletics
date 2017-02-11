@@ -8,6 +8,7 @@
  * @version  0.0.1
  */
 
+namespace SchoolAthletics;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * SA_Install Class.
  */
-class SA_Install {
+class Install {
 
 	/**
 	 * Hook in methods.

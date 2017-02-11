@@ -61,4 +61,4 @@ foreach ($posts as $post) {
 </tbody>
 </table>
 
-<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff-list.php'); ?>
+<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff-list.php'); ?>

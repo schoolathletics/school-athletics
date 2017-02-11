@@ -8,15 +8,16 @@
  * @version  0.0.1
  */
 
+namespace SchoolAthletics\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * SA_Admin_Notice Class.
+ * Notice Class.
  */
-class SA_Admin_Notice {
+class Notice {
 
 	public static function success($message){
 		return self::html('success', $message);

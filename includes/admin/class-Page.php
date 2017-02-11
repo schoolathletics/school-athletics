@@ -7,6 +7,7 @@
  * @package  SchoolAthletics/Admin
  * @version  0.0.1
  */
+namespace SchoolAthletics\Admin;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,24 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * SA_Admin Class.
+ * Page Class.
  */
-class SA_Admin {
+class Page {
 
-	/**
-	 * Hook in methods.
-	 */
-	public function __construct() {
-		add_action( 'init', array( $this, 'includes' ) );
-		add_filter( 'display_post_states', array( $this, 'post_states' ), 10, 2 );
-	}
-
-	/**
-	 * Include any classes we need within admin.
-	 */
-	public function includes(){
-		require SA__PLUGIN_DIR . 'includes/admin/class-sa-admin-notice.php';
-		require SA__PLUGIN_DIR . 'includes/admin/class-sa-admin-menus.php';
+	public function __construct(){
+		$this->header();
 	}
 
 	public function post_states( $states, $post ) {
@@ -50,6 +39,7 @@ class SA_Admin {
 		return $states;
 	}
 
+
 	public static function header(){
 		include_once( 'views/html-admin-elements-header.php' );
 	} 
@@ -59,5 +49,3 @@ class SA_Admin {
 	} 
 
 }
-
-return new SA_Admin();

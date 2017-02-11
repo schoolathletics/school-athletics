@@ -47,4 +47,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p class="submit"><input name="submit" id="submit" class="button button-primary" value="Save Changes" type="submit"></p>
 </form>
 
-<?php SchoolAthletics::debug_file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff-edit.php'); ?>
+<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff-edit.php'); ?>

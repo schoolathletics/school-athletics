@@ -8,15 +8,22 @@
  * @version  0.0.1
  */
 
+namespace SchoolAthletics\Admin;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Main admin page in wp dashboard.
+ * Sports page class.
  */
-class SA_Admin_Sports {
+class Sports extends Page{
+
+	public function __construct(){
+		parent::__construct();
+		self::output();
+	}
 	
 	/**
 	 * Handles output of the sports page in admin.
@@ -82,7 +89,7 @@ class SA_Admin_Sports {
 	public static function save() {
 
 		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'schoolathletics-edit-sport' ) ) {
-			SA_Admin_Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
+			\SchoolAthletics\Admin\Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
 		}
 
 		if(!empty($_REQUEST['sa_sport_options'])){
@@ -91,7 +98,7 @@ class SA_Admin_Sports {
 			self::build($sport);
 		}
 
-		SA_Admin_Notice::success('Sport has been saved');
+		\SchoolAthletics\Admin\Notice::success('Sport has been saved');
 
 	}
 
@@ -101,7 +108,7 @@ class SA_Admin_Sports {
 	public static function publish($sport) {
 
 		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'schoolathletics-publish-sport' ) ) {
-			SA_Admin_Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
+			\SchoolAthletics\Admin\Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
 		}
 
 		if(!empty($sport)){
@@ -109,7 +116,7 @@ class SA_Admin_Sports {
 			self::build($sport,1);
 		}
 
-		SA_Admin_Notice::success('Sport has been published');
+		\SchoolAthletics\Admin\Notice::success('Sport has been published');
 
 	}
 
@@ -119,7 +126,7 @@ class SA_Admin_Sports {
 	public static function unpublish($sport) {
 
 		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'schoolathletics-unpublish-sport' ) ) {
-			SA_Admin_Notice::error(__( 'Failed to unpublish. Please refresh the page and retry.', 'school-athletics' ));
+			\SchoolAthletics\Admin\Notice::error(__( 'Failed to unpublish. Please refresh the page and retry.', 'school-athletics' ));
 		}
 
 		if(!empty($sport)){
@@ -128,7 +135,7 @@ class SA_Admin_Sports {
 			
 		}
 
-		SA_Admin_Notice::success('Sport has been unpublished');
+		\SchoolAthletics\Admin\Notice::success('Sport has been unpublished');
 
 	}
 
@@ -215,7 +222,7 @@ class SA_Admin_Sports {
 			self::delete_all($_REQUEST['sport']);
 			self::build($_REQUEST['sport']);
 
-			SA_Admin_Notice::success('Sport has successfully been rebuilt.');
+			\SchoolAthletics\Admin\Notice::success('Sport has successfully been rebuilt.');
 		}
 
 	}
@@ -343,6 +350,80 @@ class SA_Admin_Sports {
 		return $id;
 	}
 
-}
+	public static function get_current_roster($sport){
+		$pages = get_posts(array(
+		  'post_type' => 'sa_roster',
+		  'numberposts' => 1,
+		  'tax_query' => array(
+		    array(
+		      'taxonomy' => 'sa_sport',
+		      'field' => 'id',
+		      'terms' => $sport->term_id, // Where term_id of Term 1 is "1".
+		    )
+		  ),
+		  'orderby' => 'taxonomy_sa_season',
+		  'order'   => 'DESC',
+		));
+		foreach ($pages as $page) {
+			if(is_object($page)){
+				if(is_object_in_term( $page->ID, 'sa_season')){
+					$season = get_the_terms($page,'sa_season');
+					$content = '<a href="?page=roster&sport='.$sport->term_id.'&season='.$season[0]->term_id.'&roster_id='.$page->ID.'">'.$season[0]->name.'</a>';
+				}
+			}
+		}
+		$content = (!empty($content)) ? $content : '- - -';
+		return $content;
+	}
 
-return new SA_Admin_Sports();
+	public static function get_current_schedule($sport){
+		$pages = get_posts(array(
+		  'post_type' => 'sa_schedule',
+		  'numberposts' => 1,
+		  'tax_query' => array(
+		    array(
+		      'taxonomy' => 'sa_sport',
+		      'field' => 'id',
+		      'terms' => $sport->term_id, // Where term_id of Term 1 is "1".
+		    )
+		  ),
+		  'orderby' => 'taxonomy_sa_season',
+		  'order'   => 'DESC',
+		));
+		foreach ($pages as $page) {
+			if(is_object($page)){
+				if(is_object_in_term( $page->ID, 'sa_season')){
+					$season = get_the_terms($page,'sa_season');
+					$content = '<a href="?page=schedule&sport='.$sport->term_id.'&season='.$season[0]->term_id.'&schedule_id='.$page->ID.'">'.$season[0]->name.'</a>';
+				}
+			}
+		}
+		$content = (!empty($content)) ? $content : '- - -';
+		return $content;
+	}
+
+	public static function get_current_staff($sport){
+		$pages = get_posts(array(
+		  'post_type' => 'sa_person',
+		  'numberposts' => -1,
+		  'tax_query' => array(
+		    array(
+		      'taxonomy' => 'sa_sport',
+		      'field' => 'id',
+		      'terms' => $sport->term_id,
+		    ),
+		   	array(
+		      'taxonomy' => 'sa_person_type',
+		      'field' => 'slug',
+		      'terms' => 'staff', // Where term_id of Term 1 is "1".
+		    )
+		  )
+		));
+		$content = null;
+		foreach ($pages as $page) {
+			if(is_object($page)){
+				$content .= '<a href="#&roster_id='.$page->ID.'">'.$page->post_title.' <span class="dashicons dashicons-no"></span></a><br />';
+			}
+		}
+	}
+}
