@@ -2,7 +2,7 @@
 /**
  * Debug class.
  *
- * @class    Debug
+ *
  * @author   Dwayne Parton
  * @category Class
  * @package  SchoolAthletics
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * SA_Install Class.
+ * Debug Class.
  */
 class Debug {
 
@@ -25,6 +25,9 @@ class Debug {
 	 * Hook in methods.
 	 */
 	public function __construct() {
+		if(self::status()){
+			
+		}
 	}
 
 	/**
@@ -39,6 +42,9 @@ class Debug {
 		}
 	}
 
+	/**
+	 * Is Debugging On
+	 */
 	public static function file_path($path){
 		if(self::status()){
 			echo '<p>Included From : <code>'.$path.'</code></p>';
@@ -47,18 +53,30 @@ class Debug {
 		}
 	}
 
-	public static function content($content){
+	/**
+	 * Is Debugging On
+	 */
+	public static function content($data){
 		if(self::status()){
 			echo '<p><code>';
-			if(is_array($content)){
-				var_dump($content);
+			if(is_array($data)){
+				var_dump($data);
 			}else{
-				echo $content;
+				echo $data;
 			}
 			echo '</code></p>';
 		}else{
 			return;
 		}
+	}
+
+	/**
+	 * Print errors to console log
+	 */
+	public static function console_log( $data ){
+		echo '<script>';
+		echo 'console.log('. json_encode( $data ) .')';
+		echo '</script>';
 	}
 
 }

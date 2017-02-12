@@ -31,8 +31,4 @@ class Settings extends Page{
 		include_once( 'views/html-admin-page-settings.php' );
 	}
 
-	public static function save(){
-
-	}
-
 }

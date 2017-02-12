@@ -55,13 +55,6 @@ class Sports extends Page{
 	}
 
 	/**
-	 * Form to force season and sport choice.
-	 */
-	public static function wizard() {
-		include_once( 'views/html-admin-page-sports-wizard.php' );
-	}
-
-	/**
 	 * Edit a single sport, and perfom tasks on submit
 	 */
 	public static function edit() {
@@ -350,6 +343,9 @@ class Sports extends Page{
 		return $id;
 	}
 
+	/**
+	 * Get the current roster with edit link.
+	 */
 	public static function get_current_roster($sport){
 		$pages = get_posts(array(
 		  'post_type' => 'sa_roster',
@@ -376,6 +372,9 @@ class Sports extends Page{
 		return $content;
 	}
 
+	/**
+	 * Get the current schedule with edit link.
+	 */
 	public static function get_current_schedule($sport){
 		$pages = get_posts(array(
 		  'post_type' => 'sa_schedule',
@@ -402,6 +401,9 @@ class Sports extends Page{
 		return $content;
 	}
 
+	/**
+	 * Get the sports staff with edit link. Returns all staff members of sport.
+	 */
 	public static function get_current_staff($sport){
 		$pages = get_posts(array(
 		  'post_type' => 'sa_person',

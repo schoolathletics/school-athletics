@@ -19,19 +19,31 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Notice {
 
+	/**
+	 * Returns a dismissible success notice
+	 */
 	public static function success($message){
-		return self::html('success', $message);
+		return self::view('success', $message);
 	}
 
+	/**
+	 * Returns a dismissible success notice
+	 */
 	public static function warning($message){
-		return self::html('warning', $message);
+		return self::view('warning', $message);
 	}
 
+	/**
+	 * Returns a dismissible success notice
+	 */
 	public static function error($message){
-		return self::html('error', $message);
+		return self::view('error', $message);
 	}
 
-	private static function html($type,$message){
+	/**
+	 * The notice view
+	 */
+	private static function view($type,$message){
 		?>
 		<div class="notice notice-<?php echo $type; ?> is-dismissible"> 
 			<p><strong><?php echo $message; ?></strong></p>

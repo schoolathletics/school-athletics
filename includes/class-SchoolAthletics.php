@@ -16,13 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Main SchoolAthletic Class.
+ * Main School Athletics Class.
  *
  */
 class SchoolAthletics {
 	
 	/**
-	 * SportsPro Constructor.
+	 * School Athletics Constructor.
 	 */
 	public function __construct() {
 		\SchoolAthletics\InstallWpObjects::init();

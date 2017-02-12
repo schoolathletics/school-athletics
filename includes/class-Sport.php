@@ -2,7 +2,7 @@
 /**
  * Main sport class.
  *
- * @class    SA_Sport
+ * 
  * @author   Dwayne Parton
  * @category Class
  * @package  SchoolAthletics
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * SA_Install Class.
+ * Sport Class.
  */
 class Sport {
 

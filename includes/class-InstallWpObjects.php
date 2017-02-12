@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Install_WP_Objects Class.
+ * Install WordPress objects class.
  */
 class InstallWpObjects {
 
@@ -30,8 +30,7 @@ class InstallWpObjects {
 
 
 	/**
-	 * Register core taxonomies
-	 * Sport, Person, Season
+	 * Registers core taxonomies: Sport, Person, Season;
 	 */
 	public static function register_taxonomies() {
 		if ( taxonomy_exists( 'sa_sport' ) ) {

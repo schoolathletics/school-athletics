@@ -208,8 +208,8 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 <?php 
 
 }else{
-
-	\SchoolAthletics\Admin\Sports::wizard();
+	echo '<h1 class="wp-heading-inline">'.__('Select a Schedule.','school-athletics').'</h1>';
+	\SchoolAthletics\Admin\Page::wizard();
 
 }
 

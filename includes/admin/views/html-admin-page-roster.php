@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wrap">
-
 <?php 
 
 if(!empty($_GET['sport']) && !empty($_GET['season'])){
@@ -65,7 +64,6 @@ function open_media_uploader_image()
 }
 
 </script>
-
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
 	<a class="page-title-action" href="">Add New</a>
 	<form method="POST">
@@ -212,8 +210,8 @@ function open_media_uploader_image()
 <?php 
 
 }else{
-
-	\SchoolAthletics\Admin\Sports::wizard();
+	echo '<h1 class="wp-heading-inline">'.__('Select a Roster.','school-athletics').'</h1>';
+	\SchoolAthletics\Admin\Page::wizard();
 
 }
 

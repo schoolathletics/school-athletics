@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="wrap">
-
 <?php 
 
 if(empty($_GET['sport']) && !empty($_GET['season'])){
@@ -21,9 +19,7 @@ if(!empty($_GET['sport']) && empty($_GET['season'])){
 $sport = (!empty($_GET['sport'])) ? $_GET['sport'] : '';
 $season = (!empty($_GET['season'])) ? $_GET['season'] : '';
 $title = $_GET['page'];
-
 ?>	
-<h1><?php echo ucwords($title); ?></h1>
 <p><?php _e('Please select a sport and season.', 'school-athletics'); ?></p>
 <form method="GET">
 	<input type="hidden" name="page" value="<?php echo $title; ?>">

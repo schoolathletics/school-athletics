@@ -2,6 +2,7 @@
 /**
  * Adds installation data. Default term values, and content.
  *
+ *
  * @author   Dwayne Parton
  * @category Class
  * @package  SchoolAthletics
@@ -15,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * SA_Install Class.
+ * Install class.
  */
 class Install {
 
