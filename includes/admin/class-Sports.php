@@ -427,5 +427,6 @@ class Sports extends Page{
 				$content .= '<a href="#&roster_id='.$page->ID.'">'.$page->post_title.' <span class="dashicons dashicons-no"></span></a><br />';
 			}
 		}
+		return $content;
 	}
 }

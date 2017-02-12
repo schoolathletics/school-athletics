@@ -46,4 +46,25 @@ class Page {
 		include_once( 'views/html-admin-page-wizard.php' );
 	}
 
+	/**
+	 * Form to force season and sport choice.
+	 */
+	public static function parse_csv($csv) {
+		$lines = explode(PHP_EOL, $csv);
+		$_csv = array();
+		foreach ($lines as $line) {
+			$_csv[] = str_getcsv($line,",");
+		}
+		$all_rows = array();
+		$header = null;
+		foreach ($_csv as $c) {
+			if ($header === null) {
+				$header = $c;
+				continue;
+			}
+			$all_rows[] = array_combine($header, $c);
+		}
+		return $all_rows;
+	}
+
 }

@@ -24,8 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <tbody id="the-list">
 <?php
 $args = array(
-	'posts_per_page'   => 0,
-	'offset'           => 0,
+	'posts_per_page'   => -1,
 	'category'         => '',
 	'category_name'    => '',
 	'orderby'          => 'date',

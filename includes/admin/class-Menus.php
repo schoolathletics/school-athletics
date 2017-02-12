@@ -46,8 +46,12 @@ class Menus {
 	 * Register admin menus.
 	 */
 	public function register_menus(){
-		add_menu_page( 'School Athletics', 'School Athletics', 'manage_options', 'school-athletics', '', plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
-		add_submenu_page( 'school-athletics', 'Settings', 'Settings', 'manage_options', 'sports_settings', array( $this, 'settings_page' ));
+		add_menu_page( 'School Athletics', 'School Athletics', 'manage_options', 'school-athletics', array( $this, 'school_athletics_page' ), plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
+		add_submenu_page( 'school-athletics', 'Your School', 'Your School', 'manage_options', 'sa-your-school', array( $this, 'your_school_page' ));
+		add_submenu_page( 'school-athletics', 'Opponents', 'Opponents', 'manage_options', 'sa-opponents', array( $this, 'opponents_page' ));
+		add_submenu_page( 'school-athletics', 'Settings', 'Settings', 'manage_options', 'sa-settings', array( $this, 'settings_page' ));
+
+
 		add_menu_page( 'Sports', 'Sports', 'manage_options', 'sports', array( $this, 'sports_page' ), plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
 		add_submenu_page( 'sports', 'Rosters', 'Rosters', 'manage_options', 'roster', array( $this, 'roster_page' ));
 		add_submenu_page( 'sports', 'Schedules', 'Schedules', 'manage_options', 'schedule', array( $this, 'schedule_page' ));
@@ -59,7 +63,7 @@ class Menus {
 	 * Register debug menus.
 	 */
 	public function register_debug_menus(){
-		add_menu_page( 'Debug', 'Debug', 'manage_options', 'sa_debug', '', 'dashicons-admin-generic', 35 );
+		add_menu_page( 'Debug', 'Debug', 'manage_options', 'sa_debug', array( $this, 'settings_page' ), 'dashicons-admin-generic', 35 );
 		add_submenu_page( 'sa_debug', 'Pages', 'Pages', 'manage_options', 'edit.php?post_type=sa_page');
 		add_submenu_page( 'sa_debug', 'Sport Terms', 'Sport Terms', 'manage_options', 'edit-tags.php?taxonomy=sa_sport');
 		add_submenu_page( 'sa_debug', 'Season Terms', 'Season Terms', 'manage_options', 'edit-tags.php?taxonomy=sa_season');
@@ -74,6 +78,34 @@ class Menus {
 		add_submenu_page( 'sa_debug', 'Game Types', 'Game Types', 'manage_options', 'edit-tags.php?taxonomy=sa_game_type');
 		add_submenu_page( 'sa_debug', 'Outcomes', 'Outcomes', 'manage_options', 'edit-tags.php?taxonomy=sa_outcome');
 		add_submenu_page( 'sa_debug', 'Locations', 'Locations', 'manage_options', 'edit-tags.php?taxonomy=sa_location');
+	}
+
+	/**
+	 * Create the School Athletics page
+	 */
+	public function school_athletics_page() {
+		return new \SchoolAthletics\Admin\Page();
+	}
+
+	/**
+	 * Create the your school page
+	 */
+	public function your_school_page() {
+		return new \SchoolAthletics\Admin\Page();
+	}
+
+	/**
+	 * Create the opponents page
+	 */
+	public function opponents_page() {
+		return new \SchoolAthletics\Admin\Page();
+	}
+
+	/**
+	 * Create the settings page
+	 */
+	public function settings_page() {
+		return new \SchoolAthletics\Admin\Settings();
 	}
 
 	/**
@@ -102,13 +134,6 @@ class Menus {
 	 */
 	public function schedule_page() {
 		return new \SchoolAthletics\Admin\Schedule();
-	}
-
-	/**
-	 * Create the settings page
-	 */
-	public function settings_page() {
-		return new \SchoolAthletics\Admin\Settings();
 	}
 
 }

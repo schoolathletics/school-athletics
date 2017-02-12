@@ -66,6 +66,7 @@ function open_media_uploader_image()
 </script>
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
 	<a class="page-title-action" href="">Add New</a>
+	<p></p>
 	<form method="POST">
 	<table class="wp-list-table widefat">
 	<thead>
@@ -125,6 +126,45 @@ function open_media_uploader_image()
 			</tr>
 			<?php
 			}
+		?>
+		<?php
+		if(!empty($import) && is_array($import)){
+		 foreach ($import as $i) {
+		?>
+		<tr class="ui-sortable-handle">
+			<td class="hndle"></td>
+			<td></td>
+			<td><a href="#">Add Photo</a></td>
+			<td><input type="text" name="jersey" value="<?php echo $i['number']; ?>" size="4"></td>
+			<td><input type="text" name="name" value="<?php echo $i['name']; ?>" ></td>
+			<td>
+				<input type="text" name="height" value="<?php echo $i['height']; ?>" size="4">
+			</td>
+			<td>
+				<input type="text" name="weight" value="<?php echo $i['weight']; ?>" size="4">
+			</td>
+			<td>
+				<?php wp_dropdown_categories(array(
+						'name'             => 'sa_athlete_status',
+						'show_option_none' => __( '- - -' ),
+						'show_count'       => 0,
+						'orderby'          => 'name',
+						'option_none_value'=> '',
+						'taxonomy'         => 'sa_athlete_status',
+						'hide_empty'       => 0,
+						'value_field'      => 'name',
+						'selected'         => $i['year'],
+						'echo'             => 1,
+					)); 
+				?>
+			</td>
+			<td>
+				<span class="dashicons dashicons-no"></span>
+			</td>
+		</tr>
+		<?php
+		 }
+		}
 		?>
 		<tr class="ui-sortable-handle">
 			<td class="hndle"></td>
@@ -191,13 +231,20 @@ function open_media_uploader_image()
 			</th>
 			<td>
 				<button class="button">Export</button>
+				<p><span class="description"><?php _e( 'You may want to export your roster in order to import it into another program, or even another roster. That\'s what this button does.', 'school-athletics' ); ?></span>
+				</p>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="csv">Import</label></th>
 			<td>
-				<textarea name="csv"></textarea>
-				<p><span class="description"><?php _e( 'Upload a CSV file, but make sure it\'s properly formated', 'school-athletics' ); ?></span></p>
+				<input type="hidden" name="action" value="import">
+				<textarea name="csv" class="textarea widefat"></textarea>
+				<p><span class="description"><?php _e( 'Paste CSV here, but make sure it\'s properly formated', 'school-athletics' ); ?></span>
+				</p>
+				<p>
+				<pre>number,name,height,weight,year<br />1,John Doe,5-11,123,Freshman</pre>
+				</p>
 				<button class="button">Import</button>
 			</td>
 		</tr>
