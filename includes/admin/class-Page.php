@@ -22,6 +22,7 @@ class Page {
 	public function __construct(){
 		$this->header();
 		add_filter( 'admin_footer_text', array( $this, 'footer_text' ), 1 );
+		wp_enqueue_style( 'school-athletics', SA__PLUGIN_URL.'assets/css/admin.css');
 	}
 
 	/**
@@ -30,6 +31,13 @@ class Page {
 	public static function header(){
 		include_once( 'views/html-admin-elements-header.php' );
 	} 
+	
+	/**
+	 * Probably should load scripts and styles with this. But it doesn't work yet, so just calling wp_enqueue_style() in the __construct.
+	 */
+	public function scripts(){
+		//wp_enqueue_style( 'school-athletics', SA__PLUGIN_URL.'assets/css/admin.css');
+	}
 
 	/**
 	 * Admin page foot text
@@ -47,7 +55,7 @@ class Page {
 	}
 
 	/**
-	 * Form to force season and sport choice.
+	 * Parse CSV string with , delimiter and line break to end row.
 	 */
 	public static function parse_csv($csv) {
 		$lines = explode(PHP_EOL, $csv);

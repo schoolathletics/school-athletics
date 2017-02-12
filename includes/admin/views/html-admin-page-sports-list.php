@@ -111,22 +111,6 @@ foreach ($terms as $term) {
 </tbody>
 </table>
 
-<style type="text/css">
-	.true{color:#46b450;}
-	.false{color: #dc3232;}
-	.status{display: block; background-color: #dc3232; margin-top:3px; height:1.1em; width:1.1em; border-radius: .55em;}
-	#publish.publish,#unpublish.unpublish{display:none;}
-	#unpublish.publish, .status.true{display: block; background-color:#46b450;}
-	#publish.unpublish{display: block;}
-	td.border-left, th.border-left{border-left:1px solid #ebebeb;}
-	td.border-right, th.border-right{border-right:1px solid #ebebeb;}
-	li.add{background-color:#efefef;line-height:1.75em; position:relative;}
-	li.add .dashicons{float:right;}
-	li.add .select{display: none; background-color:#ffffff; position:absolute; top:1.75em; width: 100%;}
-	li.add .select li{padding:3px 5px; border-bottom:1px solid #e4e4e4;}
-	li.add:hover .select{display:block; z-index:1; height:150px; overflow: scroll;}
-</style>
-
 <?php 
 /**
  * Debug.

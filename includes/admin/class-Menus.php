@@ -91,7 +91,7 @@ class Menus {
 	 * Create the your school page
 	 */
 	public function your_school_page() {
-		return new \SchoolAthletics\Admin\Page();
+		return new \SchoolAthletics\Admin\YourSchool();
 	}
 
 	/**

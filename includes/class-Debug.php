@@ -43,32 +43,29 @@ class Debug {
 	}
 
 	/**
-	 * Is Debugging On
+	 * If Debug on pring content.
 	 */
-	public static function file_path($path){
+	public static function content($data){
 		if(self::status()){
-			echo '<p>Included From : <code>'.$path.'</code></p>';
+			echo '<pre class="debug">';
+			if(is_array($data)){
+				var_dump($data);
+			}else{
+				echo $data;
+			}
+			echo '</pre>';
 		}else{
 			return;
 		}
 	}
 
 	/**
-	 * Is Debugging On
+	 * Adds Included From message to file path. Really not needed.
 	 */
-	public static function content($data){
-		if(self::status()){
-			echo '<p><code>';
-			if(is_array($data)){
-				var_dump($data);
-			}else{
-				echo $data;
-			}
-			echo '</code></p>';
-		}else{
-			return;
-		}
+	public static function file_path($path){
+		echo self::content('Included From : <code>'.$path.'</code>');
 	}
+
 
 	/**
 	 * Print errors to console log
