@@ -68,8 +68,8 @@ class Menus {
 		add_submenu_page( 'sa_debug', 'Sport Terms', 'Sport Terms', 'manage_options', 'edit-tags.php?taxonomy=sa_sport');
 		add_submenu_page( 'sa_debug', 'Season Terms', 'Season Terms', 'manage_options', 'edit-tags.php?taxonomy=sa_season');
 		add_submenu_page( 'sa_debug', 'Rosters', 'Rosters', 'manage_options', 'edit.php?post_type=sa_roster');
-		add_submenu_page( 'sa_debug', 'Persons', 'Persons', 'manage_options', 'edit.php?post_type=sa_person');
-		add_submenu_page( 'sa_debug', 'Person Types', 'Person Types', 'manage_options', 'edit-tags.php?taxonomy=sa_person_type');
+		add_submenu_page( 'sa_debug', 'Roster Members', 'Roster Members', 'manage_options', 'edit.php?post_type=sa_roster_member');
+		add_submenu_page( 'sa_debug', 'Staff', 'Staff', 'manage_options', 'edit.php?post_type=sa_staff');
 		add_submenu_page( 'sa_debug', 'Athlete Terms', 'Person Terms', 'manage_options', 'edit-tags.php?taxonomy=sa_person');
 		add_submenu_page( 'sa_debug', 'Athlete Status', 'Athlete Status', 'manage_options', 'edit-tags.php?taxonomy=sa_athlete_status');
 		add_submenu_page( 'sa_debug', 'Schedules', 'Schedules', 'manage_options', 'edit.php?post_type=sa_schedule');

@@ -42,9 +42,10 @@ class InstallWpObjects {
 			array(
 				'post',
 				'sa_page',
-				'sa_person',
+				'sa_staff',
 				'sa_event',
 				'sa_roster',
+				'sa_roster_member',
 				'sa_schedule'
 			),
 			array(
@@ -75,48 +76,16 @@ class InstallWpObjects {
 		);
 		register_taxonomy_for_object_type( 'sa_sport', 'post' );
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_page' );
-		register_taxonomy_for_object_type( 'sa_sport', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_staff' );
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_event' );
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_roster' );
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_schedule' );
-
-		// Register People Taxonomy
-		register_taxonomy( 'sa_person_type',
-			array(
-				'sa_person',
-			),
-			array(
-			'hierarchical'          => false,
-			'labels'                => array(
-						'name'              => __( 'Person Types', 'school-athletics' ),
-						'singular_name'     => __( 'Person Type', 'school-athletics' ),
-						'menu_name'         => __( 'Person Types', 'school-athletics' ),
-						'search_items'      => __( 'Search Person Types', 'school-athletics' ),
-						'all_items'         => __( 'All Person Types', 'school-athletics' ),
-						'edit_item'         => __( 'Edit Person Types', 'school-athletics' ),
-						'update_item'       => __( 'Update Person Types', 'school-athletics' ),
-						'add_new_item'      => __( 'Add New Person Types', 'school-athletics' ),
-						'new_item_name'     => __( 'New Person Type Name', 'school-athletics' ),
-						'not_found'         => __( 'No Person Types found', 'school-athletics' ),
-			),
-			'show_ui'               => \SchoolAthletics\Debug::status(),
-			'show_in_menu'          => false,
-			'show_in_nav_menus'     => true,
-			'show_admin_column'     => true,
-			'show_tagcloud'         => false,
-			'show_in_quick_edit'    => true,
-			'update_count_callback' => '_update_post_term_count',
-			'query_var'             => false,
-			'public'                => false,
-	        'rewrite'               => false,
-			)
-		);
-		register_taxonomy_for_object_type( 'sa_person_type', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_sport', 'sa_roster_member' );
 
 		// Register People Taxonomy
 		register_taxonomy( 'sa_athlete_status',
 			array(
-				'sa_person',
+				'sa_roster_member',
 			),
 			array(
 			'hierarchical'          => false,
@@ -144,14 +113,15 @@ class InstallWpObjects {
 	        'rewrite'               => false,
 			)
 		);
-		register_taxonomy_for_object_type( 'sa_athlete_status', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_athlete_status', 'sa_roster_member' );
 
 		// Register People Taxonomy
 		register_taxonomy( 'sa_person',
 			array(
 				'post',
-				'sa_person',
+				'sa_staff',
 				'sa_roster',
+				'sa_roster_member',
 			),
 			array(
 			'hierarchical'          => false,
@@ -180,7 +150,8 @@ class InstallWpObjects {
 			)
 		);
 		register_taxonomy_for_object_type( 'sa_person', 'post' );
-		register_taxonomy_for_object_type( 'sa_person', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_person', 'sa_staff' );
+		register_taxonomy_for_object_type( 'sa_person', 'sa_roster_member' );
 		register_taxonomy_for_object_type( 'sa_person', 'sa_roster' );
 
 		// Register Season Taxonomy
@@ -188,7 +159,7 @@ class InstallWpObjects {
 			array(
 				'sa_schedule',
 				'sa_roster',
-				'sa_person',
+				'sa_roster_member',
 				'sa_event',
 			),
 			array(
@@ -217,7 +188,7 @@ class InstallWpObjects {
 	        'rewrite'               => false,
 			)
 		);
-		register_taxonomy_for_object_type( 'sa_season', 'sa_person' );
+		register_taxonomy_for_object_type( 'sa_season', 'sa_roster_member' );
 		register_taxonomy_for_object_type( 'sa_season', 'sa_event' );
 		register_taxonomy_for_object_type( 'sa_season', 'sa_roster' );
 		register_taxonomy_for_object_type( 'sa_season', 'sa_schedule' );
@@ -404,12 +375,12 @@ class InstallWpObjects {
 			)
 		);
 
-		// Register Event
+		// Register Roster
 		register_post_type( 'sa_roster',
 			array(
-		        'label'               => __( 'roster', 'school-athletics' ),
-		        'description'         => __( 'Manage Rosters.', 'school-athletics' ),
-		        'labels'              => array(
+				'label'               => __( 'roster', 'school-athletics' ),
+				'description'         => __( 'Manage Rosters.', 'school-athletics' ),
+				'labels'              => array(
 							'name'                => __( 'Rosters', 'school-athletics' ),
 							'singular_name'       => __( 'Roster', 'school-athletics' ),
 							'menu_name'           => __( 'Rosters', 'school-athletics' ),
@@ -424,7 +395,44 @@ class InstallWpObjects {
 							'not_found'           => __( 'Not found', 'school-athletics' ),
 							'not_found_in_trash'  => __( 'Not found in Trash', 'school-athletics' ),
 				 ),
-		        'supports'            => array( 'title','editor'),
+		        'supports'            => array( 'title','editor','thumbnail'),
+		        'hierarchical'        => false,
+		        'public'              => true,
+		        'show_ui'             => \SchoolAthletics\Debug::status(),
+		        'show_in_menu'        => false,
+		        'show_in_nav_menus'   => false,
+		        'show_in_admin_bar'   => false,
+		        'can_export'          => true,
+		        'has_archive'         => false,
+		        'exclude_from_search' => false,
+		        'publicly_queryable'  => true,
+		        'rewrite'             => false,
+		        'query_var'           => false,
+		        'capability_type'     => 'post',
+			)
+		);
+
+		// Register Roster
+		register_post_type( 'sa_roster_member',
+			array(
+				'label'               => __( 'sa_roster_member', 'school-athletics' ),
+				'description'         => __( 'Manage Roster Members.', 'school-athletics' ),
+				'labels'              => array(
+							'name'                => __( 'Roster Members', 'school-athletics' ),
+							'singular_name'       => __( 'Roster Member', 'school-athletics' ),
+							'menu_name'           => __( 'Roster Members', 'school-athletics' ),
+							'parent_item_colon'   => __( 'Parent Item:', 'school-athletics' ),
+							'all_items'           => __( 'Roster Members', 'school-athletics' ),
+							'view_item'           => __( 'View Roster Member', 'school-athletics' ),
+							'add_new_item'        => __( 'Add New Roster Member', 'school-athletics' ),
+							'add_new'             => __( 'Add New Roster Member', 'school-athletics' ),
+							'edit_item'           => __( 'Edit Roster Member', 'school-athletics' ),
+							'update_item'         => __( 'Update Roster Member', 'school-athletics' ),
+							'search_items'        => __( 'Search Rosters Member', 'school-athletics' ),
+							'not_found'           => __( 'Not found', 'school-athletics' ),
+							'not_found_in_trash'  => __( 'Not found in Trash', 'school-athletics' ),
+				 ),
+		        'supports'            => array( 'title','editor', 'thumbnail', 'custom-fields'),
 		        'hierarchical'        => false,
 		        'public'              => true,
 		        'show_ui'             => \SchoolAthletics\Debug::status(),
@@ -517,22 +525,22 @@ class InstallWpObjects {
 		);
 
 		// Register Event
-		register_post_type( 'sa_person',
+		register_post_type( 'sa_staff',
 			array(
-		        'label'               => __( 'person', 'school-athletics' ),
-		        'description'         => __( 'Manage person calendar.', 'school-athletics' ),
+		        'label'               => __( 'staff', 'school-athletics' ),
+		        'description'         => __( 'Manage Staff.', 'school-athletics' ),
 		        'labels'              => array(
-							'name'                => __( 'Persons', 'school-athletics' ),
-							'singular_name'       => __( 'Person', 'school-athletics' ),
-							'menu_name'           => __( 'Persons', 'school-athletics' ),
-							'parent_item_colon'   => __( 'Parent Item:', 'school-athletics' ),
-							'all_items'           => __( 'Persons', 'school-athletics' ),
-							'view_item'           => __( 'View Person', 'school-athletics' ),
-							'add_new_item'        => __( 'Add New Person', 'school-athletics' ),
-							'add_new'             => __( 'Add New Person', 'school-athletics' ),
-							'edit_item'           => __( 'Edit Person', 'school-athletics' ),
-							'update_item'         => __( 'Update Person', 'school-athletics' ),
-							'search_items'        => __( 'Search Persons', 'school-athletics' ),
+							'name'                => __( 'Staff', 'school-athletics' ),
+							'singular_name'       => __( 'Staff', 'school-athletics' ),
+							'menu_name'           => __( 'Staff', 'school-athletics' ),
+							'parent_item_colon'   => __( 'Staff Item:', 'school-athletics' ),
+							'all_items'           => __( 'Staff', 'school-athletics' ),
+							'view_item'           => __( 'View Staff', 'school-athletics' ),
+							'add_new_item'        => __( 'Add New Staff', 'school-athletics' ),
+							'add_new'             => __( 'Add New Staff', 'school-athletics' ),
+							'edit_item'           => __( 'Edit Staff', 'school-athletics' ),
+							'update_item'         => __( 'Update Staff', 'school-athletics' ),
+							'search_items'        => __( 'Search Staff', 'school-athletics' ),
 							'not_found'           => __( 'Not found', 'school-athletics' ),
 							'not_found_in_trash'  => __( 'Not found in Trash', 'school-athletics' ),
 				 ),

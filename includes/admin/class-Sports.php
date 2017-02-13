@@ -207,7 +207,7 @@ class Sports extends Page{
 	public static function rebuild(){
 		
 		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'schoolathletics-rebuild-sport-pages' ) ) {
-			SA_Admin_Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
+			\SchoolAthletics\Admin\Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
 		}
 
 		if(!empty($_REQUEST['task']) && !empty($_REQUEST['sport'])){
@@ -406,7 +406,7 @@ class Sports extends Page{
 	 */
 	public static function get_current_staff($sport){
 		$pages = get_posts(array(
-		  'post_type' => 'sa_person',
+		  'post_type' => 'sa_staff',
 		  'numberposts' => -1,
 		  'tax_query' => array(
 		    array(
@@ -414,11 +414,6 @@ class Sports extends Page{
 		      'field' => 'id',
 		      'terms' => $sport->term_id,
 		    ),
-		   	array(
-		      'taxonomy' => 'sa_person_type',
-		      'field' => 'slug',
-		      'terms' => 'staff', // Where term_id of Term 1 is "1".
-		    )
 		  )
 		));
 		$content = null;

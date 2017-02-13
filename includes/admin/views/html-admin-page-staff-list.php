@@ -29,14 +29,7 @@ $args = array(
 	'category_name'    => '',
 	'orderby'          => 'date',
 	'order'            => 'DESC',
-	'tax_query' => array(
-			            array(
-			                'taxonomy' => 'sa_person_type',
-			                'field' => 'name',
-			                'terms' => 'staff',
-			            )
-			        ),
-	'post_type'        => 'sa_person',
+	'post_type'        => 'sa_staff',
 	'post_status'      => 'publish',
 	'suppress_filters' => true 
 );
