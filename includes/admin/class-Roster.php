@@ -30,7 +30,7 @@ class Roster extends Page{
 	 */
 	public static function output() {
 		if($_POST){
-			if($_POST['action'] == 'import'){
+			if(isset($_POST['action']) && $_POST['action'] == 'import'){
 				$import = \SchoolAthletics\Admin\Page::parse_csv($_POST['csv']);
 				\SchoolAthletics\Admin\Notice::warning(__( 'Nothing has been saved yet. First, make sure your import looks right and then click <i>Save Changes</i> to add athletes to the roster. If things look wrong try updating your csv code and reimporting.', 'school-athletics' ));
 			}

@@ -368,7 +368,7 @@ class Sports extends Page{
 				}
 			}
 		}
-		$content = (!empty($content)) ? $content : '- - -';
+		$content = (!empty($content)) ? $content : '';
 		return $content;
 	}
 
@@ -397,7 +397,7 @@ class Sports extends Page{
 				}
 			}
 		}
-		$content = (!empty($content)) ? $content : '- - -';
+		$content = (!empty($content)) ? $content : '';
 		return $content;
 	}
 

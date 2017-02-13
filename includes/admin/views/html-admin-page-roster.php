@@ -15,7 +15,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
 	$content = (!empty($content)) ? $content : '';
 	$title = $season->name.' '.$sport->name.' '.__('Roster','school-athletics');
-	$athletes = get_posts(
+	$_athletes = get_posts(
 		array(
 			'post_type' => 'sa_person',
 			'numberposts' => -1,
@@ -38,6 +38,39 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			),
 		)
 	);
+	$athletes = array();
+	foreach ($_athletes as $athlete) {
+		$status = get_the_terms($athlete,'sa_athlete_status');
+		$status = (is_array($status)) ? array_pop($status) : null;
+		$status = ($status) ? $status->name : '- - -';
+		$athletes[] = array(
+				'ID'	 => $athlete->ID,
+				'jersey' => '',
+				'name'   => $athlete->post_title,
+				'height' => '',
+				'weight' => '',
+				'status' => $status,
+			);
+	}
+
+	//Defaults for athletes
+	$defaults = array(
+				'ID'     => '',
+				'jersey' => '',
+				'name'   => '',
+				'height' => '',
+				'weight' => '',
+				'status' => '',
+			);
+	if(!empty($import) && is_array($import)){
+		foreach ($import as $key => $value) {
+			//$import[$key]['ID'] = '';
+			$import[$key] = wp_parse_args($import[$key],$defaults);
+		}
+		$athletes = array_merge($import,$athletes);
+	}
+	//Adds a new row to the bottom
+	$athletes[] = $defaults;
 
 ?>	
 <script type="text/javascript">
@@ -62,6 +95,17 @@ function open_media_uploader_image()
 
     media_uploader.open();
 }
+
+/*
+ * Clone TR if + clicked 
+ */
+jQuery("a.add_new_row").live('click', function() {
+    var $tr    = jQuery(this).closest('.clonable');
+    var $clone = $tr.clone();
+    $clone.find(':text').val('');
+    $tr.after($clone);
+    console.log('clone');
+});
 
 </script>
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
@@ -104,48 +148,25 @@ function open_media_uploader_image()
 		</tr>
 	</thead>
 	<tbody class="ui-sortable">
-		<?php 
-			foreach ($athletes as $athlete) {
-				$status = get_the_terms($athlete,'sa_athlete_status');
-				$status = (is_array($status)) ? array_pop($status) : null;
-				$status = ($status) ? $status->name : '- - -';
-			?>
-			<tr>
-				<td class="hndle"></td>
-				<td><?php echo $athlete->ID; ?></td>
-				<td></td>
-				<td></td>
-				<td><?php echo $athlete->post_title; ?></td>
-				<td></td>
-				<td></td>
-				<td><?php echo $status; ?></td>
-				<td>
-					<span class="dashicons dashicons-edit"></span> | 
-					<span class="dashicons dashicons-dismiss"></span>
-				</td>
-			</tr>
-			<?php
-			}
-		?>
 		<?php
-		if(!empty($import) && is_array($import)){
-		 foreach ($import as $i) {
+		$id = 0;
+		foreach ($athletes as $athlete) {
 		?>
 		<tr class="ui-sortable-handle">
 			<td class="hndle"></td>
-			<td></td>
+			<td><input type="text" name="athlete[<?php echo $id; ?>][ID]" value="<?php echo $athlete['ID']; ?>" size="4"></td>
 			<td><a href="#">Add Photo</a></td>
-			<td><input type="text" name="jersey" value="<?php echo $i['number']; ?>" size="4"></td>
-			<td><input type="text" name="name" value="<?php echo $i['name']; ?>" ></td>
+			<td><input type="text" name="athlete[<?php echo $id; ?>][jersey]" value="<?php echo $athlete['jersey']; ?>" size="4"></td>
+			<td><input type="text" name="athlete[<?php echo $id; ?>][name]" value="<?php echo $athlete['name']; ?>" ></td>
 			<td>
-				<input type="text" name="height" value="<?php echo $i['height']; ?>" size="4">
+				<input type="text" name="athlete[<?php echo $id; ?>][height]" value="<?php echo $athlete['height']; ?>" size="4">
 			</td>
 			<td>
-				<input type="text" name="weight" value="<?php echo $i['weight']; ?>" size="4">
+				<input type="text" name="athlete[<?php echo $id; ?>][weight]" value="<?php echo $athlete['weight']; ?>" size="4">
 			</td>
 			<td>
 				<?php wp_dropdown_categories(array(
-						'name'             => 'sa_athlete_status',
+						'name'             => 'athlete['.$id.'][status]',
 						'show_option_none' => __( '- - -' ),
 						'show_count'       => 0,
 						'orderby'          => 'name',
@@ -153,7 +174,7 @@ function open_media_uploader_image()
 						'taxonomy'         => 'sa_athlete_status',
 						'hide_empty'       => 0,
 						'value_field'      => 'name',
-						'selected'         => $i['year'],
+						'selected'         => $athlete['status'],
 						'echo'             => 1,
 					)); 
 				?>
@@ -163,20 +184,20 @@ function open_media_uploader_image()
 			</td>
 		</tr>
 		<?php
-		 }
+			$id++;
 		}
 		?>
-		<tr class="ui-sortable-handle">
+		<!--<tr class="ui-sortable-handle clonable">
 			<td class="hndle"></td>
 			<td></td>
 			<td><a href="#">Add Photo</a></td>
-			<td><input type="text" name="jersey" value="" size="4"></td>
-			<td><input type="text" name="name" value="" ></td>
+			<td><input type="text" name="athlete[][jersey]" value="" size="4"></td>
+			<td><input type="text" name="athlete[][name]" value="" ></td>
 			<td>
-				<input type="text" name="height" value="" size="4">
+				<input type="text" name="athlete[][height]" value="" size="4">
 			</td>
 			<td>
-				<input type="text" name="weight" value="" size="4">
+				<input type="text" name="athlete[][weight]" value="" size="4">
 			</td>
 			<td>
 				<?php wp_dropdown_categories(array(
@@ -194,9 +215,9 @@ function open_media_uploader_image()
 				?>
 			</td>
 			<td>
-				<span class="dashicons dashicons-plus-alt"></span>
+				<a class="add_new_row"><span class="dashicons dashicons-plus-alt"></span></a>
 			</td>
-		</tr>
+		</tr>-->
 	</tbody>
 	<tfoot>
 		<tr>
@@ -230,7 +251,12 @@ function open_media_uploader_image()
 				<label for="description">Export</label>
 			</th>
 			<td>
-				<button class="button">Export</button>
+				<pre>jersey,name,height,weight,status<br /><?php 
+					foreach ($athletes as $athlete) {
+						if($athlete['name']){
+							echo $athlete['jersey'].','.$athlete['name'].','.$athlete['height'].','.$athlete['weight'].','.$athlete['status'].'<br />';
+						}
+					} ?></pre>
 				<p><span class="description"><?php _e( 'You may want to export your roster in order to import it into another program, or even another roster. That\'s what this button does.', 'school-athletics' ); ?></span>
 				</p>
 			</td>
@@ -243,7 +269,7 @@ function open_media_uploader_image()
 				<p><span class="description"><?php _e( 'Paste CSV here, but make sure it\'s properly formated', 'school-athletics' ); ?></span>
 				</p>
 				<p>
-				<pre>number,name,height,weight,year<br />1,John Doe,5-11,123,Freshman</pre>
+				<pre>jersey,name,height,weight,status<br />1,John Doe,5-11,145,Freshman<br />2,Jane Doe,5-4,123,Freshman</pre>
 				</p>
 				<button class="button">Import</button>
 			</td>
