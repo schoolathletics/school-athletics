@@ -162,6 +162,9 @@ class RosterAdmin extends Page{
 				$athlete_id = self::add_member($_REQUEST['sport'],$_REQUEST['season'],$athlete);
 				wp_set_post_terms($roster_id, $athlete['name'], 'sa_person', true );
 			}
+			if(isset($_POST['deleteMember'])){
+				self::delete_members($_POST['deleteMember']);
+			}
 
 			\SchoolAthletics\Admin\Notice::success('Roster has been successfully saved.');
 		}
@@ -196,45 +199,54 @@ class RosterAdmin extends Page{
 	}
 
 	/**
-	 * Add athletes for roster.
+	 * Add members for roster.
 	 */
-	public static function add_member($sport,$season,$athlete){
+	public static function add_member($sport,$season,$member){
 		if(!is_object($sport)){
 			$sport = get_term($sport);
 		}
 		if(!is_object($season)){
 			$season = get_term($season);
 		}
-		if(!is_array($athlete)){
+		if(!is_array($member)){
 			return;
 		}
-		if(!$athlete['name']){
+		if(!$member['name']){
 			return;
 		}
 
-		$athlete = array(
-			'ID' => $athlete['ID'],
-			'_thumbnail_id'=>$athlete['photo'] ,//Not documented but nice to know
+		$member = array(
+			'ID' => $member['ID'],
+			'_thumbnail_id'=>$member['photo'] ,//Not documented but nice to know
 			'post_content' => 'Bio goes here.',
-			'post_title' => $athlete['name'],
+			'post_title' => $member['name'],
 			'post_type' => 'sa_roster_member',
 			'post_status' => 'publish',//publish
 			'tax_input' => array(
 				'sa_sport' => $sport->name,
 				'sa_season' => $season->name,
-				'sa_person' => $athlete['name'],
-				'sa_athlete_status' => $athlete['status'],
+				'sa_person' => $member['name'],
+				'sa_athlete_status' => $member['status'],
 			),
 			'meta_input'   => array(
-				'sa_jersey' => $athlete['jersey'],
-				'sa_name' => $athlete['name'],
-				'sa_height' => $athlete['height'],
-				'sa_weight' => $athlete['weight'],
-				'sa_order' => $athlete['order'],
+				'sa_jersey' => $member['jersey'],
+				'sa_name' => $member['name'],
+				'sa_height' => $member['height'],
+				'sa_weight' => $member['weight'],
+				'sa_order' => $member['order'],
 			),	
 		);
-		return wp_insert_post($athlete);
+		return wp_insert_post($member);
 
+	}
+
+	/**
+	 * Delete members from roster.
+	 */
+	public static function delete_members($members){
+		foreach ($members as $member) {
+			wp_delete_post( $member, true);
+		}
 	}
 
 }

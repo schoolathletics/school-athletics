@@ -14,7 +14,13 @@ li.add .dashicons{float:right;}
 li.add .select{display: none; background-color:#ffffff; position:absolute; top:1.75em; width: 100%;}
 li.add .select li{padding:3px 5px; border-bottom:1px solid #e4e4e4;}
 li.add:hover .select{display:block; z-index:1; height:150px; overflow: scroll;}
-.sa.thumbnail img{max-width: 50px; max-height: 50px;}
 .dragging{background-color:#ffffff;}
 #roster_content{height:100px;}
-.thumbnail .dashicons-format-image{font-size:50px; height:50px;}
+
+.sa.thumbnail img{max-width: 50px; max-height: 50px;}
+.thumbnail-placeholder .dashicons-format-image{font-size:50px; height:50px;}
+
+.photo.yes .thumbnail-placeholder{display: none;}
+.photo.yes .add-photo{display: none;}
+.photo.no .remove-photo{display: none;}
+.photo.no .thumbnail-placeholder{display: inherit;}

@@ -45,16 +45,24 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<tbody>
 		<tr>
 			<td>
-				<pre><?php echo $roster_id; ?></pre>
+				<?php \SchoolAthletics\Debug::content('Roster ID = '.$roster_id); ?>
 				<p><code><?php echo get_permalink($roster_id); ?></code></p>
 				<input type="hidden" name="ID" value="<?php echo $roster_id; ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php echo wp_get_attachment_image( $roster_thumbnail,'medium'); ?></p>
-				<a class="add_photo">Add Team Photo</a>
-				<input class="photo-id" type="text" name="photo" size="4" value="<?php echo $roster_thumbnail; ?>">
+				<div class="photo <?php echo ($roster_thumbnail) ? 'yes' : 'no';?>">
+					<div class="thumbnail">
+						<?php echo ($roster_thumbnail) ? wp_get_attachment_image( $roster_thumbnail,'medium') : ''; ?>
+					</div>
+					<div class="thumbnail-placeholder">
+						<span class="dashicons dashicons-format-image"></span>
+					</div>
+					<a href="#" class="add-photo">Add Team Photo</a>
+					<a href="#" class="remove-photo">Delete Team Photo</a>
+					<input class="photo-id" type="hidden" name="photo" size="4" value="<?php echo $roster_thumbnail; ?>" >
+				</div>
 			</td>
 		</tr>
 	</tbody>
@@ -82,18 +90,23 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		<tr class="clonable">
 			<td class="ui-sortable-handle handle"><span class="dashicons dashicons-move"></span></td>
 			<td>
-				<div class="photo">
-					<div class="sa thumbnail"><?php echo ($athlete['photo']) ? wp_get_attachment_image( $athlete['photo'],'thumbnail') : '<span class="dashicons dashicons-format-image"></span>'; ?></div>
+				<div class="photo <?php echo ($athlete['photo']) ? 'yes' : 'no';?>">
+					<div class="sa thumbnail">
+						<?php echo ($athlete['photo']) ? wp_get_attachment_image( $athlete['photo'],'thumbnail') : ''; ?>
+					</div>
+					<div class="thumbnail-placeholder">
+						<span class="dashicons dashicons-format-image"></span>
+					</div>
 					<a href="#" class="add-photo">Add Photo</a>
-					<a href="#" class="delete-photo hidden">Delete Photo</a>
+					<a href="#" class="remove-photo">Delete Photo</a>
 					<input class="photo-id" type="hidden" name="athlete[<?php echo $id; ?>][photo]" size="4" value="<?php echo $athlete['photo']; ?>" >
 				</div>
 			</td>
 			<td><input type="text" name="athlete[<?php echo $id; ?>][jersey]" value="<?php echo $athlete['jersey']; ?>" size="2"></td>
 			<td>
 				<input type="text" name="athlete[<?php echo $id; ?>][name]" value="<?php echo $athlete['name']; ?>" >
-				<input type="hidden" class="order" name="athlete[<?php echo $id; ?>][order]" value="<?php echo $athlete['order']; ?>" />
-				<input type="hidden" name="athlete[<?php echo $id; ?>][ID]" value="<?php echo $athlete['ID']; ?>" />
+				<input type="hidden" class="order" name="athlete[<?php echo $id; ?>][order]" value="<?php echo $athlete['order']; ?>" >
+				<input class="member_id hidden" type="text" name="athlete[<?php echo $id; ?>][ID]" value="<?php echo $athlete['ID']; ?>" >
 				<div class="row-actions">
 					<span class="options"><a href="<?php echo get_permalink($athlete['ID']);?>" >View</a> | </span> <a href="<?php echo admin_url('admin.php?page=roster').'&action=edit&athlete='.$athlete['ID']; ?>">Edit</a></span>
 				</div>
@@ -141,6 +154,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		</tr>
 	</tfoot>
 	</table>
+	<div id="tobedeleted"></div>
 	<?php wp_nonce_field( 'schoolathletics-save-roster' ); ?>
 	<p class="submit"><input name="submit" id="submit" class="button button-primary" value="Save Changes" type="submit"></p>
 	</form>
