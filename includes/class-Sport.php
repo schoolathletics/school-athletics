@@ -26,4 +26,21 @@ class Sport {
 	public function __construct() {
 	}
 
+	public function getSport($sport){
+		if(!is_object($sport)){
+			$sport = get_term($sport);
+		}
+		return $sport;
+	}
+
+	/*
+	 * Get Sport ID form the Sport Object
+	 */
+	public function getSportID($sport){
+		if(is_object($sport)){
+			$sport = $sport->term_id;
+		}
+		return $sport;
+	}
+
 }

@@ -2,7 +2,7 @@
 
 $term_id = $_GET['sport'];
 $term = get_term($term_id);
-$options = \SchoolAthletics\Admin\Sports::options($term->term_id);
+$options = \SchoolAthletics\Admin\SportsAdmin::options($term->term_id);
 //print_r($term);
 ?>
 <h1><?php echo $term->name; ?></h1>

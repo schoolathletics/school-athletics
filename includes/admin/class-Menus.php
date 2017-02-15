@@ -91,7 +91,7 @@ class Menus {
 	 * Create the your school page
 	 */
 	public function your_school_page() {
-		return new \SchoolAthletics\Admin\YourSchool();
+		return new \SchoolAthletics\Admin\YourSchoolAdmin();
 	}
 
 	/**
@@ -105,35 +105,35 @@ class Menus {
 	 * Create the settings page
 	 */
 	public function settings_page() {
-		return new \SchoolAthletics\Admin\Settings();
+		return new \SchoolAthletics\Admin\SettingsAdmin();
 	}
 
 	/**
 	 * Create the sports page
 	 */
 	public function sports_page() {
-		return new \SchoolAthletics\Admin\Sports();
+		return new \SchoolAthletics\Admin\SportsAdmin();
 	}
 
 	/**
 	 * Create the roster page
 	 */
 	public function roster_page() {
-		return new \SchoolAthletics\Admin\Roster();
+		return new \SchoolAthletics\Admin\RosterAdmin();
 	}
 
 	/**
 	 * Create the staff page
 	 */
 	public function staff_page() {
-		return new \SchoolAthletics\Admin\Staff();
+		return new \SchoolAthletics\Admin\StaffAdmin();
 	}
 
 	/**
 	 * Create the schedule page
 	 */
 	public function schedule_page() {
-		return new \SchoolAthletics\Admin\Schedule();
+		return new \SchoolAthletics\Admin\ScheduleAdmin();
 	}
 
 }

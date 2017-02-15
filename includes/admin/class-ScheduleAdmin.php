@@ -1,6 +1,6 @@
 <?php 
 /**
- * Staff Page.
+ * Schedule Page.
  *
  * @author   Dwayne Parton
  * @category Admin
@@ -10,15 +10,14 @@
 
 namespace SchoolAthletics\Admin;
 
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Staff page class.
+ * ScheduleAdmin Class.
  */
-class Staff extends Page{
+class ScheduleAdmin extends Page{
 
 	public function __construct(){
 		parent::__construct();
@@ -29,15 +28,7 @@ class Staff extends Page{
 	 * Handles output of the settings page in admin.
 	 */
 	public static function output() {
-		include_once( 'views/html-admin-page-staff.php' );
-	}
-
-	public static function get_list() {
-		include_once( 'views/html-admin-page-staff-list.php' );
-	}
-
-	public static function edit() {
-		include_once( 'views/html-admin-page-staff-edit.php' );
+		include_once( 'views/html-admin-page-schedule.php' );
 	}
 
 }

@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sports page class.
+ * SportsAdmin page class.
  */
-class Sports extends Page{
+class SportsAdmin extends Page{
 
 	public function __construct(){
 		parent::__construct();

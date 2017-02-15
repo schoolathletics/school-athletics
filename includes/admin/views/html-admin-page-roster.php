@@ -11,24 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php 
 if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
-	$roster = get_posts(
-	    array(
-	        'posts_per_page' => 0,
-	        'post_type' => 'sa_roster',
-	        'tax_query' => array(
-				array(
-					'taxonomy' => 'sa_sport',
-					'field' => 'id',
-					'terms' => $_GET['sport'], // Where term_id of Term 1 is "1".
-				),
-				array(
-					'taxonomy' => 'sa_season',
-					'field' => 'id',
-					'terms' => $_GET['season'],
-				)
-			),
-	    )
-	);
+	$sport = get_term_by( 'id', $_GET['sport'], 'sa_sport' );
+	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
+	$roster = \SchoolAthletics\Admin\RosterAdmin::getRoster($sport,$season);
 
 	if(isset($roster[0]->ID)){
 		$roster_id = $roster[0]->ID;
@@ -36,221 +21,17 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		$roster_content = $roster[0]->post_content;
 	}
 
-	$sport = get_term_by( 'id', $_GET['sport'], 'sa_sport' );
-	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
 	$content = (!empty($content)) ? $content : '';
 	$title = $season->name.' '.$sport->name.' '.__('Roster','school-athletics');
 
-
-	print_r(get_term_meta( $sport, 'sa_roster_members', true));
-	/*$args = array(
-		'post_type' => 'sa_roster_member',
-		'posts_per_page' => -1,
-		'orderby' => 'post__in',
-		'post__in' => get_post_meta( $roster_id, 'sa_roster_members', true),
-	);*/
-	$args = array(
-	        'posts_per_page' => -1,
-	        'post_type' => 'sa_roster_member',
-	        'tax_query' => array(
-				array(
-					'taxonomy' => 'sa_sport',
-					'field' => 'id',
-					'terms' => $_GET['sport'], // Where term_id of Term 1 is "1".
-				),
-				array(
-					'taxonomy' => 'sa_season',
-					'field' => 'id',
-					'terms' => $_GET['season'],
-				)
-			),
-			'meta_key' => 'sa_order',
-            'orderby' => 'meta_value_num',
-            'order' => 'ASC'
-		);
-	$_athletes = get_posts($args);
-	//print_r($_athletes);
-	$athletes = array();
-	foreach ($_athletes as $athlete) {
-		$status = get_the_terms($athlete,'sa_athlete_status');
-		$status = (is_array($status)) ? array_pop($status) : null;
-		$status = ($status) ? $status->name : '- - -';
-		$athletes[] = array(
-				'ID'	 => $athlete->ID,
-				'photo'  => get_post_thumbnail_id( $athlete->ID ),
-				'jersey' => get_post_meta( $athlete->ID, 'sa_jersey', true ),
-				'name'   => get_post_meta( $athlete->ID, 'sa_name', true ),
-				'height' => get_post_meta( $athlete->ID, 'sa_height', true ),
-				'weight' => get_post_meta( $athlete->ID, 'sa_weight', true ),
-				'order'  => get_post_meta( $athlete->ID, 'sa_order', true ),
-				'status' => $status,
-			);
-	}
-
-	//Defaults for athletes
-	$defaults = array(
-				'ID'     => '',
-				'photo'  => '',
-				'jersey' => '',
-				'name'   => '',
-				'height' => '',
-				'weight' => '',
-				'status' => '',
-				'order'  => '',
-			);
 	if(!empty($import) && is_array($import)){
-		foreach ($import as $key => $value) {
-			//$import[$key]['ID'] = '';
-			$import[$key] = wp_parse_args($import[$key],$defaults);
-		}
-		$athletes = array_merge($athletes,$import);
-	}
-	if(!is_array($athletes[0])){
-		//Adds a new row to the bottom
-		$athletes[] = $defaults;
+		$athletes = \SchoolAthletics\Admin\RosterAdmin::getMembers($sport,$season,$import);
+	}else{
+		$athletes = \SchoolAthletics\Admin\RosterAdmin::getMembers($sport,$season);
 	}
 
 ?>	
-<script type="text/javascript">
-	
-jQuery(function($){
 
-  // Set all variables to be used in scope
-  var add_photo = jQuery('.add-photo');
-  var delImgLink = jQuery('.delete-photo');
-  
-  // ADD IMAGE LINK
-  add_photo.on( 'click', function( event ){
-    
-    event.preventDefault();
-    
-
-    var frame,
-      metaBox = $(this).parent('.photo'), // Your meta box id here
-      addImgLink = metaBox.find('.add-photo'),
-      delImgLink = metaBox.find( '.delete-photo'),
-      imgContainer = metaBox.find( '.thumbnail'),
-      imgIdInput = metaBox.find( '.photo-id' );
-
-
-    // If the media frame already exists, reopen it.
-    if ( frame ) {
-      frame.open();
-      return;
-    }
-    
-    // Create a new media frame
-    frame = wp.media({
-      title: 'Select or Upload Media Of Your Chosen Persuasion',
-      button: {
-        text: 'Use this media'
-      },
-      multiple: false  // Set to true to allow multiple files to be selected
-    });
-
-    
-    // When an image is selected in the media frame...
-    frame.on( 'select', function() {
-      
-      // Get media attachment details from the frame state
-      var attachment = frame.state().get('selection').first().toJSON();
-
-      // Send the attachment URL to our custom image input field.
-      imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100px;"/>' );
-
-      // Send the attachment id to our hidden input
-      imgIdInput.val( attachment.id );
-
-      // Hide the add image link
-      addImgLink.addClass( 'hidden' );
-
-      // Unhide the remove image link
-      delImgLink.removeClass( 'hidden' );
-    });
-
-    // Finally, open the modal on click
-    frame.open();
-  });
-  
-  
-  // DELETE IMAGE LINK
-  delImgLink.on( 'click', function( event ){
-
-  	var frame,
-      metaBox = $(this).parent('.photo'), // Your meta box id here
-      addImgLink = metaBox.find('.add-photo'),
-      delImgLink = metaBox.find( '.delete-photo'),
-      imgContainer = metaBox.find( '.thumbnail'),
-      imgIdInput = metaBox.find( '.photo-id' );
-
-
-    event.preventDefault();
-
-    // Clear out the preview image
-    imgContainer.html( '' );
-
-    // Un-hide the add image link
-    addImgLink.removeClass( 'hidden' );
-
-    // Hide the delete image link
-    delImgLink.addClass( 'hidden' );
-
-    // Delete the image id from the hidden input
-    imgIdInput.val( '' );
-
-  });
-
-});
-
-/*
- * Clone TR if + clicked 
- */
-jQuery("a.add_row").live('click', function() {
-    var $tr    = jQuery(this).closest('.clonable');
-    var $clone = $tr.clone();
-    $clone.find(':text').val('');
-    $clone.find('select').attr('selected','');
-    $clone.find(':hidden').val('');
-    $clone.find('.thumbnail').empty();
-    $tr.after($clone);
-    console.log('clone');
-    updateFieldNames()
-});
-
-jQuery("a.delete_row").live('click', function() {
-    var $tr    = jQuery(this).closest('.clonable');
-    var $clone = $tr.remove();
-    //Add input if their is an ID.
-    console.log('removed');
-    updateFieldNames()
-});
-
-function updateFieldNames(){
-	jQuery('.clonable').find('input,select').each(function(i,o){
-		var row_index = jQuery(this).closest('tr').index();
-		name = jQuery(o).attr('name');
-		jQuery(o).attr('name', name.replace(/(athlete\[)([\d]+)/, '$1' + row_index));
-		if(jQuery(o).hasClass('order')){
-			jQuery(o).val(row_index);
-		}
-	});
-	console.log('Updated ID\'s');
-}
-
-jQuery( function($) {
-    $( "#sortable" ).sortable({
-	handle: ".handle",
-	start: function(event, ui){ 
-		ui.item.addClass('dragging');       
-		},
-    stop: function(event, ui){ 
-       ui.item.removeClass('dragging');
-       updateFieldNames();
-    }
-	});
-} );
-
-</script>
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
 	<a class="page-title-action" href="">Add New</a>
 	<p></p>
@@ -346,37 +127,6 @@ jQuery( function($) {
 			$id++;
 		}
 		?>
-		<!--<tr class="ui-sortable-handle clonable">
-			<td class="hndle"></td>
-			<td></td>
-			<td><a href="#">Add Photo</a></td>
-			<td><input type="text" name="athlete[][jersey]" value="" size="4"></td>
-			<td><input type="text" name="athlete[][name]" value="" ></td>
-			<td>
-				<input type="text" name="athlete[][height]" value="" size="4">
-			</td>
-			<td>
-				<input type="text" name="athlete[][weight]" value="" size="4">
-			</td>
-			<td>
-				<?php wp_dropdown_categories(array(
-						'name'             => 'sa_athlete_status',
-						'show_option_none' => __( '- - -' ),
-						'show_count'       => 0,
-						'orderby'          => 'name',
-						'option_none_value'=> '',
-						'taxonomy'         => 'sa_athlete_status',
-						'hide_empty'       => 0,
-						'value_field'      => 'term_id',
-						'selected'         => '',
-						'echo'             => 1,
-					)); 
-				?>
-			</td>
-			<td>
-				<a class="add_new_row"><span class="dashicons dashicons-plus-alt"></span></a>
-			</td>
-		</tr>-->
 	</tbody>
 	<tfoot>
 		<tr>

@@ -1,6 +1,6 @@
 <?php 
 /**
- * YourSchool Pages.
+ * Staff Page.
  *
  * @author   Dwayne Parton
  * @category Admin
@@ -10,14 +10,15 @@
 
 namespace SchoolAthletics\Admin;
 
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * YourSchool Class.
+ * StaffAdmin page class.
  */
-class YourSchool extends Page{
+class StaffAdmin extends Page{
 
 	public function __construct(){
 		parent::__construct();
@@ -28,7 +29,15 @@ class YourSchool extends Page{
 	 * Handles output of the settings page in admin.
 	 */
 	public static function output() {
-		include_once( 'views/html-admin-page-your-school.php' );
+		include_once( 'views/html-admin-page-staff.php' );
+	}
+
+	public static function get_list() {
+		include_once( 'views/html-admin-page-staff-list.php' );
+	}
+
+	public static function edit() {
+		include_once( 'views/html-admin-page-staff-edit.php' );
 	}
 
 }

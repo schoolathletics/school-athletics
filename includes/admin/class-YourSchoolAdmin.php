@@ -1,6 +1,6 @@
 <?php 
 /**
- * Settings Pages.
+ * YourSchool Pages.
  *
  * @author   Dwayne Parton
  * @category Admin
@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Settings Class.
+ * YourSchoolAdmin Class.
  */
-class Settings extends Page{
+class YourSchoolAdmin extends Page{
 
 	public function __construct(){
 		parent::__construct();
@@ -28,7 +28,7 @@ class Settings extends Page{
 	 * Handles output of the settings page in admin.
 	 */
 	public static function output() {
-		include_once( 'views/html-admin-page-settings.php' );
+		include_once( 'views/html-admin-page-your-school.php' );
 	}
 
 }

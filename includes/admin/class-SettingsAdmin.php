@@ -1,6 +1,6 @@
 <?php 
 /**
- * Schedule Page.
+ * Settings Pages.
  *
  * @author   Dwayne Parton
  * @category Admin
@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Schedule Class.
+ * SettingsAdmin Class.
  */
-class Schedule extends Page{
+class SettingsAdmin extends Page{
 
 	public function __construct(){
 		parent::__construct();
@@ -28,7 +28,7 @@ class Schedule extends Page{
 	 * Handles output of the settings page in admin.
 	 */
 	public static function output() {
-		include_once( 'views/html-admin-page-schedule.php' );
+		include_once( 'views/html-admin-page-settings.php' );
 	}
 
 }

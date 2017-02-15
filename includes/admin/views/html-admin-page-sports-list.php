@@ -48,7 +48,7 @@ if($action == 'unpublish'){
 
 
 foreach ($terms as $term) {
-	$options = \SchoolAthletics\Admin\Sports::options($term->term_id);
+	$options = \SchoolAthletics\Admin\SportsAdmin::options($term->term_id);
 	$edit = admin_url('admin.php?page=sports').'&action=edit&sport='.$term->term_taxonomy_id;
 	?>
 	<tr>
@@ -64,7 +64,7 @@ foreach ($terms as $term) {
 		</td>
 	<?php if(!empty($options['roster']) && !empty($options['status'])) : ?>
 		<td class="border-left">
-			<?php echo \SchoolAthletics\Admin\Sports::get_current_roster($term); ?>
+			<?php echo \SchoolAthletics\Admin\SportsAdmin::get_current_roster($term); ?>
 			<div class="row-actions">
 			<span class="options">
 				<a href="?page=roster&sport=<?php echo $term->term_id; ?>"> New Roster</a>
@@ -78,7 +78,7 @@ foreach ($terms as $term) {
 	<?php endif; ?>
 	<?php if(!empty($options['schedule']) && !empty($options['status'])) : ?>
 		<td class="border-left">
-			<?php echo \SchoolAthletics\Admin\Sports::get_current_schedule($term); ?>
+			<?php echo \SchoolAthletics\Admin\SportsAdmin::get_current_schedule($term); ?>
 			<div class="row-actions">
 			<span class="options">
 				<a href="?page=schedule&sport=<?php echo $term->term_id; ?>">New Schedule</a>
@@ -92,7 +92,7 @@ foreach ($terms as $term) {
 	<?php endif; ?>
 	<?php if(!empty($options['staff']) && !empty($options['status'])) : ?>
 		<td class="border-left">
-			<?php echo \SchoolAthletics\Admin\Sports::get_current_staff($term); ?>
+			<?php echo \SchoolAthletics\Admin\SportsAdmin::get_current_staff($term); ?>
 			<div class="row-actions">
 			<span class="options">
 				<a href="?page=staff&sport=<?php echo $term->term_id; ?>">Add Staff</a>
