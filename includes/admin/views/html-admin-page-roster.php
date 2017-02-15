@@ -40,11 +40,19 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
 	$content = (!empty($content)) ? $content : '';
 	$title = $season->name.' '.$sport->name.' '.__('Roster','school-athletics');
-	/*$_athletes = get_posts(
-		array(
-			'post_type' => 'sa_roster_member',
-			'numberposts' => -1,
-			'tax_query' => array(
+
+
+	print_r(get_term_meta( $sport, 'sa_roster_members', true));
+	/*$args = array(
+		'post_type' => 'sa_roster_member',
+		'posts_per_page' => -1,
+		'orderby' => 'post__in',
+		'post__in' => get_post_meta( $roster_id, 'sa_roster_members', true),
+	);*/
+	$args = array(
+	        'posts_per_page' => -1,
+	        'post_type' => 'sa_roster_member',
+	        'tax_query' => array(
 				array(
 					'taxonomy' => 'sa_sport',
 					'field' => 'id',
@@ -56,16 +64,10 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 					'terms' => $_GET['season'],
 				)
 			),
-		)
-	);*/
-
-	print_r(get_term_meta( $sport, 'sa_roster_members', true));
-	$args = array(
-		'post_type' => 'sa_roster_member',
-		'posts_per_page' => -1,
-		'orderby' => 'post__in',
-		'post__in' => get_post_meta( $roster_id, 'sa_roster_members', true),
-	); 
+			'meta_key' => 'sa_order',
+            'orderby' => 'meta_value_num',
+            'order' => 'ASC'
+		);
 	$_athletes = get_posts($args);
 	//print_r($_athletes);
 	$athletes = array();
@@ -80,6 +82,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 				'name'   => get_post_meta( $athlete->ID, 'sa_name', true ),
 				'height' => get_post_meta( $athlete->ID, 'sa_height', true ),
 				'weight' => get_post_meta( $athlete->ID, 'sa_weight', true ),
+				'order'  => get_post_meta( $athlete->ID, 'sa_order', true ),
 				'status' => $status,
 			);
 	}
@@ -93,6 +96,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 				'height' => '',
 				'weight' => '',
 				'status' => '',
+				'order'  => '',
 			);
 	if(!empty($import) && is_array($import)){
 		foreach ($import as $key => $value) {
@@ -101,34 +105,14 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		}
 		$athletes = array_merge($athletes,$import);
 	}
-	//Adds a new row to the bottom
-	$athletes[] = $defaults;
+	if(!is_array($athletes[0])){
+		//Adds a new row to the bottom
+		$athletes[] = $defaults;
+	}
 
 ?>	
 <script type="text/javascript">
 	
-var media_uploader = null;
-
-/*function open_media_uploader_image()
-{
-    media_uploader = wp.media({
-        frame:    "post",
-        state:    "insert",
-        multiple: false
-    });
-
-    media_uploader.on("insert", function(){
-        var json = media_uploader.state().get("selection").first().toJSON();
-        var image_id = json.id;
-        var image_url = json.url;
-        var image_caption = json.caption;
-        var image_title = json.title;
-        console.log(json.id);
-    });
-
-    media_uploader.open();
-};*/
-
 jQuery(function($){
 
   // Set all variables to be used in scope
@@ -221,32 +205,57 @@ jQuery(function($){
 /*
  * Clone TR if + clicked 
  */
-jQuery("a.add_new_row").live('click', function() {
+jQuery("a.add_row").live('click', function() {
     var $tr    = jQuery(this).closest('.clonable');
     var $clone = $tr.clone();
     $clone.find(':text').val('');
+    $clone.find('select').attr('selected','');
+    $clone.find(':hidden').val('');
+    $clone.find('.thumbnail').empty();
     $tr.after($clone);
     console.log('clone');
+    updateFieldNames()
 });
 
-  jQuery( function($) {
+jQuery("a.delete_row").live('click', function() {
+    var $tr    = jQuery(this).closest('.clonable');
+    var $clone = $tr.remove();
+    //Add input if their is an ID.
+    console.log('removed');
+    updateFieldNames()
+});
+
+function updateFieldNames(){
+	jQuery('.clonable').find('input,select').each(function(i,o){
+		var row_index = jQuery(this).closest('tr').index();
+		name = jQuery(o).attr('name');
+		jQuery(o).attr('name', name.replace(/(athlete\[)([\d]+)/, '$1' + row_index));
+		if(jQuery(o).hasClass('order')){
+			jQuery(o).val(row_index);
+		}
+	});
+	console.log('Updated ID\'s');
+}
+
+jQuery( function($) {
     $( "#sortable" ).sortable({
 	handle: ".handle",
 	start: function(event, ui){ 
 		ui.item.addClass('dragging');       
 		},
     stop: function(event, ui){ 
-       ui.item.removeClass('dragging'); 
+       ui.item.removeClass('dragging');
+       updateFieldNames();
     }
 	});
-  } );
+} );
 
 </script>
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
 	<a class="page-title-action" href="">Add New</a>
 	<p></p>
 	<form method="POST">
-	<table class="wp-list-table widefat">
+	<table class="wp-list-table widefat striped">
 	<thead>
 		<tr>
 			<th><strong><?php _e('Settings', 'school-athletics');?></strong></th>
@@ -255,7 +264,14 @@ jQuery("a.add_new_row").live('click', function() {
 	<tbody>
 		<tr>
 			<td>
-				<input type="text" name="ID" value="<?php echo $roster_id; ?>">
+				<pre><?php echo $roster_id; ?></pre>
+				<p><code><?php echo get_permalink($roster_id); ?></code></p>
+				<input type="hidden" name="ID" value="<?php echo $roster_id; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><?php echo wp_get_attachment_image( $roster_thumbnail,'medium'); ?></p>
 				<a class="add_photo">Add Team Photo</a>
 				<input class="photo-id" type="text" name="photo" size="4" value="<?php echo $roster_thumbnail; ?>">
 			</td>
@@ -268,14 +284,13 @@ jQuery("a.add_new_row").live('click', function() {
 	<thead>
 		<tr>
 			<th></th>
-			<th>ID</th>
 			<th><span class="dashicons dashicons-format-image"></span></th>
 			<th>No.</th>
 			<th>Name</th>
 			<th>Ht.</th>
 			<th>Wt.</th>
 			<th>Year</th>
-			<th>Actions</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody id="sortable" class="ui-sortable">
@@ -283,22 +298,25 @@ jQuery("a.add_new_row").live('click', function() {
 		$id = 0;
 		foreach ($athletes as $athlete) {
 		?>
-		<tr class="">
+		<tr class="clonable">
 			<td class="ui-sortable-handle handle"><span class="dashicons dashicons-move"></span></td>
 			<td>
-				<input type="text" name="athlete[<?php echo $id; ?>][ID]" value="<?php echo $athlete['ID']; ?>" size="4" />
-				<input type="hidden" name="athletes[]" value="<?php echo $athlete['ID']; ?>" />
-			</td>
-			<td>
 				<div class="photo">
-					<div class="sa thumbnail"><?php echo ($athlete['photo']) ? wp_get_attachment_image( $athlete['photo'],'thumbnail') : ''; ?></div>
+					<div class="sa thumbnail"><?php echo ($athlete['photo']) ? wp_get_attachment_image( $athlete['photo'],'thumbnail') : '<span class="dashicons dashicons-format-image"></span>'; ?></div>
 					<a href="#" class="add-photo">Add Photo</a>
 					<a href="#" class="delete-photo hidden">Delete Photo</a>
 					<input class="photo-id" type="hidden" name="athlete[<?php echo $id; ?>][photo]" size="4" value="<?php echo $athlete['photo']; ?>" >
 				</div>
 			</td>
-			<td><input type="text" name="athlete[<?php echo $id; ?>][jersey]" value="<?php echo $athlete['jersey']; ?>" size="4"></td>
-			<td><input type="text" name="athlete[<?php echo $id; ?>][name]" value="<?php echo $athlete['name']; ?>" ></td>
+			<td><input type="text" name="athlete[<?php echo $id; ?>][jersey]" value="<?php echo $athlete['jersey']; ?>" size="2"></td>
+			<td>
+				<input type="text" name="athlete[<?php echo $id; ?>][name]" value="<?php echo $athlete['name']; ?>" >
+				<input type="hidden" class="order" name="athlete[<?php echo $id; ?>][order]" value="<?php echo $athlete['order']; ?>" />
+				<input type="hidden" name="athlete[<?php echo $id; ?>][ID]" value="<?php echo $athlete['ID']; ?>" />
+				<div class="row-actions">
+					<span class="options"><a href="<?php echo get_permalink($athlete['ID']);?>" >View</a> | </span> <a href="<?php echo admin_url('admin.php?page=roster').'&action=edit&athlete='.$athlete['ID']; ?>">Edit</a></span>
+				</div>
+			</td>
 			<td>
 				<input type="text" name="athlete[<?php echo $id; ?>][height]" value="<?php echo $athlete['height']; ?>" size="4">
 			</td>
@@ -321,7 +339,7 @@ jQuery("a.add_new_row").live('click', function() {
 				?>
 			</td>
 			<td>
-				<span class="dashicons dashicons-no"></span>
+				<a class="add_row"><span class="dashicons dashicons-plus-alt"></span></a> <a class="delete_row"><span class="dashicons dashicons-dismiss"></span></a>
 			</td>
 		</tr>
 		<?php
@@ -363,14 +381,13 @@ jQuery("a.add_new_row").live('click', function() {
 	<tfoot>
 		<tr>
 			<th></th>
-			<th>ID</th>
 			<th><span class="dashicons dashicons-format-image"></span></th>
 			<th>No.</th>
 			<th>Name</th>
 			<th>Ht.</th>
 			<th>Wt.</th>
 			<th>Year</th>
-			<th>Actions</th>
+			<th></th>
 		</tr>
 	</tfoot>
 	</table>
