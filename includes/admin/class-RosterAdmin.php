@@ -24,7 +24,6 @@ class RosterAdmin extends Page{
 		self::output();
 		wp_enqueue_media();
 		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script( 'school-athletics', SA__PLUGIN_URL.'assets/js/ui.js');
 	}
 
@@ -137,7 +136,7 @@ class RosterAdmin extends Page{
 			}
 			$members = array_merge($members,$import);
 		}
-		if(!is_array($members[0])){
+		if(empty($members)){
 			//Adds a new row to the bottom
 			$members[] = $defaults;
 		}

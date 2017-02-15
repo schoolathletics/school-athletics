@@ -189,7 +189,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			<td>
 				<pre>jersey,name,height,weight,status<br /><?php 
 					foreach ($athletes as $athlete) {
-						if($athlete['name']){
+						if(array_key_exists ( 'name', $athlete )){
 							echo $athlete['jersey'].','.$athlete['name'].','.$athlete['height'].','.$athlete['weight'].','.$athlete['status'].'<br />';
 						}
 					} ?></pre>

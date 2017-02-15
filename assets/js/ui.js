@@ -146,7 +146,8 @@ jQuery(function($){
 			var id = $tr.find('.member_id').val();
 			//Add input if their is an ID.
 			$('#tobedeleted').append('<input type="hidden" name="deleteMember[]" value="'+id+'">');
-			$tr.remove();
+			$tr.fadeOut(300, function() { $(this).remove(); });
+			//$tr.remove();
 			console.log('removed');
 			SchoolAthletics.updateFields()
 		},
