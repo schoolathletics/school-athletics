@@ -46,7 +46,7 @@ class Schedule {
 					'terms' => $_GET['season'],
 				)
 			),
-			'meta_key' => 'sa_date',
+			'meta_key' => 'sa_order',
             'orderby' => 'meta_value_num',
             'order' => 'ASC',
 		);

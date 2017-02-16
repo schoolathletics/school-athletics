@@ -24,13 +24,12 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		$schedule_thumbnail = get_post_thumbnail_id( $schedule[0]->ID );
 		$schedule_content = $schedule[0]->post_content;
 	}
-
 	$title = $season->name.' '.$sport->name.' '.__('Schedule','school-athletics');
-	$events = \SchoolAthletics\Admin\ScheduleAdmin::getEvents($sport,$season);
+	$events = \SchoolAthletics\Admin\ScheduleAdmin::getEvents($sport,$season,$import);
 
 ?>	
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
-	<a class="page-title-action" href="">Add New</a>
+	<a class="page-title-action" href="<?php echo admin_url('admin.php?page=schedule').'&sport='.$_GET['sport']; ?>">Add New</a>
 	<form method="POST">
 	<table class="wp-list-table widefat">
 	<thead>
@@ -41,9 +40,9 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<tbody>
 		<tr>
 			<td>
-				<?php \SchoolAthletics\Debug::content( (isset($schdeule_id)) ? 'Schedule ID = '.$schedule_id : 'Unset'); ?>
-				<p><code><?php echo (isset($schdeule_id)) ? get_permalink($schedule_id) : 'No ID'; ?></code></p>
-				<input type="hidden" name="ID" value="<?php echo $roster_id; ?>" />
+				<?php \SchoolAthletics\Debug::content( (isset($schedule_id)) ? 'Schedule ID = '.$schedule_id : 'Unset'); ?>
+				<p><code><?php echo (isset($schedule_id)) ? get_permalink($schedule_id) : 'No ID'; ?></code></p>
+				<input type="hidden" name="ID" value="<?php echo $schedule_id; ?>" />
 			</td>
 		</tr>
 	</tbody>
@@ -53,6 +52,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<table class="wp-list-table widefat striped pages">
 	<thead>
 		<tr>
+			<th></th>
 			<th>Date</th>
 			<th>Name</th>
 			<th>Location</th>
@@ -62,19 +62,20 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			<th>Actions</th>
 		</tr>
 	</thead>
-	<tbody class="ui-sortable">
+	<tbody id="sortable" class="ui-sortable">
 		<?php
 		$id = 0;
 		foreach ($events as $event) {
 		?>
 		<tr class="clonable">
-			<td><input type="text" name="event[<?php echo $id; ?>][date]" value="<?php echo $event['date']; ?>" size="6"></td>
+			<td class="ui-sortable-handle handle">
+				<span class="dashicons dashicons-move"></span>
+				<input type="hidden" class="order" name="event[<?php echo $id; ?>][order]" value="<?php echo $event['order']; ?>" >
+				<input class="object_id" type="hidden" name="event[<?php echo $id; ?>][ID]" value="<?php echo $event['ID']; ?>" >
+			</td>
+			<td><input class="datetime" type="text" name="event[<?php echo $id; ?>][date]" value="<?php echo $event['date']; ?>" size="16"></td>
 			<td>
-				<input type="text" name="event[<?php echo $id; ?>][name]" value="<?php echo $event['name']; ?>" >
-				<input class="member_id hidden" type="text" name="event[<?php echo $id; ?>][ID]" value="<?php echo $event['ID']; ?>" >
-				<div class="row-actions">
-					<span class="options"><a href="<?php echo get_permalink($event['ID']);?>" >View</a> | </span> <a href="<?php echo admin_url('admin.php?page=schedule').'&action=edit&event='.$event['ID']; ?>">Edit</a></span>
-				</div>
+				<input type="text" name="event[<?php echo $id; ?>][name]" value="<?php echo $event['name']; ?>" size="24">
 			</td>
 			<td>
 				<?php wp_dropdown_categories(array(
@@ -135,6 +136,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	</tbody>
 	<tfoot>
 		<tr>
+			<th></th>
 			<th>Date</th>
 			<th>Name</th>
 			<th>Location</th>
@@ -161,7 +163,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	</thead>
 	<tbody>
 		<tr>
-			<th><label for="csv">Import</label></th>
+			<th><strong><label for="csv">Import</label></strong></th>
 			<td>
 				<input type="hidden" name="action" value="import">
 				<textarea name="csv" class="textarea widefat"></textarea>
@@ -175,10 +177,10 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		</tr>
 		<tr>
 			<th>
-				<label for="description">Export</label>
+				<strong><label for="description">Export</label></strong>
 			</th>
 			<td>
-				<pre>date,name,location,game_type,outcome,result<br /><?php 
+				<pre class="export">date,name,location,game_type,outcome,result<br /><?php 
 					foreach ($events as $event) {
 						if( array_key_exists ( 'name', $event ) ){
 							echo $event['date'].','.$event['name'].','.$event['location'].','.$event['game_type'].','.$event['outcome'].','.$event['result'].'<br />';

@@ -91,7 +91,11 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		foreach ($athletes as $athlete) {
 		?>
 		<tr class="clonable">
-			<td class="ui-sortable-handle handle"><span class="dashicons dashicons-move"></span></td>
+			<td class="ui-sortable-handle handle">
+				<span class="dashicons dashicons-move"></span>
+				<input type="hidden" class="order" name="athlete[<?php echo $id; ?>][order]" value="<?php echo $athlete['order']; ?>" >
+				<input class="object_id" type="hidden" name="athlete[<?php echo $id; ?>][ID]" value="<?php echo $athlete['ID']; ?>" >
+			</td>
 			<td>
 				<div class="photo <?php echo ($athlete['photo']) ? 'yes' : 'no';?>">
 					<div class="sa thumbnail">
@@ -108,8 +112,6 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			<td><input type="text" name="athlete[<?php echo $id; ?>][jersey]" value="<?php echo $athlete['jersey']; ?>" size="2"></td>
 			<td>
 				<input type="text" name="athlete[<?php echo $id; ?>][name]" value="<?php echo $athlete['name']; ?>" >
-				<input type="hidden" class="order" name="athlete[<?php echo $id; ?>][order]" value="<?php echo $athlete['order']; ?>" >
-				<input class="member_id hidden" type="text" name="athlete[<?php echo $id; ?>][ID]" value="<?php echo $athlete['ID']; ?>" >
 				<div class="row-actions">
 					<span class="options"><a href="<?php echo get_permalink($athlete['ID']);?>" >View</a> | </span> <a href="<?php echo admin_url('admin.php?page=roster').'&action=edit&athlete='.$athlete['ID']; ?>">Edit</a></span>
 				</div>
@@ -173,7 +175,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	</thead>
 	<tbody>
 		<tr>
-			<th><label for="csv">Import</label></th>
+			<th><strong><label for="csv">Import</label></strong></th>
 			<td>
 				<input type="hidden" name="action" value="import">
 				<textarea name="csv" class="textarea widefat"></textarea>
@@ -187,10 +189,10 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		</tr>
 		<tr>
 			<th>
-				<label for="description">Export</label>
+				<strong><label for="description">Export</label></strong>
 			</th>
 			<td>
-				<pre>jersey,name,height,weight,status<br /><?php 
+				<pre class="export">jersey,name,height,weight,status<br /><?php 
 					foreach ($athletes as $athlete) {
 						if(array_key_exists ( 'name', $athlete )){
 							echo $athlete['jersey'].','.$athlete['name'].','.$athlete['height'].','.$athlete['weight'].','.$athlete['status'].'<br />';

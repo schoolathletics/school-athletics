@@ -11,16 +11,21 @@ jQuery(function($){
 		init: function(){
 
 			//Init sortable rows
-			$( "#sortable" ).sortable({
-				handle: ".handle",
-				start: function(event, ui){ 
-					ui.item.addClass('dragging');       
-				},
-				stop: function(event, ui){ 
-					ui.item.removeClass('dragging');
-					SchoolAthletics.updateFields();
-				}
-			});
+			if($().sortable){
+				console.log('has sortable');
+				$( "#sortable" ).sortable({
+					handle: ".handle",
+					start: function(event, ui){ 
+						ui.item.addClass('dragging');       
+					},
+					stop: function(event, ui){ 
+						ui.item.removeClass('dragging');
+						SchoolAthletics.updateFields();
+					}
+				});
+			}
+
+			SchoolAthletics.datetimepickerStart();
 
 		},
 
@@ -29,6 +34,20 @@ jQuery(function($){
 		 */
 		example: function(){
 
+		},
+
+		/*
+		 * Example Docs
+		 */
+		datetimepickerStart: function(){
+			if($().datetimepicker){
+				console.log('has datepicker');
+				$('.datetime').datetimepicker({
+					controlType: 'select',
+					oneLine: true,
+					timeFormat: 'hh:mm tt'
+				});
+			}
 		},
 
 		/*
@@ -112,6 +131,9 @@ jQuery(function($){
 				var row_index = $(this).closest('tr').index();
 				name = $(o).attr('name');
 				$(o).attr('name', name.replace(/(athlete\[)([\d]+)/, '$1' + row_index));
+				$(o).attr('id', name.replace(/(athlete\[)([\d]+)/, '$1' + row_index));
+				$(o).attr('name', name.replace(/(event\[)([\d]+)/, '$1' + row_index));
+				$(o).attr('id', name.replace(/(event\[)([\d]+)/, '$1' + row_index));
 				if($(o).hasClass('order')){
 					$(o).val(row_index);
 				}
@@ -125,9 +147,9 @@ jQuery(function($){
 		addRow: function(row){
 			var $tr = $(row).closest('.clonable');
 			var $clone = $tr.clone();
-			$clone.find(':text').val('');
+			$clone.find('input[type="hidden"]').val('');
 			$clone.find('select').attr('selected','');
-			$clone.find(':hidden').val('');
+			$clone.find(':text').val('');
 			$clone.find('.thumbnail').empty();
 			$clone.find('.photo').removeClass('yes');
 			if(!$clone.find('.photo').hasClass('no')){
@@ -135,7 +157,10 @@ jQuery(function($){
 			}
 			$tr.after($clone);
 			console.log('Cloned');
-			SchoolAthletics.updateFields()
+			$(".hasDatepicker").removeClass("hasDatepicker");
+			$('.datetime').datetimepicker('destroy');
+			SchoolAthletics.updateFields();
+			SchoolAthletics.datetimepickerStart();
 		},
 
 		/*
@@ -143,9 +168,9 @@ jQuery(function($){
 		 */
 		deleteRow: function(row){
 			var $tr = $(row).closest('.clonable');
-			var id = $tr.find('.member_id').val();
+			var id = $tr.find('.object_id').val();
 			//Add input if their is an ID.
-			$('#tobedeleted').append('<input type="hidden" name="deleteMember[]" value="'+id+'">');
+			$('#tobedeleted').append('<input type="hidden" name="deleteObjects[]" value="'+id+'">');
 			$tr.fadeOut(300, function() { $(this).remove(); });
 			//$tr.remove();
 			console.log('removed');
@@ -155,11 +180,11 @@ jQuery(function($){
 	}//end ui
 
 	SchoolAthletics.init();
-	$("a.add-photo").live('click', function(e){
+	$("a.add-photo").live('click', function(event){
 		e.preventDefault();
 		SchoolAthletics.addImage(this)
 	});
-	$("a.remove-photo").live('click', function(e){
+	$("a.remove-photo").live('click', function(event){
 		e.preventDefault();
 		SchoolAthletics.removeImage(this)
 	});

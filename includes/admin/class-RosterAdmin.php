@@ -157,12 +157,14 @@ class RosterAdmin extends Page{
 		if(!empty($_REQUEST['season']) && !empty($_REQUEST['sport'])){
 			$roster_id = self::save_roster($_REQUEST['sport'],$_REQUEST['season'],$_POST);
 			$athletes = $_POST['athlete'];
+			$athlete_terms = array();
 			foreach ($athletes as $athlete) {
 				$athlete_id = self::add_member($_REQUEST['sport'],$_REQUEST['season'],$athlete);
-				wp_set_post_terms($roster_id, $athlete['name'], 'sa_person', true );
+				$athlete_terms[] = $athlete['name'];
 			}
-			if(isset($_POST['deleteMember'])){
-				self::delete_members($_POST['deleteMember']);
+			wp_set_post_terms($roster_id, $athlete_terms, 'sa_person', false );
+			if(isset($_POST['deleteObjects'])){
+				self::delete_members($_POST['deleteObjects']);
 			}
 
 			\SchoolAthletics\Admin\Notice::success('Roster has been successfully saved.');
