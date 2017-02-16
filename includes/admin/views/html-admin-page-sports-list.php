@@ -67,7 +67,7 @@ foreach ($terms as $term) {
 			<?php echo \SchoolAthletics\Admin\SportsAdmin::get_current_roster($term); ?>
 			<div class="row-actions">
 			<span class="options">
-				<a href="?page=roster&sport=<?php echo $term->term_id; ?>"> New Roster</a>
+				<a href="?page=roster&sport=<?php echo $term->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> Roster</a>
 			</span>	
 			</div>	
 		</td>
@@ -81,7 +81,7 @@ foreach ($terms as $term) {
 			<?php echo \SchoolAthletics\Admin\SportsAdmin::get_current_schedule($term); ?>
 			<div class="row-actions">
 			<span class="options">
-				<a href="?page=schedule&sport=<?php echo $term->term_id; ?>">New Schedule</a>
+				<a href="?page=schedule&sport=<?php echo $term->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> Schedule</a>
 			</span>	
 			</div>		
 		</td>
@@ -95,7 +95,7 @@ foreach ($terms as $term) {
 			<?php echo \SchoolAthletics\Admin\SportsAdmin::get_current_staff($term); ?>
 			<div class="row-actions">
 			<span class="options">
-				<a href="?page=staff&sport=<?php echo $term->term_id; ?>">Add Staff</a>
+				<a href="?page=staff&sport=<?php echo $term->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> Staff</a>
 			</span>	
 			</div>
 		</td>

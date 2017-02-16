@@ -14,7 +14,10 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	$sport = get_term_by( 'id', $_GET['sport'], 'sa_sport' );
 	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
 	$roster = \SchoolAthletics\Admin\RosterAdmin::getRoster($sport,$season);
-
+	$roster_content = '';
+	$roster_id = '';
+	$roster_thumbnail = '';
+	
 	if(isset($roster[0]->ID)){
 		$roster_id = $roster[0]->ID;
 		$roster_thumbnail = get_post_thumbnail_id( $roster[0]->ID );

@@ -349,7 +349,7 @@ class SportsAdmin extends Page{
 	public static function get_current_roster($sport){
 		$pages = get_posts(array(
 		  'post_type' => 'sa_roster',
-		  'numberposts' => 1,
+		  'numberposts' => -1,
 		  'tax_query' => array(
 		    array(
 		      'taxonomy' => 'sa_sport',
@@ -358,13 +358,14 @@ class SportsAdmin extends Page{
 		    )
 		  ),
 		  'orderby' => 'taxonomy_sa_season',
-		  'order'   => 'DESC',
+		  'order'   => 'ASC',
 		));
+		$content = '';
 		foreach ($pages as $page) {
 			if(is_object($page)){
 				if(is_object_in_term( $page->ID, 'sa_season')){
 					$season = get_the_terms($page,'sa_season');
-					$content = '<a href="?page=roster&sport='.$sport->term_id.'&season='.$season[0]->term_id.'&roster_id='.$page->ID.'">'.$season[0]->name.'</a>';
+					$content .= '<a href="?page=roster&sport='.$sport->term_id.'&season='.$season[0]->term_id.'&roster_id='.$page->ID.'">'.$season[0]->name.'</a><br />';
 				}
 			}
 		}
@@ -378,7 +379,7 @@ class SportsAdmin extends Page{
 	public static function get_current_schedule($sport){
 		$pages = get_posts(array(
 		  'post_type' => 'sa_schedule',
-		  'numberposts' => 1,
+		  'numberposts' => -1,
 		  'tax_query' => array(
 		    array(
 		      'taxonomy' => 'sa_sport',
@@ -387,13 +388,14 @@ class SportsAdmin extends Page{
 		    )
 		  ),
 		  'orderby' => 'taxonomy_sa_season',
-		  'order'   => 'DESC',
+		  'order'   => 'ASC',
 		));
+		$content = '';
 		foreach ($pages as $page) {
 			if(is_object($page)){
 				if(is_object_in_term( $page->ID, 'sa_season')){
 					$season = get_the_terms($page,'sa_season');
-					$content = '<a href="?page=schedule&sport='.$sport->term_id.'&season='.$season[0]->term_id.'&schedule_id='.$page->ID.'">'.$season[0]->name.'</a>';
+					$content .= '<a href="?page=schedule&sport='.$sport->term_id.'&season='.$season[0]->term_id.'&schedule_id='.$page->ID.'">'.$season[0]->name.'</a><br />';
 				}
 			}
 		}
