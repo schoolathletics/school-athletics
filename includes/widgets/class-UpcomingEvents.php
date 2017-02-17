@@ -1,6 +1,6 @@
 <?php
 /**
- * School Athletics shortcode class.
+ * Upcoming Events widget class.
  *
  *
  * @author   Dwayne Parton
@@ -9,7 +9,7 @@
  * @version  0.0.1
  */
 
-namespace SchoolAthletics\shortcodes; 
+namespace SchoolAthletics\Widgets; 
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * School Athletics shortcode class.
+ * Upcoming Events widget class.
  */
-class SchoolAthletics {
+class UpcomingEvents {
 
 	/**
 	 * Hook in methods.

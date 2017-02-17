@@ -282,7 +282,7 @@ class SportsAdmin extends Page{
 			$term = get_term($term);
 		}
 		$home = array(
-			'post_content' => '$sa_page_content',
+			'post_content' => '[schoolathletics_news sport=\''.$term->name.'\']',
 			'post_title' => $term->name,
 			'post_name' => $term->slug,
 			'post_type' => 'sa_page',

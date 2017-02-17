@@ -27,7 +27,8 @@ class SchoolAthletics {
 	public function __construct() {
 		\SchoolAthletics\InstallWpObjects::init();
 		new \SchoolAthletics\Admin\Admin();
-		new \SchoolAthletics\Debug();	
+		new \SchoolAthletics\Debug();
+		\SchoolAthletics\Shortcodes::init();
 	}
 
 }
