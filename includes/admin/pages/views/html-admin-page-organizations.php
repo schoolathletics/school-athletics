@@ -18,7 +18,7 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 				\SchoolAthletics\Admin\Pages\Organizations::edit();
 			break;
 			default :
-				\SchoolAthletics\Admin\Pages\Organizations::list();
+				\SchoolAthletics\Admin\Pages\Organizations::get_list();
 			break;
 		}
 	?>
