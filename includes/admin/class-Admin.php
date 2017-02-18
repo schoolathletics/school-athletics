@@ -31,19 +31,29 @@ class Admin {
 	 * Displays the post state on the page post type
 	 */
 	public function post_states( $states, $post ) {
-		if ( 'page' == $post->post_type ) {
-			if (! empty(get_post_meta($post->ID, 'schoolathletics_page', true)) ) {
-				$url = '#';
+		if ( 'sa_page' == $post->post_type ) {
+			if (! empty(get_post_meta($post->ID, 'schoolathletics_page_state', true)) ) {
 				$states['schoolathletics'] = sprintf(
-					'<a style="%2$s" href="%3$s">%1$s</a>',
-					__( 'School Athletics', 'schoolathletics' ),
-					'background:#aaa;color:#fff;padding:1px 4px;border-radius:4px;font-size:0.8em',
-					$url
+					'<span style="%2$s" >%1$s</span>',
+					__( get_post_meta($post->ID, 'schoolathletics_page_state', true), 'schoolathletics' ),
+					'background:#aaa;color:#fff;padding:1px 4px;border-radius:4px;font-size:0.8em'
 				);
 			}
 		}
 
 		return $states;
+	}
+
+	/**
+	 * Advanced Options
+	 */
+	public static function advanced_mode(){
+		$status_options = get_option( 'schoolathletics_settings_options', array() );
+		if ( ! empty( $status_options['advanced_mode'] ) || \SchoolAthletics\Debug::status()) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

@@ -1,5 +1,4 @@
 jQuery(function($){
-
 	/*
 	 * School Athletics Admin UI
 	 */
@@ -9,38 +8,40 @@ jQuery(function($){
 		 * Init School Athletics Admin UI
 		 */
 		init: function(){
+			
+			SchoolAthletics.autocomplete();
+			SchoolAthletics.datetimepicker();
 
-			//Init sortable rows
-			if($().sortable){
-				console.log('has sortable');
-				$( "#sortable" ).sortable({
-					handle: ".handle",
-					start: function(event, ui){ 
-						ui.item.addClass('dragging');       
-					},
-					stop: function(event, ui){ 
-						ui.item.removeClass('dragging');
-						SchoolAthletics.updateFields();
+		},
+
+		/*
+		 * Start Autocomplete if it exists
+		 */
+		autocomplete: function(){
+			if($().autocomplete){
+				if($('.autocomplete').autocomplete()){
+					$('.autocomplete').autocomplete("destroy");
+				}
+				$('.autocomplete').each(function(i, el) {
+					if (typeof $(this).data('ui-autocomplete') === 'undefined') {
+							$(this).autocomplete({
+								source: autocomplete,
+							});
 					}
 				});
 			}
-
-			SchoolAthletics.datetimepickerStart();
-
 		},
 
-		/*
-		 * Example Docs
-		 */
-		example: function(){
-
-		},
 
 		/*
-		 * Example Docs
+		 * Start Datepicker if it exists
 		 */
-		datetimepickerStart: function(){
+		datetimepicker: function(){
 			if($().datetimepicker){
+				if($('.datetime').datetimepicker()){
+					$(".hasDatepicker").removeClass("hasDatepicker");
+					$('.datetime').datetimepicker('destroy');
+				}
 				console.log('has datepicker');
 				$('.datetime').datetimepicker({
 					controlType: 'select',
@@ -49,6 +50,7 @@ jQuery(function($){
 				});
 			}
 		},
+
 
 		/*
 		 * Example Docs
@@ -157,10 +159,9 @@ jQuery(function($){
 			}
 			$tr.after($clone);
 			console.log('Cloned');
-			$(".hasDatepicker").removeClass("hasDatepicker");
-			$('.datetime').datetimepicker('destroy');
+			//SchoolAthletics.datetimepickerReset();
 			SchoolAthletics.updateFields();
-			SchoolAthletics.datetimepickerStart();
+			SchoolAthletics.init();
 		},
 
 		/*
@@ -180,12 +181,27 @@ jQuery(function($){
 	}//end ui
 
 	SchoolAthletics.init();
+	//Init sortable rows
+	if($().sortable){
+		console.log('has sortable');
+		$( "#sortable" ).sortable({
+			handle: ".handle",
+			start: function(event, ui){ 
+				ui.item.addClass('dragging');       
+			},
+			stop: function(event, ui){ 
+				ui.item.removeClass('dragging');
+				SchoolAthletics.updateFields();
+			}
+		});
+	}
+
 	$("a.add-photo").live('click', function(event){
-		e.preventDefault();
+		event.preventDefault();
 		SchoolAthletics.addImage(this)
 	});
 	$("a.remove-photo").live('click', function(event){
-		e.preventDefault();
+		event.preventDefault();
 		SchoolAthletics.removeImage(this)
 	});
 

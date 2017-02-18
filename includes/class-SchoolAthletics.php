@@ -28,6 +28,7 @@ class SchoolAthletics {
 		\SchoolAthletics\InstallWpObjects::init();
 		new \SchoolAthletics\Admin\Admin();
 		new \SchoolAthletics\Debug();
+		\SchoolAthletics\TemplateLoader::init();
 		\SchoolAthletics\Shortcodes::init();
 	}
 

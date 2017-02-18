@@ -65,4 +65,4 @@ $title = $_GET['page'];
 	<p class="submit"><input id="submit" class="button button-primary" value="Get <?php echo ucwords($title); ?>" type="submit"></p>
 </form>
 
-<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-sports-wizard.php'); ?>
+<?php \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-sports-wizard.php'); ?>

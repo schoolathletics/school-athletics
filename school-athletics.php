@@ -33,6 +33,9 @@ spl_autoload_register(function( $class) {
 				if($namespace == 'Admin'){
 					$path = 'admin/';
 				}
+				if($namespace == 'Pages'){
+					$path = 'admin/pages/';
+				}
 				$file = $namespace;
 			}
 			//$file = in_array('SchoolAthletics', $namespaces).$class;

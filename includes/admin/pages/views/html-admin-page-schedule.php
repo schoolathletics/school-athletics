@@ -16,7 +16,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
 	$content = (!empty($content)) ? $content : '';
 
-	$schedule = \SchoolAthletics\Admin\ScheduleAdmin::getSchedule($sport,$season);
+	$schedule = \SchoolAthletics\Admin\Pages\Schedule::getSchedule($sport,$season);
 	$schedule_content = '';
 
 	if(isset($schedule[0]->ID)){
@@ -25,11 +25,15 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		$schedule_content = $schedule[0]->post_content;
 	}
 	$title = $season->name.' '.$sport->name.' '.__('Schedule','school-athletics');
-	$events = \SchoolAthletics\Admin\ScheduleAdmin::getEvents($sport,$season,$import);
+	$events = \SchoolAthletics\Admin\Pages\Schedule::getEvents($sport,$season,$import);
 
 ?>	
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
 	<a class="page-title-action" href="<?php echo admin_url('admin.php?page=schedule').'&sport='.$_GET['sport']; ?>">Add New</a>
+	<p></p>
+	<script>
+		var autocomplete = [ <?php echo $autocomplete; ?> ];
+	</script>
 	<form method="POST">
 	<table class="wp-list-table widefat">
 	<thead>
@@ -75,7 +79,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			</td>
 			<td><input class="datetime" type="text" name="event[<?php echo $id; ?>][date]" value="<?php echo $event['date']; ?>" size="16"></td>
 			<td>
-				<input type="text" name="event[<?php echo $id; ?>][name]" value="<?php echo $event['name']; ?>" size="24">
+				<input class="autocomplete" type="text" name="event[<?php echo $id; ?>][name]" value="<?php echo $event['name']; ?>" size="24">
 			</td>
 			<td>
 				<?php wp_dropdown_categories(array(
@@ -204,5 +208,5 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 }
 
-\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-schedule.php');
+\SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-schedule.php');
 \SchoolAthletics\Debug::content($_REQUEST); 

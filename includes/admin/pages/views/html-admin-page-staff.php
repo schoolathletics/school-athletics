@@ -17,13 +17,13 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 	<?php
 		switch ( $action ) {
 			case "edit" :
-				\SchoolAthletics\Admin\StaffAdmin::edit();
+				\SchoolAthletics\Admin\Pages\Staff::edit();
 			break;
 			default :
-				\SchoolAthletics\Admin\StaffAdmin::get_list();
+				\SchoolAthletics\Admin\Pages\Staff::get_list();
 			break;
 		}
 	?>
 </div>
 
-<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-staff.php'); ?>
+<?php \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-staff.php'); ?>

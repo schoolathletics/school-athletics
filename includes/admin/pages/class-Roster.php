@@ -8,23 +8,21 @@
  * @version  0.0.1
  */
 
-namespace SchoolAthletics\Admin;
+namespace SchoolAthletics\Admin\Pages;
+use SchoolAthletics\Admin\Page as Page;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Roster Class.
+ * Roster admin page class.
  */
-class RosterAdmin extends Page{
+class Roster extends Page{
 
 	public function __construct(){
 		parent::__construct();
 		self::output();
-		wp_enqueue_media();
-		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script( 'school-athletics', SA__PLUGIN_URL.'assets/js/ui.js');
 	}
 
 	/**
@@ -40,6 +38,7 @@ class RosterAdmin extends Page{
 			}
 
 		}
+		$autocomplete = self::autocomplete();
 		include_once( 'views/html-admin-page-roster.php' );
 	}
 
@@ -59,6 +58,28 @@ class RosterAdmin extends Page{
 				'order' => '',
 			);
 		return $defaults;
+	}
+
+	/**
+	 * Autocomplete
+	 */
+	public static function autocomplete(){
+		//Defaults for athletes
+		$options = get_terms( array(
+			'taxonomy' => 'sa_person',
+			'hide_empty' => false,
+		));
+		$autocomplete = '';
+		if (!empty($options)) {
+			foreach ($options as $option) {
+				if(isset($i)){
+					$autocomplete .= ',';
+				}
+				$autocomplete .= '"'.addslashes ($option->name).'"';
+				$i = true;
+			}
+		}
+		return $autocomplete;
 	}
 
 

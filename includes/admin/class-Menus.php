@@ -27,19 +27,6 @@ class Menus {
 		if(\SchoolAthletics\Debug::status()){
 			add_action( 'admin_menu', array( $this, 'register_debug_menus' ), 5 );
 		}
-		$this->includes();
-	}
-
-	/**
-	 * Include any classes we need within admin.
-	 */
-	public function includes(){
-		//include_once( 'class-page.php');
-		//include_once( 'class-sports.php');
-		//include_once( 'class-roster.php');
-		//include_once( 'class-schedule.php');
-		//include_once( 'class-staff.php');
-		//include_once( 'class-settings.php');
 	}
 
 	/**
@@ -47,8 +34,11 @@ class Menus {
 	 */
 	public function register_menus(){
 		add_menu_page( 'School Athletics', 'School Athletics', 'manage_options', 'school-athletics', array( $this, 'school_athletics_page' ), plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
+		if(\SchoolAthletics\Admin\Admin::advanced_mode()){
+			add_submenu_page( 'school-athletics', 'Pages', 'Pages', 'manage_options', 'edit.php?post_type=sa_page');
+		}
 		add_submenu_page( 'school-athletics', 'Your School', 'Your School', 'manage_options', 'sa-your-school', array( $this, 'your_school_page' ));
-		add_submenu_page( 'school-athletics', 'Opponents', 'Opponents', 'manage_options', 'sa-opponents', array( $this, 'opponents_page' ));
+		add_submenu_page( 'school-athletics', 'Organizations', 'Organizations', 'manage_options', 'sa-organizations', array( $this, 'organizations_page' ));
 		add_submenu_page( 'school-athletics', 'Settings', 'Settings', 'manage_options', 'sa-settings', array( $this, 'settings_page' ));
 
 
@@ -78,62 +68,63 @@ class Menus {
 		add_submenu_page( 'sa_debug', 'Game Types', 'Game Types', 'manage_options', 'edit-tags.php?taxonomy=sa_game_type');
 		add_submenu_page( 'sa_debug', 'Outcomes', 'Outcomes', 'manage_options', 'edit-tags.php?taxonomy=sa_outcome');
 		add_submenu_page( 'sa_debug', 'Locations', 'Locations', 'manage_options', 'edit-tags.php?taxonomy=sa_location');
+		add_submenu_page( 'sa_debug', 'Organizations', 'Organizations', 'manage_options', 'edit-tags.php?taxonomy=sa_organization');
 	}
 
 	/**
 	 * Create the School Athletics page
 	 */
 	public function school_athletics_page() {
-		return new \SchoolAthletics\Admin\Page();
+		return new \SchoolAthletics\Admin\Pages\SchoolAthletics();
 	}
 
 	/**
 	 * Create the your school page
 	 */
 	public function your_school_page() {
-		return new \SchoolAthletics\Admin\YourSchoolAdmin();
+		return new \SchoolAthletics\Admin\Pages\YourSchool();
 	}
 
 	/**
 	 * Create the opponents page
 	 */
-	public function opponents_page() {
-		return new \SchoolAthletics\Admin\Page();
+	public function organizations_page() {
+		return new \SchoolAthletics\Admin\Pages\Organizations();
 	}
 
 	/**
 	 * Create the settings page
 	 */
 	public function settings_page() {
-		return new \SchoolAthletics\Admin\SettingsAdmin();
+		return new \SchoolAthletics\Admin\Pages\Settings();
 	}
 
 	/**
 	 * Create the sports page
 	 */
 	public function sports_page() {
-		return new \SchoolAthletics\Admin\SportsAdmin();
+		return new \SchoolAthletics\Admin\Pages\Sports();
 	}
 
 	/**
 	 * Create the roster page
 	 */
 	public function roster_page() {
-		return new \SchoolAthletics\Admin\RosterAdmin();
+		return new \SchoolAthletics\Admin\Pages\Roster();
 	}
 
 	/**
 	 * Create the staff page
 	 */
 	public function staff_page() {
-		return new \SchoolAthletics\Admin\StaffAdmin();
+		return new \SchoolAthletics\Admin\Pages\Staff();
 	}
 
 	/**
 	 * Create the schedule page
 	 */
 	public function schedule_page() {
-		return new \SchoolAthletics\Admin\ScheduleAdmin();
+		return new \SchoolAthletics\Admin\Pages\Schedule();
 	}
 
 }

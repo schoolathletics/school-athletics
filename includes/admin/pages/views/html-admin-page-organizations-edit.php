@@ -13,17 +13,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<form method="POST" action="options.php">
 	<table class="wp-list-table widefat striped pages">
 		<tr>
-			<th><label for="logo"><?php _e( 'Logo', 'school-athletics' ); ?></th>
+			<th><label for="name"><?php _e( 'Name', 'school-athletics' ); ?></th>
 			<td>
-				<p><input type="text" ></p>
-				<p><span class="description"><?php _e( 'Upload your school logo.', 'school-athletics' ); ?></span></p>
+				<p><input type="text" name="name"></p>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="mascot"><?php _e( 'Mascot', 'school-athletics' ); ?></th>
 			<td>
 				<p><input type="text" name="mascot"></p>
-				<p><span class="description"><?php _e( 'What is your school known as?.', 'school-athletics' ); ?></span></p>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="logo"><?php _e( 'Logo', 'school-athletics' ); ?></th>
+			<td>
+				<p><input type="text" ></p>
+				<p><span class="description"><?php _e( 'Upload your school logo.', 'school-athletics' ); ?></span></p>
 			</td>
 		</tr>
 		<tr>

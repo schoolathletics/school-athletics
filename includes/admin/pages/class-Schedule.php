@@ -8,29 +8,21 @@
  * @version  0.0.1
  */
 
-namespace SchoolAthletics\Admin;
+namespace SchoolAthletics\Admin\Pages;
+use SchoolAthletics\Admin\Page as Page;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * ScheduleAdmin Class.
+ * ScheduleAdmin admin page class.
  */
-class ScheduleAdmin extends Page{
+class Schedule extends Page{
 
 	public function __construct(){
 		parent::__construct();
 		self::output();
-		wp_enqueue_script('jquery-ui-core');
-		wp_enqueue_script('jquery-ui-sortable');
-		wp_register_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css');
-		wp_enqueue_style( 'jquery-ui' );
-		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_script('jquery-ui-slider');
-		wp_enqueue_script( 'school-athletics', SA__PLUGIN_URL.'assets/js/ui.js');
-		wp_enqueue_script( 'jquery-ui-timepicker-addon', SA__PLUGIN_URL.'assets/js/jquery-ui-timepicker-addon.js');
-		wp_enqueue_style( 'jquery-ui-timepicker-addon', SA__PLUGIN_URL.'assets/css/jquery-ui-timepicker-addon.css');
 	}
 
 	/**
@@ -47,7 +39,31 @@ class ScheduleAdmin extends Page{
 			}
 
 		}
+
+		$autocomplete = self::autocomplete();
 		include_once( 'views/html-admin-page-schedule.php' );
+	}
+
+	/**
+	 * Autocomplete
+	 */
+	public static function autocomplete(){
+		//Defaults for athletes
+		$options = get_terms( array(
+			'taxonomy' => 'sa_organization',
+			'hide_empty' => false,
+		));
+		$autocomplete = '';
+		if (!empty($options)) {
+			foreach ($options as $option) {
+				if(isset($i)){
+					$autocomplete .= ',';
+				}
+				$autocomplete .= '"'.addslashes ($option->name).'"';
+				$i = true;
+			}
+		}
+		return $autocomplete;
 	}
 
 	/**
@@ -182,7 +198,7 @@ class ScheduleAdmin extends Page{
 	}
 
 	/**
-	 * Create roster page.
+	 * Create schedule page.
 	 */
 	public static function save_schedule($sport,$season,$data){
 		if(!is_object($sport)){
@@ -192,7 +208,7 @@ class ScheduleAdmin extends Page{
 			$season = get_term($season);
 		}
 
-		$roster = array(
+		$schedule = array(
 			'ID' => $data['ID'],
 			//'_thumbnail_id'=>$data['photo'] ,//Not documented but nice to know
 			'post_content' => $data['schedule_content'],
@@ -205,11 +221,11 @@ class ScheduleAdmin extends Page{
 			),
 		);
 
-		return wp_insert_post($roster);
+		return wp_insert_post($schedule);
 	}
 
 	/**
-	 * Add members for roster.
+	 * Add events to roster.
 	 */
 	public static function add_event($sport,$season,$event){
 		if(!is_object($sport)){

@@ -1,11 +1,27 @@
 <?php //Short Codes
+if(isset($_GET['sport'])){
+	$term_id = $_GET['sport'];
+	$term = get_term($term_id);
+	$options = \SchoolAthletics\Admin\Pages\Sports::options($term->term_id);
+}else{
+	$term = '';
+	$options = \SchoolAthletics\Admin\Pages\Sports::options('');
+}
 
-$term_id = $_GET['sport'];
-$term = get_term($term_id);
-$options = \SchoolAthletics\Admin\SportsAdmin::options($term->term_id);
+if(is_object($term)){
+	$title = $term->name;
+	$term_name = $term->name;
+	$term_slug = $term->slug;
+	$permalink = get_permalink($options['page_id']);
+}else{
+	$title = 'Add New Sport';
+	$term_name = '';
+	$term_slug = '';
+	$permalink = '';
+}
 //print_r($term);
 ?>
-<h1><?php echo $term->name; ?></h1>
+<h1><?php echo $title; ?></h1>
 <form method="POST">
 
 	<table class="wp-list-table widefat fixed striped pages">
@@ -19,23 +35,16 @@ $options = \SchoolAthletics\Admin\SportsAdmin::options($term->term_id);
 	<tbody>
 	<tr>
 		<th><label for="name">Sport</label></th>
-		<td><input class="regular-text" type="text" name="name" value="<?php echo $term->name; ?>" ></td>
+		<td><input class="regular-text" type="text" name="name" value="<?php echo $term_name; ?>" ></td>
 	</tr>
 	<tr>
 		<th><label for="slug">Slug</label></th>
-		<td><input class="regular-text"  type="text" name="slug" value="<?php echo $term->slug; ?>" ></td>
+		<td><input class="regular-text"  type="text" name="slug" value="<?php echo $term_slug; ?>" ></td>
 	</tr>
 	<tr>
 		<th><label>Debug</label></th>
 		<td><p>Page ID: <input type="text" readonly="readonly" name="sa_sport_options[page_id]" value="<?php echo $options['page_id']; ?>"></p>
-			<code><?php echo get_permalink($options['page_id']); ?></code>
-		</td>
-	</tr>
-	<tr>
-		<th><label>Status</label></th>
-		<td>
-			<p><label><input type="checkbox" class="checkbox" name="sa_sport_options[status]" value="1" <?php checked( '1', $options['status'] ); ?> /> <?php _e( 'Publish', 'school-athletics' ); ?></label></p>
-			<p><span class="description"><?php _e( 'Publishing a sport.', 'school-athletics' ); ?></span></p>
+			<code><?php echo $permalink; ?></code>
 		</td>
 	</tr>
 	</tbody>
@@ -178,5 +187,5 @@ $options = \SchoolAthletics\Admin\SportsAdmin::options($term->term_id);
 	</tbody>
 	</table>
 
-<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-sports-edit.php'); ?>
+<?php \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-sports-edit.php'); ?>
 <?php \SchoolAthletics\Debug::content($options);  ?>

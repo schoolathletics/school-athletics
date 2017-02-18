@@ -22,6 +22,7 @@ li.add:hover .select{display:block; z-index:1; height:150px; overflow: scroll;}
 
 .sa.thumbnail img{max-width: 50px; max-height: 50px;}
 .thumbnail-placeholder .dashicons-format-image{font-size:50px; height:50px;}
+.thumbnail-placeholder  img{max-width: 50px; max-height: 50px;}
 
 .photo.yes .thumbnail-placeholder{display: none;}
 .photo.yes .add-photo{display: none;}

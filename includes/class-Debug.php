@@ -32,6 +32,7 @@ class Debug {
 
 	/**
 	 * Is Debugging On
+	 * @return boolean
 	 */
 	public static function status(){
 		$status_options = get_option( 'schoolathletics_settings_options', array() );
@@ -44,11 +45,13 @@ class Debug {
 
 	/**
 	 * If Debug on pring content.
+	 * @param mixed $data
+	 * @return string
 	 */
 	public static function content($data){
 		if(self::status()){
 			echo '<pre class="debug">';
-			if(is_array($data)){
+			if(is_array($data) || is_object($data)){
 				var_dump($data);
 			}else{
 				echo $data;

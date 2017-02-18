@@ -137,7 +137,7 @@ class InstallWpObjects {
 						'new_item_name'     => __( 'New Person Name', 'school-athletics' ),
 						'not_found'         => __( 'No Persons found', 'school-athletics' ),
 			),
-			'show_ui'               => \SchoolAthletics\Debug::status(),
+			'show_ui'               => \SchoolAthletics\Admin\Admin::advanced_mode(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => false,
 			'show_admin_column'     => true,
@@ -292,6 +292,39 @@ class InstallWpObjects {
 		);
 		register_taxonomy_for_object_type( 'sa_outcome', 'sa_event' );
 
+		// Register Organization Type Taxonomy
+		register_taxonomy( 'sa_organization',
+			array(
+				'sa_event',
+			),
+			array(
+			'hierarchical'          => false,
+			'labels'                => array(
+						'name'              => __( 'Organizations', 'school-athletics' ),
+						'singular_name'     => __( 'Organization', 'school-athletics' ),
+						'menu_name'         => __( 'Organizations', 'school-athletics' ),
+						'search_items'      => __( 'Search Organizations', 'school-athletics' ),
+						'all_items'         => __( 'All Organizations', 'school-athletics' ),
+						'edit_item'         => __( 'Edit Organizations', 'school-athletics' ),
+						'update_item'       => __( 'Update Organizations', 'school-athletics' ),
+						'add_new_item'      => __( 'Add New Organizations', 'school-athletics' ),
+						'new_item_name'     => __( 'New Organization Name', 'school-athletics' ),
+						'not_found'         => __( 'No Organizations found', 'school-athletics' ),
+			),
+			'show_ui'               => \SchoolAthletics\Debug::status(),
+			'show_in_menu'          => 'sa_debug',
+			'show_in_nav_menus'     => false,
+			'show_admin_column'     => false,
+			'show_tagcloud'         => false,
+			'show_in_quick_edit'    => false,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var'             => false,
+			'public'                => false,
+	        'rewrite'               => false,
+			)
+		);
+		register_taxonomy_for_object_type( 'sa_organization', 'sa_event' );
+
 		// Register Event Type Taxonomy
 		register_taxonomy( 'sa_location',
 			array(
@@ -363,7 +396,6 @@ class InstallWpObjects {
 				'show_in_menu'        => false,
 				'show_in_nav_menus'   => true,
 				'show_in_admin_bar'   => false,
-				'menu_position'       => 5,
 				'can_export'          => true,
 				'has_archive'         => false,
 				'exclude_from_search' => false,
@@ -544,7 +576,7 @@ class InstallWpObjects {
 							'not_found'           => __( 'Not found', 'school-athletics' ),
 							'not_found_in_trash'  => __( 'Not found in Trash', 'school-athletics' ),
 				 ),
-		        'supports'            => array( 'title','editor'),
+		        'supports'            => array( 'title','editor','thumbnail'),
 		        'hierarchical'        => false,
 		        'public'              => true,
 		        'show_ui'             => \SchoolAthletics\Debug::status(),

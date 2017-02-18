@@ -13,7 +13,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 	$sport = get_term_by( 'id', $_GET['sport'], 'sa_sport' );
 	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
-	$roster = \SchoolAthletics\Admin\RosterAdmin::getRoster($sport,$season);
+	$roster = \SchoolAthletics\Admin\Pages\Roster::getRoster($sport,$season);
 	$roster_content = '';
 	$roster_id = '';
 	$roster_thumbnail = '';
@@ -28,9 +28,9 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	$title = $season->name.' '.$sport->name.' '.__('Roster','school-athletics');
 
 	if(!empty($import) && is_array($import)){
-		$athletes = \SchoolAthletics\Admin\RosterAdmin::getMembers($sport,$season,$import);
+		$athletes = \SchoolAthletics\Admin\Pages\Roster::getMembers($sport,$season,$import);
 	}else{
-		$athletes = \SchoolAthletics\Admin\RosterAdmin::getMembers($sport,$season);
+		$athletes = \SchoolAthletics\Admin\Pages\Roster::getMembers($sport,$season);
 	}
 
 ?>	
@@ -38,6 +38,9 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
 	<a class="page-title-action" href="">Add New</a>
 	<p></p>
+	<script>
+		var autocomplete = [ <?php echo $autocomplete; ?> ];
+	</script>
 	<form method="POST">
 	<table class="wp-list-table widefat striped">
 	<thead>
@@ -111,7 +114,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			</td>
 			<td><input type="text" name="athlete[<?php echo $id; ?>][jersey]" value="<?php echo $athlete['jersey']; ?>" size="2"></td>
 			<td>
-				<input type="text" name="athlete[<?php echo $id; ?>][name]" value="<?php echo $athlete['name']; ?>" >
+				<input class="autocomplete" type="text" name="athlete[<?php echo $id; ?>][name]" value="<?php echo $athlete['name']; ?>" >
 				<div class="row-actions">
 					<span class="options"><a href="<?php echo get_permalink($athlete['ID']);?>" >View</a> | </span> <a href="<?php echo admin_url('admin.php?page=roster').'&action=edit&athlete='.$athlete['ID']; ?>">Edit</a></span>
 				</div>
@@ -216,5 +219,5 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 }
 
-\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-roster.php');
+\SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-roster.php');
 \SchoolAthletics\Debug::content($_REQUEST); 
