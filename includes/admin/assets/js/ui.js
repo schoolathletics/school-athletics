@@ -11,6 +11,7 @@ jQuery(function($){
 			
 			SchoolAthletics.autocomplete();
 			SchoolAthletics.datetimepicker();
+			SchoolAthletics.iris();
 
 		},
 
@@ -29,6 +30,25 @@ jQuery(function($){
 							});
 					}
 				});
+			}
+		},
+
+		/*
+		 * Start iris color picker if it exists
+		 */
+		iris: function(){
+			if($().iris){
+				$('.iris').iris({
+						hide: false,
+						palettes: true,
+						change: function(event, ui) {
+							// event = standard jQuery event, produced by whichever control was changed.
+							// ui = standard jQuery UI object, with a color member containing a Color.js object
+
+							// change the headline color
+							$(this).parent().find('.swatch').css( 'background-color', ui.color.toString());
+						},
+					});
 			}
 		},
 

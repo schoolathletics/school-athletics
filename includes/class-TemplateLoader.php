@@ -26,6 +26,8 @@ class TemplateLoader {
 	 */
 	public static function init() {
 		add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
+		//if(is_singular( 'sa_page' )){
+		//} 
 	}
 
 	/**
@@ -45,13 +47,20 @@ class TemplateLoader {
 	 */
 	public static function template_loader( $template ) {
 		$file = '';
-
+		global $post;
 		/*
 		 * Default Template
 		 */
 		if ( is_single() && get_post_type() == 'sa_page' ) {
-			$file 	= 'single-sa_page.php';
-			$find[] = $file;
+			if($post->post_parent){
+				//default page template
+				$file 	= 'single-sa_page.php';
+				$find[] = $file;
+			}else{
+				//If the page is a top level link show the home template
+				$file 	= 'single-sa_page-home.php';
+				$find[] = $file;
+			}
 			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
 
 		}
@@ -59,8 +68,17 @@ class TemplateLoader {
 		/*
 		 * Roster Template
 		 */
+		if ( is_single() && get_post_type() == 'sa_roster' ) {
+			$file 	= 'single-sa_roster.php';
+			$find[] = $file;
+			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
+		}
+
+		/*
+		 * Roster Archive Template
+		 */
 		if ( is_single() && get_post_type() == 'sa_page' && get_the_title() == 'Roster') {
-			$file 	= 'single-sa_page-roster.php';
+			$file 	= 'archive-sa_roster.php';
 			$find[] = $file;
 			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
 		}
@@ -68,8 +86,17 @@ class TemplateLoader {
 		/*
 		 * Schedule Template
 		 */
-		if ( is_single() && get_post_type() == 'sa_page' && get_the_title() == 'Schedule') {
-			$file 	= 'single-sa_page-schedule.php';
+		if ( is_single() && get_post_type() == 'sa_schedule' ) {
+			$file 	= 'single-sa_schedule.php';
+			$find[] = $file;
+			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
+		}
+
+		/*
+		 * Schedule Archive Template
+		 */
+		if ( is_single() && get_post_type() == 'sa_page' && get_the_title() == 'Schedule' ) {
+			$file 	= 'archive-sa_schedule.php';
 			$find[] = $file;
 			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
 		}
@@ -77,8 +104,17 @@ class TemplateLoader {
 		/*
 		 * Staff Template
 		 */
-		if ( is_single() && get_post_type() == 'sa_page' && get_the_title() == 'Staff') {
-			$file 	= 'single-sa_page-staff.php';
+		if ( is_single() && get_post_type() == 'sa_staff' ) {
+			$file 	= 'single-sa_staff.php';
+			$find[] = $file;
+			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
+		}
+
+		/*
+		 * Staff Archive Template
+		 */
+		if ( is_single() && get_post_type() == 'sa_page' && get_the_title() == 'Staff' ) {
+			$file 	= 'archive-sa_staff.php';
 			$find[] = $file;
 			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
 		}

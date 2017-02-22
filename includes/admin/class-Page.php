@@ -30,6 +30,7 @@ class Page {
 		wp_enqueue_style('wp-jquery-ui-autocomplete');
 		wp_enqueue_script('jquery-ui-datepicker');
 		wp_enqueue_script('jquery-ui-slider');
+		wp_enqueue_script('iris');
 		wp_enqueue_script( 'jquery-ui-timepicker-addon', SA__PLUGIN_URL.'includes/admin/assets/js/jquery-ui-timepicker-addon.js');
 		wp_enqueue_style( 'jquery-ui-timepicker-addon', SA__PLUGIN_URL.'includes/admin/assets/css/jquery-ui-timepicker-addon.css');
 		wp_enqueue_script( 'school-athletics', SA__PLUGIN_URL.'includes/admin/assets/js/ui.js');

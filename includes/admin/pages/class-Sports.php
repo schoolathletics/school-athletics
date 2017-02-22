@@ -36,21 +36,6 @@ class Sports extends Page{
 	 * Default view, and perfom tasks on submit
 	 */
 	public static function get_list() {
-		if ( ! empty( $_GET['task'] ) ) {
-
-			if($_GET['task'] == 'publish'){
-				
-				self::publish($_REQUEST['sport']);
-
-			}
-
-			if($_GET['task'] == 'unpublish'){
-				
-				self::unpublish($_REQUEST['sport']);
-
-			}
-
-		}
 		include_once( 'views/html-admin-page-sports-list.php' );
 	}
 
@@ -60,20 +45,26 @@ class Sports extends Page{
 	public static function edit() {
 		// Save settings if data has been posted
 		if ( ! empty( $_POST ) ) {
-
-			if(empty($_POST['task'])){
 				
-				self::save();
-
-			}elseif($_POST['task'] == 'rebuild'){
-				
-				self::rebuild();
-
-			}
-
+			self::save();
 		}
 
 		include_once( 'views/html-admin-page-sports-edit.php' );
+	}
+
+	/**
+	 * Delete sport
+	 */
+	public static function delete() {
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'schoolathletics-delete-sport' ) ) {
+			\SchoolAthletics\Admin\Notice::error(__( 'Failed to delete. Please refresh the page and retry.', 'school-athletics' ));
+		}
+
+		if(!empty($_GET['action']) && $_GET['action'] == 'delete'){
+			self::delete_all_data($_GET['sport']);
+			\SchoolAthletics\Admin\Notice::success('Sport has been deleted.');
+		}
+		self::get_list();
 	}
 
 	/**
@@ -85,17 +76,17 @@ class Sports extends Page{
 			\SchoolAthletics\Admin\Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
 		}
 
-		if(!empty($_REQUEST['sa_sport_options'])){
+		//if(!empty($_REQUEST['sa_sport_options'])){
 			if(isset($_REQUEST['sport'])){
 				$sport = $_REQUEST['sport'];
-				update_term_meta($sport, 'sa_sport_options', $_REQUEST['sa_sport_options']);
 			}else{
 				$sport = wp_insert_term( $_REQUEST['name'], 'sa_sport');
 				$sport = $sport['term_id'];
-				$_REQUEST['sport'] = $sport;
+				$_GET['sport'] = $sport;
 			}
 			self::build($sport);
-		}
+			update_term_meta($sport, 'sa_sport_options', $_REQUEST['sa_sport_options']);
+		//}
 
 		\SchoolAthletics\Admin\Notice::success('Sport has been saved');
 
@@ -141,6 +132,35 @@ class Sports extends Page{
 	 * @param mixed $sport
 	 * @return string
 	 */
+	public static function delete_all_data($sport){
+		
+		$pages = get_posts(array(
+			  'post_type' => 'sa_page',
+			  'numberposts' => -1,
+			  'tax_query' => array(
+			    array(
+			      'taxonomy' => 'sa_sport',
+			      'field' => 'id',
+			      'terms' => $sport,
+			    )
+			  ),
+			));
+
+		foreach ($pages as $page) {
+			if(is_object($page)){
+				wp_delete_post( $page->ID, true); 
+			}
+		}
+			
+		wp_delete_term( $sport, 'sa_sport' );
+
+	}
+
+	/**
+	 * Force delete all pages in sport of sa_page post type.
+	 * @param mixed $sport
+	 * @return string
+	 */
 	public static function delete_all($sport){
 		
 		$pages = get_posts(array(
@@ -171,24 +191,7 @@ class Sports extends Page{
 
 	}
 
-	/**
-	 * Rebuild pages. This deletes all the pages and then readds them.
-	 */
-	public static function rebuild(){
-		
-		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'schoolathletics-rebuild-sport-pages' ) ) {
-			\SchoolAthletics\Admin\Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
-		}
 
-		if(!empty($_REQUEST['task']) && !empty($_REQUEST['sport'])){
-			
-			self::delete_all($_REQUEST['sport']);
-			self::build($_REQUEST['sport']);
-
-			\SchoolAthletics\Admin\Notice::success('Sport has successfully been rebuilt.');
-		}
-
-	}
 
 	/**
 	 * Build sport pages.
@@ -197,128 +200,116 @@ class Sports extends Page{
 	 */
 	public static function build($sport){
 
-		$options = self::options($sport);
-		if($options && !empty($sport)){
-			
-
-			if(!$options['page_id']){
-				$options['page_id'] = self::build_page($sport);
-			}
-
-			if($options['roster']){
-				if(!$options['roster_id']){
-					$options['roster_id'] = self::build_roster_page($sport,$options['page_id']);
-				}
-			}else{
-				if($options['roster_id']){
-					wp_delete_post( $options['roster_id'], true); 
-					$options['roster_id'] = 0;
-				}
-			}
-
-			if($options['schedule']){
-				if(!$options['schedule_id']){
-					$options['schedule_id'] = self::build_schedule_page($sport,$options['page_id']);
-				}
-			}else{
-				if($options['schedule_id']){
-					wp_delete_post( $options['schedule_id'], true); 
-					$options['schedule_id'] = 0;
-				}
-			}
-
-			if($options['staff']){
-				if(!$options['staff_id']){
-					$options['staff_id'] = self::build_staff_page($sport,$options['page_id']);
-				}
-			}else{
-				if($options['staff_id']){
-					wp_delete_post( $options['staff_id'], true); 
-					$options['staff_id'] = 0;
-				}
-			}
-			
-			update_term_meta($sport, 'sa_sport_options', $options);
+		$sport = \SchoolAthletics\Sport::get_sport($sport);
+		$options = \SchoolAthletics\Sport::get_sport_options($sport);
+		$home_id = \SchoolAthletics\Sport::get_sport_page_id($sport,'home');
+		$message = '<ul>';
+		if(isset($home_id) && $home = get_post($home_id)){
+			//Update Page
+			self::add_sport_page($sport,'home',$home_id);
+			$message .= '<li>Rebuilt '.$sport->name .' page</li>';
+		}else{
+			//Create Page
+			self::add_sport_page($sport,'home');
+			$message .= '<li>Created '.$sport->name .' page</li>';
 		}
+
+		if($options['roster']){
+			$roster_id = \SchoolAthletics\Sport::get_sport_page_id($sport,'roster');
+			if(isset($roster_id) && $roster = get_post($roster_id)){
+				//Update Page
+				self::add_sport_page($sport,'roster', $roster_id);
+				$message .= '<li>Rebuilt '.$sport->name .' roster</li>';
+			}else{
+				//Create Page
+				self::add_sport_page($sport,'roster');
+				$message .= '<li>Created '.$sport->name .' roster</li>';
+			}
+		}
+
+		if($options['schedule']){
+			$schedule_id = \SchoolAthletics\Sport::get_sport_page_id($sport,'schedule');
+			if(isset($schedule_id) && $schedule = get_post($schedule_id)){
+				//Update Page
+				self::add_sport_page($sport,'schedule', $schedule_id);
+				$message .= '<li>Rebuilt '.$sport->name .' schedule</li>';
+			}else{
+				//Create Page
+				self::add_sport_page($sport,'schedule');
+				$message .= '<li>Created '.$sport->name .' schedule</li>';
+			}
+		}
+
+		if($options['staff']){
+			$staff_id = \SchoolAthletics\Sport::get_sport_page_id($sport,'staff');
+			if(isset($staff_id) && $staff = get_post($staff_id)){
+				//Update Page
+				self::add_sport_page($sport,'staff', $staff_id);
+				$message .= '<li>Rebuilt '.$sport->name .' staff</li>';
+			}else{
+				//Create Page
+				self::add_sport_page($sport,'staff');
+				$message .= '<li>Created '.$sport->name .' staff</li>';
+			}
+		}
+		$message .= '</ul>';
+		return $message;
 
 	}
 
 	/**
-	 * Create sport home page.
-	 * @param mixed $term
+	 * Create sport page.
+	 * @param mixed $sport
+	 * @param mixed $page
+	 * @param int $id
 	 * @return string
 	 */
-	public static function build_page($term){
-		if(!is_object($term)){
-			$term = get_term($term);
-		}
-		$home = array(
-			'post_content' => '[schoolathletics_news sport=\''.$term->name.'\']',
-			'post_title' => $term->name,
-			'post_name' => $term->slug,
-			'post_type' => 'sa_page',
-			'post_status' => 'publish',//publish
-			'tax_input' => array(
-				'sa_sport' => $term->name,
-			),
-			'meta_input' => array(
-				'schoolathletics_page_state' => 'Generated by School Athletics',
-			),
-		);
-		return wp_insert_post($home);
-	}
-
-	/**
-	 * Create sport roster page.
-	 */
-	public static function build_roster_page($sport, $home_id){
-		$title = 'Roster';
-		$content = '[roster]';
-		return self::insert_sport_subpage($sport, $home_id, $title, $content);
-	}
-
-	/**
-	 * Create sport schedule page.
-	 */
-	public static function build_schedule_page($sport, $home_id){
-		$title = 'Schedule';
-		$content = '[schedule]';
-		return self::insert_sport_subpage($sport, $home_id, $title, $content);
-	}
-
-	/**
-	 * Create sport staff page.
-	 */
-	public static function build_staff_page($sport, $home_id){
-		$title = 'Staff';
-		$content = '[staff]';
-		return self::insert_sport_subpage($sport, $home_id, $title, $content);
-	}
-
-	/**
-	 * Create a subpage under the sport home page
-	 */
-	public static function insert_sport_subpage($sport, $parentID, $title, $content){
+	public static function add_sport_page($sport,$page,$id = null){
 		if(!is_object($sport)){
 			$sport = get_term($sport);
 		}
-		$subpage = array(
-						'post_content' => $content,
-						'post_title' => $title,
-						'post_name' => '',
-						'post_parent' => $parentID,
-						'post_type' => 'sa_page',
-						'post_status' => 'publish',//publish
-						'tax_input' => array(
-							'sa_sport' => $sport->name,
-						),
-						'meta_input' => array(
-							'schoolathletics_page_state' => 'Generated by School Athletics',
-						),
-					);
-		$id = wp_insert_post($subpage);
-		return $id;
+		$home = \SchoolAthletics\Sport::get_sport_page_id($sport,'home');
+		if(!isset($home)){
+			$page = 'home';
+		}
+
+		if($page == 'home'){
+			$post_name = $sport->slug;
+			$post_title = $sport->name;
+		}else{
+			$post_name = $page;
+			$post_title = ucwords($page);
+		}
+
+		$args = array();
+		if($id){
+			$args['ID'] = $id;
+		}else{
+			$args['post_name'] =  $post_name;
+			$args['post_status'] =  'publish';
+		}
+		$args['post_content'] = '[schoolathletics page="'.$page.'"]';
+		$args['post_title'] =  $post_title;
+		$args['post_type'] =  'sa_page';
+		if($page != 'home'){
+			$args['post_parent'] = $home;
+		}
+		$args['tax_input'] =  array(
+				'sa_sport' => $sport->name,
+			);
+		$args['meta_input'] = array(
+				'schoolathletics_page_state' => 'Generated by School Athletics',
+			);
+		if($id){
+			wp_update_post($args);
+			$page_id = $id;
+		}else{
+			$page_id = wp_insert_post($args);
+		}
+		update_term_meta($sport->term_id, 'sa_sport_'.$page.'_id', $page_id);
+		return $page_id;
 	}
+
 
 	/**
 	 * Get the current roster with edit link.

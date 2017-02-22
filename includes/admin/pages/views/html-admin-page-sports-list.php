@@ -1,43 +1,13 @@
-<?php //Short Codes
-/*
-ADD META
-sa_sport_options
-*/
+<?php 
 
-$terms = get_terms( array(
+$sports = get_terms( array(
     'taxonomy' => 'sa_sport',
     'hide_empty' => false,
 ) );
-//print_r($terms);
-if(isset($_GET['action'])){
-	$action = $_GET['action'];
-}else{
-	$action = false;
-}
-
-
-if($action == 'publish'){
-	$term_id = $_GET['sport'];
-	update_term_meta($term_id, 'sa_sport_status', 'publish');
-	sa_notice('Sport Activated.');
-	activate_sa_sport($term_id);
-}
-
-if($action == 'unpublish'){
-	$term_id = $_GET['sport'];
-	update_term_meta($term_id, 'sa_sport_status', 'unpublish');
-	sa_notice('Sport Deactivated.');
-}
-
-
 
 ?>
 <h1 class="wp-heading-inline"><?php _e('Sports', 'school-athletics') ; ?></h1>
-
-<?php //if(\SchoolAthletics\Admin\Admin::advanced_mode()) : ?>
-<a class="page-title-action" href="<?php echo admin_url('admin.php?page=sports'); ?>&action=edit">Add New</a>
-<?php //endif; ?>
-
+<a class="page-title-action" href="<?php echo admin_url('admin.php?page=sports'); ?>&action=edit"><?php _e('Add New','school-athletics'); ?></a>
 <p></p>
 <table class="wp-list-table widefat striped pages">
 <thead>
@@ -50,22 +20,37 @@ if($action == 'unpublish'){
 </thead>
 <tbody id="the-list">
 <?php
-
-
-foreach ($terms as $term) {
-	$options = \SchoolAthletics\Admin\Pages\Sports::options($term->term_id);
-	$edit = admin_url('admin.php?page=sports').'&action=edit&sport='.$term->term_taxonomy_id;
+/*
+ * Sport Rows
+ */
+foreach ($sports as $sport) {
+	$options = \SchoolAthletics\Admin\Pages\Sports::options($sport->term_id);
+	$edit = admin_url('admin.php?page=sports').'&action=edit&sport='.$sport->term_taxonomy_id;
+	$delete = wp_nonce_url(admin_url('admin.php?page=sports').'&action=delete&sport='.$sport->term_taxonomy_id, 'schoolathletics-delete-sport');
+	?>
+	<?php 
+		/*
+		 * Sport Column
+		 */
 	?>
 	<tr>
 		<td>
-			<span class="row-title"><?php echo $term->name; ?></span><div class="row-actions"><span class="options"><a href="<?php echo get_permalink($options['page_id']); ?>" >View</a> | <a href="<?php echo $edit; ?>">Edit</a> | <a href="<?php echo $edit; ?>">Delete</a></span></div>
+			<span class="row-title"><?php echo $sport->name; ?></span>
+			<div class="row-actions">
+				<span class="options"><a href="<?php echo get_permalink($options['page_id']); ?>" ><?php _e('View', 'school-athletics') ; ?></a> | <a href="<?php echo $edit; ?>"><?php _e('Edit', 'school-athletics') ; ?></a> | <a href="<?php echo $delete; ?>"><?php _e('Delete', 'school-athletics') ; ?></a></span>
+			</div>
 		</td>
-	<?php if(!empty($options['roster']) && !empty($options['status'])) : ?>
+	<?php 
+		/*
+		 * Roster Column
+		 */
+	?>
+	<?php if(!empty($options['roster'])) : ?>
 		<td class="border-left">
-			<?php echo \SchoolAthletics\Admin\Pages\Sports::get_current_roster($term); ?>
+			<?php echo \SchoolAthletics\Admin\Pages\Sports::get_current_roster($sport); ?>
 			<div class="row-actions">
 			<span class="options">
-				<a href="?page=roster&sport=<?php echo $term->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> Roster</a>
+				<a href="?page=roster&sport=<?php echo $sport->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> <?php _e('Roster', 'school-athletics') ; ?></a>
 			</span>	
 			</div>	
 		</td>
@@ -74,12 +59,17 @@ foreach ($terms as $term) {
 			<span class="dashicons dashicons-lock"></span>
 		</td>
 	<?php endif; ?>
-	<?php if(!empty($options['schedule']) && !empty($options['status'])) : ?>
+	<?php 
+		/*
+		 * Schedule Column
+		 */
+	?>
+	<?php if(!empty($options['schedule'])) : ?>
 		<td class="border-left">
-			<?php echo \SchoolAthletics\Admin\Pages\Sports::get_current_schedule($term); ?>
+			<?php echo \SchoolAthletics\Admin\Pages\Sports::get_current_schedule($sport); ?>
 			<div class="row-actions">
 			<span class="options">
-				<a href="?page=schedule&sport=<?php echo $term->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> Schedule</a>
+				<a href="?page=schedule&sport=<?php echo $sport->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> <?php _e('Schedule', 'school-athletics') ; ?></a>
 			</span>	
 			</div>		
 		</td>
@@ -88,12 +78,17 @@ foreach ($terms as $term) {
 			<span class="dashicons dashicons-lock"></span>
 		</td>
 	<?php endif; ?>
-	<?php if(!empty($options['staff']) && !empty($options['status'])) : ?>
+	<?php 
+		/*
+		 * Staff Column
+		 */
+	?>
+	<?php if(!empty($options['staff'])) : ?>
 		<td class="border-left">
-			<?php echo \SchoolAthletics\Admin\Pages\Sports::get_current_staff($term); ?>
+			<?php echo \SchoolAthletics\Admin\Pages\Sports::get_current_staff($sport); ?>
 			<div class="row-actions">
 			<span class="options">
-				<a href="?page=staff&sport=<?php echo $term->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> Staff</a>
+				<a href="?page=staff&sport=<?php echo $sport->term_id; ?>"><span class="dashicons dashicons-plus-alt"></span> <?php _e('Staff', 'school-athletics') ; ?></a>
 			</span>	
 			</div>
 		</td>

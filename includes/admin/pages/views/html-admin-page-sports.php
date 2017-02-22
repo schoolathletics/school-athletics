@@ -17,6 +17,9 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 			case "edit" :
 				\SchoolAthletics\Admin\Pages\Sports::edit();
 			break;
+			case "delete" :
+				\SchoolAthletics\Admin\Pages\Sports::delete();
+			break;
 			default :
 				\SchoolAthletics\Admin\Pages\Sports::get_list();
 			break;

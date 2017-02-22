@@ -40,7 +40,9 @@ class Menus {
 		add_submenu_page( 'school-athletics', 'Your School', 'Your School', 'manage_options', 'sa-your-school', array( $this, 'your_school_page' ));
 		add_submenu_page( 'school-athletics', 'Organizations', 'Organizations', 'manage_options', 'sa-organizations', array( $this, 'organizations_page' ));
 		add_submenu_page( 'school-athletics', 'Settings', 'Settings', 'manage_options', 'sa-settings', array( $this, 'settings_page' ));
-
+		if(\SchoolAthletics\Admin\Admin::advanced_mode()){
+			add_submenu_page( 'school-athletics', 'Tools', 'Tools', 'manage_options', 'sa-tools', array( $this, 'tools_page' ));
+		}
 
 		add_menu_page( 'Sports', 'Sports', 'manage_options', 'sports', array( $this, 'sports_page' ), plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
 		add_submenu_page( 'sports', 'Rosters', 'Rosters', 'manage_options', 'roster', array( $this, 'roster_page' ));
@@ -97,6 +99,13 @@ class Menus {
 	 */
 	public function settings_page() {
 		return new \SchoolAthletics\Admin\Pages\Settings();
+	}
+
+	/**
+	 * Create the Tools page
+	 */
+	public function tools_page() {
+		return new \SchoolAthletics\Admin\Pages\Tools();
 	}
 
 	/**

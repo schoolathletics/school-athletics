@@ -44,7 +44,7 @@ class Shortcodes {
 	public static function news($atts){
 		$atts = shortcode_atts( array(
 				'sport' => '',
-				'posts_per_page'=> '5',
+				'posts_per_page'=> '-5',
 			), $atts );
 
 		$args = array(
@@ -61,9 +61,31 @@ class Shortcodes {
 			'order'               => 'DESC',
 		);
 		
-		$news = get_posts($args);
+		//$news = get_posts($args);
 		ob_start();
-	    print_r($news);
+		query_posts($args);
+   
+		// Reset and setup variables
+		$output = '';
+		$temp_title = '';
+		$temp_link = '';
+		if ( have_posts() ) : while ( have_posts() ) : the_post();
+		global $post;
+		?>
+			<div>
+				<h2 href='<?php echo get_permalink($post->ID); ?>'><?php the_title(); ?></h2>
+				<div><?php the_content(); ?></div>
+			</div>
+			<div class="clearfix"></div>
+
+        <?php  
+		endwhile; else:
+   
+			$output .= "nothing found.";
+      
+		endif;
+		
+		wp_reset_query();
 		return ob_get_clean();
 	}
 

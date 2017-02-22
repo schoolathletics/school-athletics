@@ -44,4 +44,6 @@ spl_autoload_register(function( $class) {
 	}
 });
 
-new \SchoolAthletics\SchoolAthletics();
+include(SA__PLUGIN_DIR . 'includes/class-SchoolAthletics.php');
+
+new SchoolAthletics();

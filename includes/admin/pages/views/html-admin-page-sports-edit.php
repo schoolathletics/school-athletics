@@ -14,7 +14,7 @@ if(is_object($term)){
 	$term_slug = $term->slug;
 	$permalink = get_permalink($options['page_id']);
 }else{
-	$title = 'Add New Sport';
+	$title = __('Add New Sport','school-athletics');
 	$term_name = '';
 	$term_slug = '';
 	$permalink = '';
@@ -28,24 +28,18 @@ if(is_object($term)){
 	<thead>
 	<tr>
 		<th colspan="2">
-			<strong>Settings</strong>
+			<strong><?php _e('Settings', 'school-athletics'); ?></strong>
 		</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<th><label for="name">Sport</label></th>
+		<th><label for="name"><?php _e('Sport', 'school-athletics'); ?></label></th>
 		<td><input class="regular-text" type="text" name="name" value="<?php echo $term_name; ?>" ></td>
 	</tr>
 	<tr>
-		<th><label for="slug">Slug</label></th>
+		<th><label for="slug"><?php _e('Slug', 'school-athletics'); ?></label></th>
 		<td><input class="regular-text"  type="text" name="slug" value="<?php echo $term_slug; ?>" ></td>
-	</tr>
-	<tr>
-		<th><label>Debug</label></th>
-		<td><p>Page ID: <input type="text" readonly="readonly" name="sa_sport_options[page_id]" value="<?php echo $options['page_id']; ?>"></p>
-			<code><?php echo $permalink; ?></code>
-		</td>
 	</tr>
 	</tbody>
 	</table>
@@ -56,27 +50,20 @@ if(is_object($term)){
 	<thead>
 	<tr>
 		<th colspan="2">
-			<strong>Roster Options</strong>
+			<strong><?php _e('Roster Options','school-athletics'); ?></strong>
 		</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<th><label>Debug</label></th>
-		<td>
-			<p>Page ID : <input type="text" readonly="readonly" name="sa_sport_options[roster_id]" value="<?php echo $options['roster_id']; ?>"></p>
-			<code><?php echo get_permalink($options['roster_id']); ?></code>
-		</td>
-	</tr>
-	<tr>
-		<th><label for="name">Has Roster</label></th>
+		<th><label for="name"><?php _e('Has Roster','school-athletics'); ?></label></th>
 		<td>
 			<p><label><input type="checkbox" class="checkbox" name="sa_sport_options[roster]" value="1" <?php checked( '1', $options['roster'] ); ?> /> <?php _e( 'Enabled', 'school-athletics' ); ?></label></p>
 			<p><span class="description"><?php _e( 'This add a roster page to the sport.', 'school-athletics' ); ?></span></p>
 		</td>
 	</tr>
 	<tr>
-		<th><label for="options">Options</label></th>
+		<th><label for="options"><?php _e('Options', 'school-athletics'); ?></label></th>
 		<td>
 			<ul>
 				<li><input type="checkbox" class="checkbox" name="sa_sport_options[roster_has_number]" value="1" <?php checked( '1', $options['roster_has_number'] ); ?> /> <?php _e( 'Number', 'school-athletics' ); ?></li>
@@ -96,27 +83,20 @@ if(is_object($term)){
 	<thead>
 	<tr>
 		<th colspan="2">
-			<strong>Schedule Options</strong>
+			<strong><?php _e('Schedule Options', 'school-athletics'); ?></strong>
 		</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<th><label>Debug</label></th>
-		<td>
-			<p>Page ID : <input type="text" readonly="readonly" name="sa_sport_options[schedule_id]" value="<?php echo $options['schedule_id']; ?>"></p>
-			<code><?php echo get_permalink($options['schedule_id']); ?></code>
-		</td>
-	</tr>
-	<tr>
-		<th><label for="name">Has Schedule</label></th>
+		<th><label for="name"><?php _e('Has Schedule', 'school-athletics'); ?></label></th>
 		<td>
 			<p><label><input type="checkbox" class="checkbox" name="sa_sport_options[schedule]" value="1" <?php checked( '1', $options['schedule'] ); ?> /> <?php _e( 'Enabled', 'school-athletics' ); ?></label></p>
 			<p><span class="description"><?php _e( 'This add a roster page to the sport.', 'school-athletics' ); ?></span></p>
 		</td>
 	</tr>
 	<tr>
-		<th><label for="options">Options</label></th>
+		<th><label for="options"><?php _e('Options', 'school-athletics'); ?></label></th>
 		<td>
 			<ul>
 				<li><input type="checkbox" class="checkbox" name="sa_sport_options[schedule_has_opponents]" value="1" <?php checked( '1', $options['schedule_has_opponents'] ); ?> /> <?php _e( 'Has Oponents', 'school-athletics' ); ?></li>
@@ -134,20 +114,13 @@ if(is_object($term)){
 	<thead>
 	<tr>
 		<th colspan="2">
-			<strong>Staff Options</strong>
+			<strong><?php _e('Staff Options', 'school-athletics'); ?></strong>
 		</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<th><label>Debug</label></th>
-		<td>
-			<p>Page ID : <input type="text" readonly="readonly" name="sa_sport_options[staff_id]" value="<?php echo $options['staff_id']; ?>"></p>
-			<code><?php echo get_permalink($options['staff_id']); ?></code>
-		</td>
-	</tr>
-	<tr>
-		<th><label for="name">Has Staff</label></th>
+		<th><label for="name"><?php _e('Has Staff', 'school-athletics'); ?></label></th>
 		<td>
 			<p><label><input type="checkbox" class="checkbox" name="sa_sport_options[staff]" value="1" <?php checked( '1', $options['staff'] ); ?> /> <?php _e( 'Enabled', 'school-athletics' ); ?></label></p>
 			<p><span class="description"><?php _e( 'This add a roster page to the sport.', 'school-athletics' ); ?></span></p>
@@ -163,29 +136,46 @@ if(is_object($term)){
 
 	<p></p>
 
+<?php if(\SchoolAthletics\Debug::status()) : ?>
 
 	<table class="wp-list-table fixed widefat striped pages">
 	<thead>
 	<tr>
 		<th colspan="2">
-			<strong>Tools</strong>
+			<strong><?php _e('Debug Pages', 'school-athletics'); ?></strong>
 		</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<th><label>Rebuild Sport Pages</label></th>
+		<th><label><?php _e('Sport', 'school-athletics'); ?></label></th>
+		<td><p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[page_id]" value="<?php echo $options['page_id']; ?>"></p>
+			<code><?php echo $permalink; ?></code>
+		</td>
+	</tr>
+	<tr>
+		<th><label><?php _e('Roster', 'school-athletics'); ?></label></th>
 		<td>
-			<form method="POST">
-			<input type="hidden" name="task" value="rebuild">
-			<?php wp_nonce_field( 'schoolathletics-rebuild-sport-pages' ); ?>
-			<input name="submit" id="submit" class="button" value="Rebuild" type="submit">
-			</form>
-			<p><span class="description"><?php _e( 'If things are looking funny. Try rebuilding the pages.', 'school-athletics' ); ?></span></p>
+			<p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[roster_id]" value="<?php echo $options['roster_id']; ?>"></p>
+			<code><?php echo get_permalink($options['roster_id']); ?></code>
+		</td>
+	</tr>
+	<tr>
+		<th><label><?php _e('Schedule', 'school-athletics'); ?></label></th>
+		<td>
+			<p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[schedule_id]" value="<?php echo $options['schedule_id']; ?>"></p>
+			<code><?php echo get_permalink($options['schedule_id']); ?></code>
+		</td>
+	</tr>
+	<tr>
+		<th><label><?php _e('Staff', 'school-athletics'); ?></label></th>
+		<td>
+			<p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[staff_id]" value="<?php echo $options['staff_id']; ?>"></p>
+			<code><?php echo get_permalink($options['staff_id']); ?></code>
 		</td>
 	</tr>
 	</tbody>
 	</table>
-
+<?php endif; ?>
 <?php \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-sports-edit.php'); ?>
 <?php \SchoolAthletics\Debug::content($options);  ?>

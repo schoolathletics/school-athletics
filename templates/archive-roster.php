@@ -14,7 +14,17 @@ get_header(); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<?php include(SA__PLUGIN_DIR .'templates/loop/roster.php'); ?>
+			<?php wp_get_archives(array(
+				'type' => 'postbypost', 
+				'limit' => '5',
+				'format' => 'html', 
+				'before' => '',
+				'after' => '', 
+				'show_post_count' => false,
+				'echo' => 1, 
+				'order' => 'DESC',
+				'post_type' => 'sa_roster'
+			)); ?>
 
 		<?php endwhile; // end of the loop. ?>
 

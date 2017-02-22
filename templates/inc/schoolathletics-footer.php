@@ -1,0 +1,3 @@
+<?php ?>
+
+<p>Footer</p>

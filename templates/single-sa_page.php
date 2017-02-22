@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header(); ?>
 
+		<?php include(SA__PLUGIN_DIR .'templates/inc/schoolathletics-menu.php'); ?>
+
 		<?php while ( have_posts() ) : the_post(); ?>
 
 			<h1>

@@ -28,3 +28,5 @@ li.add:hover .select{display:block; z-index:1; height:150px; overflow: scroll;}
 .photo.yes .add-photo{display: none;}
 .photo.no .remove-photo{display: none;}
 .photo.no .thumbnail-placeholder{display: inherit;}
+
+.swatch{display: block; width:50px; height: 50px;}
