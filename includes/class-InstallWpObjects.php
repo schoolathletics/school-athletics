@@ -293,23 +293,23 @@ class InstallWpObjects {
 		register_taxonomy_for_object_type( 'sa_outcome', 'sa_event' );
 
 		// Register Organization Type Taxonomy
-		register_taxonomy( 'sa_organization',
+		register_taxonomy( 'sa_opponent',
 			array(
 				'sa_event',
 			),
 			array(
 			'hierarchical'          => false,
 			'labels'                => array(
-						'name'              => __( 'Organizations', 'school-athletics' ),
-						'singular_name'     => __( 'Organization', 'school-athletics' ),
-						'menu_name'         => __( 'Organizations', 'school-athletics' ),
-						'search_items'      => __( 'Search Organizations', 'school-athletics' ),
-						'all_items'         => __( 'All Organizations', 'school-athletics' ),
-						'edit_item'         => __( 'Edit Organizations', 'school-athletics' ),
-						'update_item'       => __( 'Update Organizations', 'school-athletics' ),
-						'add_new_item'      => __( 'Add New Organizations', 'school-athletics' ),
-						'new_item_name'     => __( 'New Organization Name', 'school-athletics' ),
-						'not_found'         => __( 'No Organizations found', 'school-athletics' ),
+						'name'              => __( 'Opponents', 'school-athletics' ),
+						'singular_name'     => __( 'Opponent', 'school-athletics' ),
+						'menu_name'         => __( 'Opponents', 'school-athletics' ),
+						'search_items'      => __( 'Search Opponents', 'school-athletics' ),
+						'all_items'         => __( 'All Opponents', 'school-athletics' ),
+						'edit_item'         => __( 'Edit Opponents', 'school-athletics' ),
+						'update_item'       => __( 'Update Opponents', 'school-athletics' ),
+						'add_new_item'      => __( 'Add New Opponents', 'school-athletics' ),
+						'new_item_name'     => __( 'New Opponents Name', 'school-athletics' ),
+						'not_found'         => __( 'No Opponents found', 'school-athletics' ),
 			),
 			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => 'sa_debug',
@@ -323,7 +323,7 @@ class InstallWpObjects {
 	        'rewrite'               => false,
 			)
 		);
-		register_taxonomy_for_object_type( 'sa_organization', 'sa_event' );
+		register_taxonomy_for_object_type( 'sa_opponent', 'sa_event' );
 
 		// Register Event Type Taxonomy
 		register_taxonomy( 'sa_location',

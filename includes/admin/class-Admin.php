@@ -26,6 +26,7 @@ class Admin {
 		add_filter( 'display_post_states', array( $this, 'post_states' ), 10, 2 );
 		new \SchoolAthletics\Admin\Menus();
 		add_filter('pre_get_posts', array( $this, 'sa_pages_admin' ));
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
 	}
 
 	/**
@@ -56,6 +57,11 @@ class Admin {
 			return false;
 		}
 	}
+
+	public function register_settings() {
+		register_setting( 'schoolathletics_settings_fields', 'schoolathletics_settings_options' );
+		register_setting( 'schoolathletics_your_school_fields', 'schoolathletics_your_school_options'); 
+	} 
 
 	/**
 	 * Customize sa_pages Admin

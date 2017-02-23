@@ -38,7 +38,7 @@ class Menus {
 			add_submenu_page( 'school-athletics', 'Pages', 'Pages', 'manage_options', 'edit.php?post_type=sa_page');
 		}
 		add_submenu_page( 'school-athletics', 'Your School', 'Your School', 'manage_options', 'sa-your-school', array( $this, 'your_school_page' ));
-		add_submenu_page( 'school-athletics', 'Organizations', 'Organizations', 'manage_options', 'sa-organizations', array( $this, 'organizations_page' ));
+		add_submenu_page( 'school-athletics', 'Opponents', 'Opponents', 'manage_options', 'sa-opponents', array( $this, 'opponents_page' ));
 		add_submenu_page( 'school-athletics', 'Settings', 'Settings', 'manage_options', 'sa-settings', array( $this, 'settings_page' ));
 		if(\SchoolAthletics\Admin\Admin::advanced_mode()){
 			add_submenu_page( 'school-athletics', 'Tools', 'Tools', 'manage_options', 'sa-tools', array( $this, 'tools_page' ));
@@ -47,7 +47,6 @@ class Menus {
 		add_menu_page( 'Sports', 'Sports', 'manage_options', 'sports', array( $this, 'sports_page' ), plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
 		add_submenu_page( 'sports', 'Rosters', 'Rosters', 'manage_options', 'roster', array( $this, 'roster_page' ));
 		add_submenu_page( 'sports', 'Schedules', 'Schedules', 'manage_options', 'schedule', array( $this, 'schedule_page' ));
-		register_setting( 'schoolathletics_settings_fields', 'schoolathletics_settings_options' );
 		add_submenu_page( 'sports', 'Staff', 'Staff', 'manage_options', 'staff', array( $this, 'staff_page' ));
 	}
 
@@ -90,8 +89,8 @@ class Menus {
 	/**
 	 * Create the opponents page
 	 */
-	public function organizations_page() {
-		return new \SchoolAthletics\Admin\Pages\Organizations();
+	public function opponents_page() {
+		return new \SchoolAthletics\Admin\Pages\Opponents();
 	}
 
 	/**

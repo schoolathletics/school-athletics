@@ -50,7 +50,7 @@ class Schedule extends Page{
 	public static function autocomplete(){
 		//Defaults for athletes
 		$options = get_terms( array(
-			'taxonomy' => 'sa_organization',
+			'taxonomy' => 'sa_opponent',
 			'hide_empty' => false,
 		));
 		$autocomplete = '';
@@ -66,113 +66,7 @@ class Schedule extends Page{
 		return $autocomplete;
 	}
 
-	/**
-	 * Get members for admin
-	 */
-	public static function getSchedule($sport,$season){
-		//Accept sport as an object or ID
-		if(is_object($sport)){
-			$sport = $sport->term_id;
-		}
-		//Accept season as an object or ID
-		if(is_object($season)){
-			$season = $season->term_id;
-		}
-
-		$args = array(
-			'posts_per_page' => 0,
-			'post_type' => 'sa_schedule',
-			'tax_query' => array(
-				array(
-					'taxonomy' => 'sa_sport',
-					'field' => 'id',
-					'terms' => $_GET['sport'], // Where term_id of Term 1 is "1".
-				),
-				array(
-					'taxonomy' => 'sa_season',
-					'field' => 'id',
-					'terms' => $_GET['season'],
-				)
-			),
-	    );
-		$schedule = get_posts($args);
-		return $schedule;
-	}
-
-	/**
-	 * Event default array
-	 */
-	public static function eventDefaults(){
-		//Defaults for athletes
-		$defaults = array(
-				'ID'     => 0,
-				'date'  => '',
-				'name'   => '',
-				'result' => '',
-				'location' => '',
-				'game_type' => '',
-				'outcome' => '',
-				'order' => '',
-			);
-		return $defaults;
-	}
-
-	/**
-	 * Get members for admin
-	 */
-	public static function getEvents($sport,$season,$import = null){
-		//Accept sport as an object or ID
-		if(is_object($sport)){
-			$sport = $sport->term_id;
-		}
-		//Accept season as an object or ID
-		if(is_object($season)){
-			$season = $season->term_id;
-		}
-
-		$_events = \SchoolAthletics\Schedule::get_events($sport,$season);
-
-		$events = array();
-		foreach ($_events as $event) {
-			$location = get_the_terms($event,'sa_location');
-			$location = (is_array($location)) ? array_pop($location) : null;
-			$location = ($location) ? $location->name : '- - -';
-
-			$game_type = get_the_terms($event,'sa_game_type');
-			$game_type = (is_array($game_type)) ? array_pop($game_type) : null;
-			$game_type = ($game_type) ? $game_type->name : '- - -';
-
-			$outcome = get_the_terms($event,'sa_outcome');
-			$outcome = (is_array($outcome)) ? array_pop($outcome) : null;
-			$outcome = ($outcome) ? $outcome->name : '- - -';
-
-			$events[] = array(
-					'ID'	 => $event->ID,
-					'date'  => get_post_meta( $event->ID, 'sa_start', true ),
-					'name'   => get_post_meta( $event->ID, 'sa_name', true ),
-					'result' => get_post_meta( $event->ID, 'sa_result', true ),
-					'location' => $location,
-					'game_type' => $game_type,
-					'outcome' => $outcome,
-					'order' => get_post_meta( $event->ID, 'sa_order', true ),
-				);
-		}
-		//Defaults for athletes
-		$defaults = self::eventDefaults();
-		if(!empty($import) && is_array($import)){
-			foreach ($import as $key => $value) {
-				//$import[$key]['ID'] = '';
-				$import[$key] = wp_parse_args($import[$key],$defaults);
-			}
-			$events = array_merge($events,$import);
-		}
-		if(empty($events)){
-			//Adds a new row to the bottom
-			$events[] = $defaults;
-		}
-		return $events;
-	}
-
+	
 	/**
 	 * Save roster
 	 */

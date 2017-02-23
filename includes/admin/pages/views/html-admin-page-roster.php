@@ -16,10 +16,12 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 	$title = $roster->season->name.' '.$roster->sport->name.' '.__('Roster','school-athletics');
 
+	$athletes = $roster->athletes;
+
 	if(!empty($import) && is_array($import)){
-		$athletes = \SchoolAthletics\Admin\Pages\Roster::getMembers($sport,$season,$import);
-	}else{
-		$athletes = $roster->athletes;
+		if(!empty($import) && is_array($import)){
+			$athletes = array_merge($athletes,$import);
+		}
 	}
 
 ?>	

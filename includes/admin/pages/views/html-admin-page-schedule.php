@@ -12,20 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php 
 
 if(!empty($_GET['sport']) && !empty($_GET['season'])){
-	$sport = get_term_by( 'id', $_GET['sport'], 'sa_sport' );
-	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
-	$content = (!empty($content)) ? $content : '';
+	$schedule = new \SchoolAthletics\Schedule();
+	$schedule_thumbnail = get_post_thumbnail_id( $schedule->ID);
+	$title = $schedule->season->name.' '.$schedule->sport->name.' '.__('Roster','school-athletics');
+	$events = $schedule->events;
 
-	$schedule = \SchoolAthletics\Admin\Pages\Schedule::getSchedule($sport,$season);
-	$schedule_content = '';
-
-	if(isset($schedule[0]->ID)){
-		$schedule_id = $schedule[0]->ID;
-		$schedule_thumbnail = get_post_thumbnail_id( $schedule[0]->ID );
-		$schedule_content = $schedule[0]->post_content;
+	if(!empty($import) && is_array($import)){
+		if(!empty($import) && is_array($import)){
+			$events = array_merge($events,$import);
+		}
 	}
-	$title = $season->name.' '.$sport->name.' '.__('Schedule','school-athletics');
-	$events = \SchoolAthletics\Admin\Pages\Schedule::getEvents($sport,$season,$import);
 
 ?>	
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
@@ -44,14 +40,14 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<tbody>
 		<tr>
 			<td>
-				<?php \SchoolAthletics\Debug::content( (isset($schedule_id)) ? 'Schedule ID = '.$schedule_id : 'Unset'); ?>
-				<p><code><?php echo (isset($schedule_id)) ? get_permalink($schedule_id) : 'No ID'; ?></code></p>
-				<input type="hidden" name="ID" value="<?php echo $schedule_id; ?>" />
+				<?php \SchoolAthletics\Debug::content($schedule->ID); ?>
+				<p><code><?php echo get_permalink($schedule->ID); ?></code></p>
+				<input type="hidden" name="ID" value="<?php echo $schedule->ID; ?>" />
 			</td>
 		</tr>
 	</tbody>
 	</table>
-	<p><?php wp_editor( $schedule_content, 'schedule_content', array('teeny'=>1,'media_buttons'=> 0) ); ?> </p>
+	<p><?php wp_editor( $schedule->content, 'schedule_content', array('teeny'=>1,'media_buttons'=> 0) ); ?> </p>
 	<h2>Events</h2>
 	<table class="wp-list-table widefat striped pages">
 	<thead>

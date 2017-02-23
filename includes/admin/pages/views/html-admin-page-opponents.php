@@ -15,10 +15,10 @@ $action = ! empty( $_REQUEST['action'] ) ? sanitize_title( $_REQUEST['action'] )
 	<?php
 		switch ( $action ) {
 			case "edit" :
-				\SchoolAthletics\Admin\Pages\Organizations::edit();
+				\SchoolAthletics\Admin\Pages\Opponents::edit();
 			break;
 			default :
-				\SchoolAthletics\Admin\Pages\Organizations::get_list();
+				\SchoolAthletics\Admin\Pages\Opponents::get_list();
 			break;
 		}
 	?>
