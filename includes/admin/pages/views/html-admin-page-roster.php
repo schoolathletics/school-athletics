@@ -11,32 +11,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php 
 if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
-	$sport = get_term_by( 'id', $_GET['sport'], 'sa_sport' );
-	$season = get_term_by( 'id', $_GET['season'], 'sa_season' );
-	$roster = \SchoolAthletics\Admin\Pages\Roster::getRoster($sport,$season);
-	$roster_content = '';
-	$roster_id = '';
-	$roster_thumbnail = '';
-	
-	if(isset($roster[0]->ID)){
-		$roster_id = $roster[0]->ID;
-		$roster_thumbnail = get_post_thumbnail_id( $roster[0]->ID );
-		$roster_content = $roster[0]->post_content;
-	}
+	$roster = new \SchoolAthletics\Roster();
+	$roster_thumbnail = get_post_thumbnail_id( $roster->ID);
 
-	$content = (!empty($content)) ? $content : '';
-	$title = $season->name.' '.$sport->name.' '.__('Roster','school-athletics');
+	$title = $roster->season->name.' '.$roster->sport->name.' '.__('Roster','school-athletics');
 
 	if(!empty($import) && is_array($import)){
 		$athletes = \SchoolAthletics\Admin\Pages\Roster::getMembers($sport,$season,$import);
 	}else{
-		$athletes = \SchoolAthletics\Admin\Pages\Roster::getMembers($sport,$season);
+		$athletes = $roster->athletes;
 	}
 
 ?>	
 
 	<h1 class="wp-heading-inline"><?php echo $title ; ?></h1>
-	<a class="page-title-action" href="">Add New</a>
+	<a class="page-title-action" href=""><?php _e('Add New','school-athletics'); ?></a>
 	<p></p>
 	<script>
 		var autocomplete = [ <?php echo $autocomplete; ?> ];
@@ -51,8 +40,8 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<tbody>
 		<tr>
 			<td>
-				<?php \SchoolAthletics\Debug::content('Roster ID = '.$roster_id); ?>
-				<p><code><?php echo get_permalink($roster_id); ?></code></p>
+				<?php \SchoolAthletics\Debug::content('Roster ID = '.$roster->ID); ?>
+				<p><code><?php echo get_permalink($roster->ID); ?></code></p>
 				<input type="hidden" name="ID" value="<?php echo $roster_id; ?>" />
 			</td>
 		</tr>
@@ -73,7 +62,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		</tr>
 	</tbody>
 	</table>
-	<p><?php wp_editor( $roster_content, 'roster_content', array('teeny'=>1,'media_buttons'=> 0) ); ?> </p>
+	<p><?php wp_editor( $roster->content, 'roster_content', array('teeny'=>1,'media_buttons'=> 0) ); ?> </p>
 	<h2>Athletes</h2>
 	<table class="wp-list-table widefat striped pages">
 	<thead>
@@ -221,3 +210,4 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-roster.php');
 \SchoolAthletics\Debug::content($_REQUEST); 
+\SchoolAthletics\Debug::content($roster);

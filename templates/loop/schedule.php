@@ -1,11 +1,11 @@
 <?php
 /**
- * Roster Loop
+ * Schedule Loop
  * 
  */
-$sport = SchoolAthletics::get_sport($post);
-$season = SchoolAthletics::get_season($post);
-$members = SchoolAthletics::get_roster_members($sport, $season);
+
+$schedule = new \SchoolAthletics\Schedule($post);
+$events = $schedule->events;
 
 ?>
 <h1>
@@ -22,13 +22,22 @@ $members = SchoolAthletics::get_roster_members($sport, $season);
 </thead>
 <tbody>
 	<?php
-	foreach ($members as $member) {
+	foreach ($events as $event) {
 	?>
 	<tr>
-		<td><?php echo $member->post_title; ?></td>
+		<td><?php echo $event->post_title; ?></td>
 	</tr>
 	<?php
 	}
 	?>
 </tbody>
+<tfoot>
+	<tr>
+		<td>Page Dropdown</td>
+	</tr>
+</tfoot>
 </table>
+
+<pre>
+<?php print_r($schedule); ?>
+</pre>

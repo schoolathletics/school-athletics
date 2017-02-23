@@ -42,23 +42,6 @@ class Roster extends Page{
 		include_once( 'views/html-admin-page-roster.php' );
 	}
 
-	/**
-	 * Athlete default array
-	 */
-	public static function athleteDefaults(){
-		//Defaults for athletes
-		$defaults = array(
-				'ID'     => 0,
-				'photo'  => '',
-				'jersey' => '',
-				'name'   => '',
-				'height' => '',
-				'weight' => '',
-				'status' => '',
-				'order' => '',
-			);
-		return $defaults;
-	}
 
 	/**
 	 * Autocomplete
@@ -81,90 +64,7 @@ class Roster extends Page{
 		}
 		return $autocomplete;
 	}
-
-
-	/**
-	 * Get members for admin
-	 */
-	public static function getRoster($sport,$season){
-		//Accept sport as an object or ID
-		if(is_object($sport)){
-			$sport = $sport->term_id;
-		}
-		//Accept season as an object or ID
-		if(is_object($season)){
-			$season = $season->term_id;
-		}
-
-		$args = array(
-			'posts_per_page' => 0,
-			'post_type' => 'sa_roster',
-			'tax_query' => array(
-				array(
-					'taxonomy' => 'sa_sport',
-					'field' => 'id',
-					'terms' => $_GET['sport'], // Where term_id of Term 1 is "1".
-				),
-				array(
-					'taxonomy' => 'sa_season',
-					'field' => 'id',
-					'terms' => $_GET['season'],
-				)
-			),
-	    );
-		$roster = get_posts($args);
-		return $roster;
-	}
-
-
-	/**
-	 * Get members for admin
-	 */
-	public static function getMembers($sport,$season,$import = null){
-		//Accept sport as an object or ID
-		if(is_object($sport)){
-			$sport = $sport->term_id;
-		}
-		//Accept season as an object or ID
-		if(is_object($season)){
-			$season = $season->term_id;
-		}
-
-		$_members = \SchoolAthletics\Roster::getMembers($sport,$season);
-
-		$members = array();
-		foreach ($_members as $member) {
-			$status = get_the_terms($member,'sa_athlete_status');
-			$status = (is_array($status)) ? array_pop($status) : null;
-			$status = ($status) ? $status->name : '- - -';
-			$members[] = array(
-					'ID'	 => $member->ID,
-					'photo'  => get_post_thumbnail_id( $member->ID ),
-					'jersey' => get_post_meta( $member->ID, 'sa_jersey', true ),
-					'name'   => get_post_meta( $member->ID, 'sa_name', true ),
-					'height' => get_post_meta( $member->ID, 'sa_height', true ),
-					'weight' => get_post_meta( $member->ID, 'sa_weight', true ),
-					'order'  => get_post_meta( $member->ID, 'sa_order', true ),
-					'status' => $status,
-				);
-		}
-		//Defaults for athletes
-		$defaults = self::athleteDefaults();
-		if(!empty($import) && is_array($import)){
-			foreach ($import as $key => $value) {
-				//$import[$key]['ID'] = '';
-				$import[$key] = wp_parse_args($import[$key],$defaults);
-			}
-			$members = array_merge($members,$import);
-		}
-		if(empty($members)){
-			//Adds a new row to the bottom
-			$members[] = $defaults;
-		}
-		return $members;
-	}
 	
-
 
 	/**
 	 * Save roster

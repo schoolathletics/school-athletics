@@ -17,7 +17,6 @@ get_header(); ?>
 			<h1>
 			<?php the_title(); ?>
 			</h1>
-			<p>The Staff!</p>
 			<?php the_content(); ?>
 			<?php 
 			\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/templates/single-sa_page-staff.php');

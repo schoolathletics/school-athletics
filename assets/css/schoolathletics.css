@@ -1,0 +1,5 @@
+.nav-school-athletics ul.menu{width:100%; list-style: none; padding-left:0px;}
+.nav-school-athletics ul.menu>li{width:100%;}
+.nav-school-athletics ul.menu li{list-style: none; display:inline-block; padding:5px 10px;}
+.nav-school-athletics .home{font-size:1.5em; font-weight:bold;}
+.nav-school-athletics ul.menu ul{ margin:0px; display:inline-block; }

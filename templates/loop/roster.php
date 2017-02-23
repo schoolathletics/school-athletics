@@ -3,10 +3,11 @@
  * Roster Loop
  * 
  */
-$sport = SchoolAthletics::get_sport($post);
-$season = SchoolAthletics::get_season($post);
-$members = SchoolAthletics::get_roster_members($sport, $season);
-
+//$sport = SchoolAthletics::get_sport($post);
+//$season = SchoolAthletics::get_season($post);
+//$members = SchoolAthletics::get_roster_members($sport, $season);
+$roster = new \SchoolAthletics\Roster($post);
+$athletes = $roster->athletes;
 ?>
 <h1>
 	<?php the_title(); ?>
@@ -22,13 +23,22 @@ $members = SchoolAthletics::get_roster_members($sport, $season);
 </thead>
 <tbody>
 	<?php
-	foreach ($members as $member) {
+	foreach ($athletes as $athlete) {
 	?>
 	<tr>
-		<td><?php echo $member->post_title; ?></td>
+		<td><?php echo $athlete['name']; ?></td>
 	</tr>
 	<?php
 	}
 	?>
 </tbody>
+<tfoot>
+	<tr>
+		<td>Page Dropdown</td>
+	</tr>
+</tfoot>
 </table>
+
+<pre>
+<?php print_r($roster); ?>
+</pre>

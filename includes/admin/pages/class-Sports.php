@@ -76,20 +76,21 @@ class Sports extends Page{
 			\SchoolAthletics\Admin\Notice::error(__( 'Failed to save. Please refresh the page and retry.', 'school-athletics' ));
 		}
 
-		//if(!empty($_REQUEST['sa_sport_options'])){
-			if(isset($_REQUEST['sport'])){
-				$sport = $_REQUEST['sport'];
-			}else{
-				$sport = wp_insert_term( $_REQUEST['name'], 'sa_sport');
-				$sport = $sport['term_id'];
-				$_GET['sport'] = $sport;
-			}
-			self::build($sport);
+		if(isset($_GET['sport'])){
+			$sport = $_GET['sport'];
+		}else{
+			$sport = wp_insert_term( $_REQUEST['name'], 'sa_sport');
+			$sport = $sport['term_id'];
+		}
+		self::build($sport);
+
+		if(!empty($_REQUEST['sa_sport_options'])){
 			update_term_meta($sport, 'sa_sport_options', $_REQUEST['sa_sport_options']);
-		//}
+		}
+
+		$_GET['sport'] = $sport;
 
 		\SchoolAthletics\Admin\Notice::success('Sport has been saved');
-
 	}
 
 
@@ -252,6 +253,7 @@ class Sports extends Page{
 				$message .= '<li>Created '.$sport->name .' staff</li>';
 			}
 		}
+		
 		$message .= '</ul>';
 		return $message;
 

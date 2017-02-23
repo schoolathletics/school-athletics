@@ -14,37 +14,7 @@ get_header(); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<h1>
-			<?php the_title(); ?>
-			</h1>
 			<?php the_content(); ?>
-
-			<?php 
-				$sport = SchoolAthletics::get_sport($post);
-				$season = SchoolAthletics::get_season($post);
-				$args = array(
-					  'post_type' => 'sa_roster',
-					  'posts_per_page' => 1,
-					  'tax_query' => array(
-					    array(
-					      'taxonomy' => 'sa_sport',
-					      'field' => 'id',
-					      'terms' => $sport->term_id, // Where term_id of Term 1 is "1".
-					    )
-					  ),
-					  'orderby' => 'taxonomy_sa_season',
-					  'order'   => 'ASC',
-					);
-				query_posts($args);
-			?>
-
-			<?php while ( have_posts() ) : the_post(); ?>
-
-				<?php include(SA__PLUGIN_DIR .'templates/loop/roster.php'); ?>
-
-			<?php endwhile; // end of the loop. ?>
-
-			<?php wp_reset_query(); ?>
 
 		<?php endwhile; // end of the loop. ?>
 

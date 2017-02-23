@@ -130,7 +130,7 @@ class Schedule extends Page{
 			$season = $season->term_id;
 		}
 
-		$_events = \SchoolAthletics\Schedule::getEvents($sport,$season);
+		$_events = \SchoolAthletics\Schedule::get_events($sport,$season);
 
 		$events = array();
 		foreach ($_events as $event) {

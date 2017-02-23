@@ -136,7 +136,8 @@ if(is_object($term)){
 
 	<p></p>
 
-<?php if(\SchoolAthletics\Debug::status()) : ?>
+<?php if(\SchoolAthletics\Debug::status() && isset($_GET['sport'])) : ?>
+<?php $sport = $_GET['sport']; ?>
 
 	<table class="wp-list-table fixed widefat striped pages">
 	<thead>
@@ -149,29 +150,29 @@ if(is_object($term)){
 	<tbody>
 	<tr>
 		<th><label><?php _e('Sport', 'school-athletics'); ?></label></th>
-		<td><p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[page_id]" value="<?php echo $options['page_id']; ?>"></p>
-			<code><?php echo $permalink; ?></code>
+		<td><p><?php _e('Page ID:','school-athletics'); ?> <?php echo \SchoolAthletics\Sport::get_sport_page_id($sport,'home'); ?></p>
+			<code><?php echo get_permalink(\SchoolAthletics\Sport::get_sport_page_id($sport,'home')); ?></code>
 		</td>
 	</tr>
 	<tr>
 		<th><label><?php _e('Roster', 'school-athletics'); ?></label></th>
 		<td>
-			<p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[roster_id]" value="<?php echo $options['roster_id']; ?>"></p>
-			<code><?php echo get_permalink($options['roster_id']); ?></code>
+			<p><?php _e('Page ID:','school-athletics'); ?> <?php echo \SchoolAthletics\Sport::get_sport_page_id($sport,'roster'); ?></p>
+			<code><?php echo get_permalink(\SchoolAthletics\Sport::get_sport_page_id($sport,'roster')); ?></code>
 		</td>
 	</tr>
 	<tr>
 		<th><label><?php _e('Schedule', 'school-athletics'); ?></label></th>
 		<td>
-			<p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[schedule_id]" value="<?php echo $options['schedule_id']; ?>"></p>
-			<code><?php echo get_permalink($options['schedule_id']); ?></code>
+			<p><?php _e('Page ID:','school-athletics'); ?> <?php echo \SchoolAthletics\Sport::get_sport_page_id($sport,'schedule'); ?></p>
+			<code><?php echo get_permalink(\SchoolAthletics\Sport::get_sport_page_id($sport,'schedule')); ?></code>
 		</td>
 	</tr>
 	<tr>
 		<th><label><?php _e('Staff', 'school-athletics'); ?></label></th>
 		<td>
-			<p><?php _e('Page ID:','school-athletics'); ?> <input type="text" readonly="readonly" name="sa_sport_options[staff_id]" value="<?php echo $options['staff_id']; ?>"></p>
-			<code><?php echo get_permalink($options['staff_id']); ?></code>
+			<p><?php _e('Page ID:','school-athletics'); ?> <?php echo \SchoolAthletics\Sport::get_sport_page_id($sport,'staff'); ?></p>
+			<code><?php echo get_permalink(\SchoolAthletics\Sport::get_sport_page_id($sport,'staff')); ?></code>
 		</td>
 	</tr>
 	</tbody>

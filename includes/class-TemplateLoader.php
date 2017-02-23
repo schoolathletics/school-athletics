@@ -26,8 +26,11 @@ class TemplateLoader {
 	 */
 	public static function init() {
 		add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
-		//if(is_singular( 'sa_page' )){
-		//} 
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'template_enqueue_scripts' ) );
+	}
+
+	public static function template_enqueue_scripts(){
+		wp_enqueue_style( 'school-athletics', SA__PLUGIN_URL.'assets/css/schoolathletics.css');
 	}
 
 	/**
