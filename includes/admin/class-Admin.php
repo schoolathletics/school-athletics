@@ -27,6 +27,8 @@ class Admin {
 		new \SchoolAthletics\Admin\Menus();
 		add_filter('pre_get_posts', array( $this, 'sa_pages_admin' ));
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_init', array( $this, 'permalinks') );
+		add_action( 'admin_init', array( $this, 'save_permalink_settings') );
 	}
 
 	/**
@@ -77,5 +79,36 @@ class Admin {
 			}
 		}
 	}
+
+	public function permalinks(){
+		// Add our settings
+		add_settings_field(
+			'schoolathletics_sports_base',             // id
+			__( 'Sports Base', 'school-athletics' ),   // setting title
+			array( $this, 'schoolathletics_sports_base' ),       // display callback
+			'permalink',                               // settings page
+			'optional'                                 // settings section
+		);
+	}
+
+	/**
+	 * Show a slug input box.
+	 */
+	public function schoolathletics_sports_base() {
+		$permalinks = get_option( 'schoolathletics_permalinks' );
+		?>
+		<input name="schoolathletics_sports_base" type="text" class="regular-text code" value="<?php if ( isset($permalinks['base']) ) echo esc_attr( $permalinks['base'] ); ?>" placeholder="<?php echo esc_attr_x('sports', 'slug', 'school-athletics') ?>" />
+		<?php
+	}
+
+	function save_permalink_settings(){
+
+		if( isset($_POST['permalink_structure']) && isset( $_POST['schoolathletics_sports_base'] ) ){
+			$permalinks = array();
+			$permalinks['base'] = wp_unslash( $_POST['schoolathletics_sports_base'] );
+			update_option( 'schoolathletics_permalinks',  $permalinks );
+  		} 
+	}
+
 
 }

@@ -26,6 +26,9 @@ class InstallWpObjects {
 		add_action( 'init', array( __CLASS__, 'register_taxonomies' ), 5 );
 		add_action( 'init', array( __CLASS__, 'register_post_types' ), 5 );
 		add_action( 'init', array( __CLASS__, 'register_post_status' ), 9 );
+	
+		add_filter( 'post_type_link', array( __CLASS__, 'post_type_link' ), 10, 2);
+		add_action('init', array( __CLASS__, 'rewrite_tags'), 10, 0);
 	}
 
 
@@ -369,6 +372,8 @@ class InstallWpObjects {
 			return;
 		}
 
+		$permalinks = get_option( 'schoolathletics_permalinks' );
+		$page_permalink = empty( $permalinks['base'] ) ? _x( 'sports', 'slug', 'school-athletics' ) : $permalinks['base'];
 		// Register Sport Pages
 		register_post_type( 'sa_page',
 			array(
@@ -400,14 +405,15 @@ class InstallWpObjects {
 				'has_archive'         => false,
 				'exclude_from_search' => false,
 				'publicly_queryable'  => true,
-				'query_var'           => 'sport',
+				'query_var'           => true,
 				'public'              => true,
-		        'rewrite'             => array( 'slug' => 'sports' ),
+		        'rewrite'             => $page_permalink ? array( 'slug' => untrailingslashit( $page_permalink ), 'with_front' => false, 'feeds' => true ) : false,
 				'capability_type'     => 'page',
 			)
 		);
 
 		// Register Roster
+		$roster_permalink = empty( $permalinks['roster_base'] ) ? untrailingslashit( $page_permalink ).'/%sa_sport%/'._x( 'roster', 'slug', 'school-athletics' ) : $permalinks['roster_base'];
 		register_post_type( 'sa_roster',
 			array(
 				'label'               => __( 'roster', 'school-athletics' ),
@@ -438,8 +444,8 @@ class InstallWpObjects {
 		        'has_archive'         => false,
 		        'exclude_from_search' => false,
 		        'publicly_queryable'  => true,
-		        'rewrite'             => false,
-		        'query_var'           => false,
+		        'rewrite'             => $roster_permalink ? array( 'slug' => untrailingslashit( $roster_permalink ), 'with_front' => false, 'feeds' => false, 'pages' => false ) : false,
+		        'query_var'           => true,
 		        'capability_type'     => 'post',
 			)
 		);
@@ -482,6 +488,7 @@ class InstallWpObjects {
 		);
 
 		// Register Event
+		$schedule_permalink = empty( $permalinks['schedule_base'] ) ? untrailingslashit( $page_permalink ).'/%sa_sport%/'._x( 'schedule', 'slug', 'school-athletics' ) : $permalinks['schedule_base'];
 		register_post_type( 'sa_schedule',
 			array(
 		        'label'               => __( 'schedule', 'school-athletics' ),
@@ -512,8 +519,8 @@ class InstallWpObjects {
 		        'has_archive'         => false,
 		        'exclude_from_search' => false,
 		        'publicly_queryable'  => true,
-		        'rewrite'             => false,
-		        'query_var'           => false,
+		        'rewrite'             => $schedule_permalink ? array( 'slug' => untrailingslashit( $schedule_permalink ), 'with_front' => false, 'feeds' => false, 'pages' => false ) : false,
+		        'query_var'           => true,
 		        'capability_type'     => 'post',
 			)
 		);
@@ -557,6 +564,7 @@ class InstallWpObjects {
 		);
 
 		// Register Event
+		$staff_permalink = empty( $permalinks['staff_base'] ) ? untrailingslashit( $page_permalink ).'/%sa_sport%/'._x( 'staff', 'slug', 'school-athletics' ) : $permalinks['staff_base'];
 		register_post_type( 'sa_staff',
 			array(
 		        'label'               => __( 'staff', 'school-athletics' ),
@@ -587,11 +595,12 @@ class InstallWpObjects {
 		        'has_archive'         => false,
 		        'exclude_from_search' => false,
 		        'publicly_queryable'  => true,
-		        'rewrite'             => false,
-		        'query_var'           => false,
+		        'rewrite'             => $staff_permalink ? array( 'slug' => untrailingslashit( $staff_permalink ), 'with_front' => false, 'feeds' => false, 'pages' => false) : false,
+		        'query_var'           => true,
 		        'capability_type'     => 'post',
 			)
 		);
+
 
 	}
 
@@ -610,6 +619,49 @@ class InstallWpObjects {
 		) );
 
 	}
+
+	/*
+	 * Post Type Link
+	 */
+	public static function post_type_link($permalink, $post){
+
+		if ( $post->post_type == 'sa_schedule' || $post->post_type == 'sa_roster' || $post->post_type == 'sa_staff'){
+
+			// Abort early if the placeholder rewrite tag isn't in the generated URL.
+			if ( false === strpos( $permalink, '%' ) ) {
+				return $permalink;
+			}
+
+			$sports = get_the_terms( $post->ID, 'sa_sport' );
+			if ( ! empty( $sports ) ) {
+				return str_replace( '%sa_sport%' , $sports[0]->slug , $permalink );
+			}else{
+				return str_replace( '%sa_sport%' ,'no-sport', $permalink );
+			}
+
+			$sports = get_the_terms( $post->ID, 'sa_season' );
+			if ( ! empty( $sports ) ) {
+				return str_replace( '%sa_season%' , $sports[0]->slug , $permalink );
+			}else{
+				return str_replace( '%sa_season%' ,'no-sa_season', $permalink );
+			}
+
+		}
+		return $permalink;
+
+	}
+
+	/*
+	 * Torture
+	 */
+	public static function rewrite_tags() {
+		add_rewrite_tag( '%sa_sport%', '([^&]+)');
+		add_rewrite_tag( '%sa_season%', '([^&]+)');
+		$permalinks = get_option( 'schoolathletics_permalinks' );
+		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('schedule', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_schedule=$matches[2]','top');
+		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('roster', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_roster=$matches[2]','top');
+		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('staff', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_staff=$matches[2]','top');
+	}	
 
 }
 

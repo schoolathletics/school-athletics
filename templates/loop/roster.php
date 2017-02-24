@@ -8,6 +8,7 @@
 //$members = SchoolAthletics::get_roster_members($sport, $season);
 $roster = new \SchoolAthletics\Roster($post);
 $athletes = $roster->athletes;
+
 ?>
 <h1>
 	<?php the_title(); ?>
