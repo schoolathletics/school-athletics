@@ -18,7 +18,7 @@ if(is_object($staff)){
 
 ?>
 <h1 class="wp-heading-inline"><?php _e('Staff','school-athletics'); ?></h1>
-<a class="page-title-action" href="">Add New</a>
+<a class="page-title-action" href=""><?php _e('Add New', 'school-athletics');?></a>
 <p></p>
 <script>
 	var autocomplete = [ <?php echo $autocomplete; ?> ];
@@ -44,8 +44,8 @@ if(is_object($staff)){
 				<div class="thumbnail-placeholder">
 					<span class="dashicons dashicons-format-image"></span>
 				</div>
-				<a href="#" class="add-photo">Add Team Photo</a>
-				<a href="#" class="remove-photo">Delete Team Photo</a>
+				<a href="#" class="add-photo"><?php _e('Add Team Photo','school-athletics'); ?></a>
+				<a href="#" class="remove-photo"><?php _e('Delete Team Photo','school-athletics'); ?></a>
 				<input class="photo-id" type="hidden" name="photo" size="4" value="<?php echo get_post_thumbnail_id( $id ); ?>" >
 			</div>
 		</td>
@@ -78,7 +78,7 @@ if(is_object($staff)){
 </tbody>
 </table>
 <?php wp_nonce_field( 'schoolathletics-edit-staff' ); ?>
-<p class="submit"><input name="submit" id="submit" class="button button-primary" value="Save Changes" type="submit"></p>
+<p class="submit"><input name="submit" id="submit" class="button button-primary" value="<?php _e('Save Changes','school-athletics'); ?>" type="submit"></p>
 </form>
 
 <?php \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-staff-edit.php'); ?>

@@ -73,7 +73,7 @@ class Shortcodes {
 		global $post;
 
 		$sport = \SchoolAthletics::get_sport($post);
-		$season = \SchoolAthletics::get_season($post);
+		//$season = \SchoolAthletics::get_season($post);
 		$args = array(
 					  'post_type' => 'sa_roster',
 					  'posts_per_page' => 1,
@@ -103,7 +103,7 @@ class Shortcodes {
 		global $post;
 
 		$sport = \SchoolAthletics::get_sport($post);
-		$season = \SchoolAthletics::get_season($post);
+		//$season = \SchoolAthletics::get_season($post);
 		$args = array(
 					  'post_type' => 'sa_schedule',
 					  'posts_per_page' => 1,

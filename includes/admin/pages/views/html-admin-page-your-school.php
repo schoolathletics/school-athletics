@@ -64,5 +64,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 </div>
 
-<?php \SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/admin/views/html-admin-page-settings.php'); ?>
+<?php \SchoolAthletics\Debug::file_path('includes/admin/views/html-admin-page-your-school.php'); ?>
 <?php \SchoolAthletics\Debug::content($_REQUEST); ?>

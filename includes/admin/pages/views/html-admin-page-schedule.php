@@ -53,13 +53,13 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<thead>
 		<tr>
 			<th></th>
-			<th>Date</th>
-			<th>Name</th>
-			<th>Location</th>
-			<th>Type</th>
-			<th>Outcome</th>
-			<th>Result</th>
-			<th>Actions</th>
+			<th><?php _e( 'Date', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Name', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Location', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Type', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Outcome', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Result', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Actions', 'school-athletics' ); ?></th>
 		</tr>
 	</thead>
 	<tbody id="sortable" class="ui-sortable">
@@ -137,13 +137,13 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	<tfoot>
 		<tr>
 			<th></th>
-			<th>Date</th>
-			<th>Name</th>
-			<th>Location</th>
-			<th>Type</th>
-			<th>Outcome</th>
-			<th>Result</th>
-			<th>Actions</th>
+			<th><?php _e( 'Date', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Name', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Location', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Type', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Outcome', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Result', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Actions', 'school-athletics' ); ?></th>
 		</tr>
 	</tfoot>
 	</table>
@@ -167,11 +167,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			<td>
 				<input type="hidden" name="action" value="import">
 				<textarea name="csv" class="textarea widefat"></textarea>
-				<p><span class="description"><?php _e( 'Paste CSV here, but make sure it\'s properly formated', 'school-athletics' ); ?></span>
-				</p>
-				<p>
-				<pre>date,name,location,game_type,outcome,result<br />date,name,location,game_type,outcome,result</pre>
-				</p>
+				<p><span class="description"><?php _e( 'Paste CSV here, but make sure it\'s properly formated', 'school-athletics' ); ?></span></p>
 				<button class="button">Import</button>
 			</td>
 		</tr>

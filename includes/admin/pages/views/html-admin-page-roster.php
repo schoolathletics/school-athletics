@@ -71,11 +71,11 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		<tr>
 			<th></th>
 			<th><span class="dashicons dashicons-format-image"></span></th>
-			<th>No.</th>
-			<th>Name</th>
-			<th>Ht.</th>
-			<th>Wt.</th>
-			<th>Year</th>
+			<th><?php _e( 'No.', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Name', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Ht.', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Wt.', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Year', 'school-athletics' ); ?></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -144,11 +144,11 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		<tr>
 			<th></th>
 			<th><span class="dashicons dashicons-format-image"></span></th>
-			<th>No.</th>
-			<th>Name</th>
-			<th>Ht.</th>
-			<th>Wt.</th>
-			<th>Year</th>
+			<th><?php _e( 'No.', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Name', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Ht.', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Wt.', 'school-athletics' ); ?></th>
+			<th><?php _e( 'Year', 'school-athletics' ); ?></th>
 			<th></th>
 		</tr>
 	</tfoot>

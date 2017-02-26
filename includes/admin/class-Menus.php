@@ -33,7 +33,7 @@ class Menus {
 	 * Register admin menus.
 	 */
 	public function register_menus(){
-		add_menu_page( 'School Athletics', 'School Athletics', 'manage_options', 'school-athletics', array( $this, 'school_athletics_page' ), plugins_url( 'school-athletics/assets/images/icon.png' ), 30 );
+		add_menu_page( 'School Athletics', 'School Athletics', 'manage_options', 'school-athletics', array( $this, 'school_athletics_page' ), plugins_url( 'school-athletics/assets/images/school.png' ), 30 );
 		if(\SchoolAthletics\Admin\Admin::advanced_mode()){
 			add_submenu_page( 'school-athletics', 'Pages', 'Pages', 'manage_options', 'edit.php?post_type=sa_page');
 		}

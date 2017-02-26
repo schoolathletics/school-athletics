@@ -15,7 +15,7 @@ if(isset($_GET['sport'])){
 
 ?>
 <h1 class="wp-heading-inline"><?php _e('Staff','school-athletics'); ?></h1>
-<a class="page-title-action" href="<?php echo admin_url('admin.php?page=staff').'&action=edit'; ?>"><?php _e('Add New'); ?></a>
+<a class="page-title-action" href="<?php echo admin_url('admin.php?page=staff').'&action=edit'; ?>"><?php _e('Add New', 'school-athletics'); ?></a>
 <p></p>
 <?php if($sport) : ?>
 	<form action="post">
@@ -26,10 +26,10 @@ if(isset($_GET['sport'])){
 	<?php if($sport) : ?>
 		<th width="20px"></th>
 	<?php endif; ?>
-		<th>Photo</th>
-		<th>Name</th>
-		<th>Job Title</th>
-		<th>Sports</th>
+		<th><?php _e('Photo', 'school-athletics');?></th>
+		<th><?php _e('Name', 'school-athletics');?></th>
+		<th><?php _e('Job Title', 'school-athletics');?></th>
+		<th><?php _e('Sports', 'school-athletics');?></th>
 	</tr>
 </thead>
 <tbody id="sortable" class="ui-sortable">

@@ -49,12 +49,9 @@ class Install {
 				'Women\'s Track & Field',
 				'Volleyball',
 			),
-			'sa_person_type' => array(
-				'athlete',
-				'coach',
-			)
-			'sa_event_type' => array(
-				'game',
+			'sa_roster_member_type' => array(
+				'Athlete',
+				'Coach',
 			)
 			'sa_season' => array(
 				'1999-00',
@@ -76,7 +73,34 @@ class Install {
 				'2015-16',
 				'2016-17',
 				'2017-18',
+			),
+			'sa_athlete_status' => array(
+				'Freshman',
+				'Sophomore',
+				'Junior',
+				'Senior',
+			),
+			'sa_event_type' => array(
+				'Game',
+			),
+			'sa_game_type' => array(
+				'Scrimmage',
+				'Non-Conference',
+				'Conference',
+				'Playoff',
+				'Tournament',
+			),
+			'sa_outcome' => array(
+				'Win',
+				'Loss',
+				'Tie',
 			)
+			'sa_location' => array(
+				'Home',
+				'Away',
+				'Nuetral',
+			)
+
 		);
 
 		foreach ( $taxonomies as $taxonomy => $terms ) {
