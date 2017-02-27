@@ -36,7 +36,8 @@ class Debug {
 	 */
 	public static function status(){
 		$status_options = get_option( 'schoolathletics_settings_options', array() );
-		if ( ! empty( $status_options['debug_mode'] ) ) {
+		global $user;
+		if ( ! empty( $status_options['debug_mode'] ) && is_super_admin() ) {
 			return true;
 		}else{
 			return false;

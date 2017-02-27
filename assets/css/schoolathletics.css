@@ -3,3 +3,30 @@
 .nav-school-athletics ul.menu li{list-style: none; display:inline-block; padding:5px 10px;}
 .nav-school-athletics .home{font-size:1.5em; font-weight:bold;}
 .nav-school-athletics ul.menu ul{ margin:0px; display:inline-block; }
+
+.schoolathletics.news{}
+.schoolathletics.news .thumbnail {float:left; padding:0px 15px;}
+
+.roster.dropdown, .schedule.dropdown{float:right;}
+
+/* Column Classes
+--------------------------------------------- */
+.one-third,
+.two-thirds {
+	float: left;
+	margin-left: 2.564102564102564%;
+}
+
+.one-third{
+	width: 31.623931623931625%;
+}
+
+.two-thirds {
+	width: 65.81196581196582%;
+}
+
+
+.first {
+	clear: both;
+	margin-left: 0;
+}

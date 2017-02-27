@@ -20,8 +20,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Sport {
 
+	/** @var int post ID for roster page. */
+	public $ID = '';
+
+	/** @var string post ID for roster page. */
+	public $title = '';
+
 	/** @var object sport that roster belongs to. */
 	public $sport = array();
+
+	/** @var array of roster objects. */
+	public $rosters = array();
+
+	/** @var array of schedule objects. */
+	public $schedule = array();
+
+	/** @var array of staff objects. */
+	public $staff = array();
 
 	/**
 	 * Hook in methods.
@@ -101,6 +116,31 @@ class Sport {
 		$page_id = get_term_meta( $sport->term_id, 'sa_sport_'.$page.'_id', true);
 		return $page_id;
 	}
+
+	/**
+	 * Get Rosters
+	 */
+	/*public static function get_rosters($sport){
+		$args = array(
+			'posts_per_page' => -1,
+			'post_type' => 'sa_roster',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'sa_sport',
+					'field' => 'id',
+					'terms' => $sport,
+				),
+			),
+			'orderby' => 'taxonomy_sa_season',
+			'order'   => 'DESC',
+		);
+		$posts = get_posts($args);
+		$rosters = array();
+		foreach ($posts as $post) {
+			$rosters[] = new \SchoolAthletics\Roster($post);
+		}
+		return $rosters;
+	}*/
 
 
 }

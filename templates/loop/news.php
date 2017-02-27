@@ -7,7 +7,7 @@
 <div class="schoolathletics news">
 	<div class="thumbnail">
 		<a href="<?php echo get_permalink($post->ID); ?>">
-			<?php the_post_thumbnail('medium')?>
+			<?php the_post_thumbnail('thumbnail')?>
 		</a>
 	</div>
 	<a href="<?php echo get_permalink($post->ID); ?>">

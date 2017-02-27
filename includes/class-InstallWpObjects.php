@@ -451,6 +451,7 @@ class InstallWpObjects {
 		);
 
 		// Register Roster
+		$member_permalink = empty( $permalinks['roster_base'] ) ? untrailingslashit($roster_permalink).'/%sa_season%/' : $permalinks['roster_base'];
 		register_post_type( 'sa_roster_member',
 			array(
 				'label'               => __( 'sa_roster_member', 'school-athletics' ),
@@ -481,8 +482,8 @@ class InstallWpObjects {
 		        'has_archive'         => false,
 		        'exclude_from_search' => false,
 		        'publicly_queryable'  => true,
-		        'rewrite'             => false,
-		        'query_var'           => false,
+		        'rewrite'             => $member_permalink ? array( 'slug' => untrailingslashit( $member_permalink ), 'with_front' => false, 'feeds' => false, 'pages' => false ) : false,
+		        'query_var'           => true,
 		        'capability_type'     => 'post',
 			)
 		);
@@ -625,7 +626,7 @@ class InstallWpObjects {
 	 */
 	public static function post_type_link($permalink, $post){
 
-		if ( $post->post_type == 'sa_schedule' || $post->post_type == 'sa_roster' || $post->post_type == 'sa_staff'){
+		if ( $post->post_type == 'sa_schedule' || $post->post_type == 'sa_roster' || $post->post_type == 'sa_roster_member' || $post->post_type == 'sa_staff'){
 
 			// Abort early if the placeholder rewrite tag isn't in the generated URL.
 			if ( false === strpos( $permalink, '%' ) ) {
@@ -634,16 +635,16 @@ class InstallWpObjects {
 
 			$sports = get_the_terms( $post->ID, 'sa_sport' );
 			if ( ! empty( $sports ) ) {
-				return str_replace( '%sa_sport%' , $sports[0]->slug , $permalink );
+				$permalink =  str_replace( '%sa_sport%' , $sports[0]->slug , $permalink );
 			}else{
-				return str_replace( '%sa_sport%' ,'no-sport', $permalink );
+				$permalink =  str_replace( '%sa_sport%' ,'no-sport', $permalink );
 			}
 
-			$sports = get_the_terms( $post->ID, 'sa_season' );
-			if ( ! empty( $sports ) ) {
-				return str_replace( '%sa_season%' , $sports[0]->slug , $permalink );
+			$seasons = get_the_terms( $post->ID, 'sa_season' );
+			if ( ! empty( $seasons ) ) {
+				$permalink =  str_replace( '%sa_season%' , $seasons[0]->slug , $permalink );
 			}else{
-				return str_replace( '%sa_season%' ,'no-sa_season', $permalink );
+				$permalink =  str_replace( '%sa_season%' ,'no-sa_season', $permalink );
 			}
 
 		}
@@ -659,6 +660,7 @@ class InstallWpObjects {
 		add_rewrite_tag( '%sa_season%', '([^&]+)');
 		$permalinks = get_option( 'schoolathletics_permalinks' );
 		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('schedule', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_schedule=$matches[2]','top');
+		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('roster', 'slug', 'school-athletics').'/([^&]+)/([^&]+)/?$','index.php?sa_roster_member=$matches[3]','top');
 		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('roster', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_roster=$matches[2]','top');
 		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('staff', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_staff=$matches[2]','top');
 	}	

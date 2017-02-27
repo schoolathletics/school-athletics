@@ -14,15 +14,7 @@ get_header(); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<h1>
-			<?php the_title(); ?>
-			</h1>
-			<p>The Schedule!</p>
-			<?php the_content(); ?>
-			<?php 
-			\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/templates/single-sa_page-schedule.php');
-			\SchoolAthletics\Debug::content($_REQUEST); 
-			?>
+			<?php include(SA__PLUGIN_DIR .'templates/loop/schedule.php'); ?>
 
 		<?php endwhile; // end of the loop. ?>
 

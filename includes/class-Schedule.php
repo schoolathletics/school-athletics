@@ -42,7 +42,14 @@ class Schedule {
 	public $schedule = array();
 
 	/** @var array List of sport schedules */
-	public $schedules = array();
+	public $schedules = array(
+			array(
+				'ID' => '',
+				'season' => '', 
+				'title' => '', 
+				'permalink' => '',
+			),
+		);
 
 	/** @var array Contains schedule events */
 	public $events = array(
@@ -127,9 +134,20 @@ class Schedule {
 				),
 			),
 			'orderby' => 'taxonomy_sa_season',
-			'order'   => 'ASC',
+			'order'   => 'DESC',
 		);
-		return get_posts($args);
+		$posts = get_posts($args);
+		$schedules = array();
+		foreach ($posts as $post) {
+			$schedule = array();
+			$schedule['ID'] = $post->ID;
+			$season = get_the_terms( $post, 'sa_season' );
+			$schedule['season'] = $season[0]->slug;
+			$schedule['title'] = $post->post_title;
+			$schedule['permalink'] = get_permalink($post->ID);
+			$schedules[] = $schedule;
+		}
+		return $schedules;
 	}
 
 	/**
@@ -186,6 +204,26 @@ class Schedule {
 
 		return $events;
 
+	}
+
+	/**
+	 * Creates a schedule list from the schedules object.
+	 */
+	public function dropdown(){
+
+		if(is_object($this)){
+
+			echo '<select class="select" onChange="window.location.href=this.value">';
+				foreach ($this->schedules as $schedule) {
+					if($this->ID == $schedule['ID']){
+						$selected = 'selected';
+					}else{
+						$selected = '';
+					}
+					echo '<option value="'.$schedule['permalink'].'" '.$selected.'>'.$schedule['season'].'</option>';
+				}
+			echo '</select>';
+		}
 	}
 
 }

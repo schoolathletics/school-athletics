@@ -41,7 +41,14 @@ class Roster {
 	public $roster = array();
 
 	/** @var array List of sport Rosters */
-	public $rosters = array();
+	public $rosters = array(
+			array(
+				'ID' => '',
+				'season' => '', 
+				'title' => '', 
+				'permalink' => '',
+			),
+		);
 
 	/** @var array Contains roster athletes */
 	public $athletes = array(
@@ -130,9 +137,20 @@ class Roster {
 				),
 			),
 			'orderby' => 'taxonomy_sa_season',
-			'order'   => 'ASC',
+			'order'   => 'DESC',
 		);
-		return get_posts($args);
+		$posts = get_posts($args);
+		$rosters = array();
+		foreach ($posts as $post) {
+			$roster = array();
+			$roster['ID'] = $post->ID;
+			$season = get_the_terms( $post, 'sa_season' );
+			$roster['season'] = $season[0]->slug;
+			$roster['title'] = $post->post_title;
+			$roster['permalink'] = get_permalink($post->ID);
+			$rosters[] = $roster;
+		}
+		return $rosters;
 	}
 
 	/**
@@ -183,6 +201,26 @@ class Roster {
 	 */
 	public static function get_coaches($sport,$season){
 
+	}
+
+	/**
+	 * Creates a roster list from the roster object.
+	 */
+	public function dropdown(){
+
+		if(is_object($this)){
+
+			echo '<select class="select" onChange="window.location.href=this.value">';
+				foreach ($this->rosters as $roster) {
+					if($this->ID == $roster['ID']){
+						$selected = 'selected';
+					}else{
+						$selected = '';
+					}
+					echo '<option value="'.$roster['permalink'].'" '.$selected.'>'.$roster['season'].'</option>';
+				}
+			echo '</select>';
+		}
 	}
 
 }

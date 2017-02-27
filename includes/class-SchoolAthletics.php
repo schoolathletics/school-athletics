@@ -24,13 +24,7 @@ class SchoolAthletics {
 	 * School Athletics Constructor.
 	 */
 	public function __construct() {
-		\SchoolAthletics\InstallWpObjects::init();
-		if(is_admin()){
-			new \SchoolAthletics\Admin\Admin();
-		}
-		new \SchoolAthletics\Debug();
-		\SchoolAthletics\TemplateLoader::init();
-		\SchoolAthletics\Shortcodes::init();
+		add_action('init', array( $this, 'init' ), 0 );
 	}
 
 	/**
@@ -39,6 +33,16 @@ class SchoolAthletics {
 	public static function get_sport($post){
 		$terms = wp_get_post_terms( $post->ID, 'sa_sport');
 		return get_term( $terms[0]->term_id);
+	}
+
+	public function init(){
+		\SchoolAthletics\InstallWpObjects::init();
+		if(is_admin()){
+			new \SchoolAthletics\Admin\Admin();
+		}
+		new \SchoolAthletics\Debug();
+		\SchoolAthletics\TemplateLoader::init();
+		\SchoolAthletics\Shortcodes::init();
 	}
 
 

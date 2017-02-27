@@ -27,6 +27,6 @@ $members = $staff->staff;
 </tbody>
 </table>
 
-<pre>
-<?php print_r($staff); ?>
-</pre>
+<?php 
+	\SchoolAthletics\Debug::content($staff); 
+?>
