@@ -55,6 +55,7 @@ jQuery(function($){
 
 		/*
 		 * Start Datepicker if it exists
+		 * Set to match the WP Format yy-mm-dd 16:30:00
 		 */
 		datetimepicker: function(){
 			if($().datetimepicker){
@@ -66,7 +67,8 @@ jQuery(function($){
 				$('.datetime').datetimepicker({
 					controlType: 'select',
 					oneLine: true,
-					timeFormat: 'hh:mm tt'
+					dateFormat: "yy-mm-dd",
+					timeFormat: 'HH:mm:ss'
 				});
 			}
 		},
