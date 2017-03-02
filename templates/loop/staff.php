@@ -8,24 +8,18 @@ $staff = new \SchoolAthletics\Staff($sport);
 $members = $staff->staff;
 
 ?>
-<table>
-<thead>
-	<tr>
-		<th></th>
-	</tr>
-</thead>
-<tbody>
-	<?php
+
+<?php
 	foreach ($members as $member) {
 	?>
-	<tr>
-		<td><?php echo $member->post_title; ?></td>
-	</tr>
+	<div class="staff">
+		<div><?php echo get_the_post_thumbnail($member->ID, 'thumbnail'); ?></div>
+		<h2><?php echo $member->post_title; ?></h2>
+		<div><?php echo $member->post_content; ?></div>
+	</div>
 	<?php
 	}
-	?>
-</tbody>
-</table>
+?>
 
 <?php 
 	\SchoolAthletics\Debug::content($staff); 

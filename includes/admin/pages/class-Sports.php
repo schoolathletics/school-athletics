@@ -391,7 +391,7 @@ class Sports extends Page{
 		$content = null;
 		foreach ($pages as $page) {
 			if(is_object($page)){
-				$content .= '<a href="#&roster_id='.$page->ID.'">'.$page->post_title.' <span class="dashicons dashicons-no"></span></a><br />';
+				$content .= '<a href="?page=staff&action=edit&staff='.$page->ID.'">'.$page->post_title.' <span class="dashicons dashicons-no"></span></a><br />';
 			}
 		}
 		return $content;

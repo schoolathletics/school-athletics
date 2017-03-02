@@ -14,12 +14,13 @@ $events = $schedule->events;
 <div class="schedule dropdown">
 	<?php $schedule->dropdown(); ?>
 </div>
-<?php the_content(); ?>
+<?php //the_content(); ?>
 
 <table class="table table-striped table-responsive table-condensed schedule">
 <thead>
 	<tr>
 		<th><?php _e( 'Date', 'school-athletics' ); ?></th>
+		<th><?php _e( 'Time', 'school-athletics' ); ?></th>
 		<th><?php _e( 'Name', 'school-athletics' ); ?></th>
 		<th><?php _e( 'Location', 'school-athletics' ); ?></th>
 		<th><?php _e( 'Type', 'school-athletics' ); ?></th>
@@ -30,9 +31,13 @@ $events = $schedule->events;
 <tbody>
 	<?php
 	foreach ($events as $event) {
+		$datetime = date_create($event['date']);
+		$date = date_format($datetime,"F d, Y");
+		$time = date_format($datetime,"h:i a");
 	?>
-	<tr>
-		<td><?php echo $event['date']; ?></td>
+	<tr class="<?php echo $event['game_type']; ?>">
+		<td><?php echo $date; ?></td>
+		<td><?php echo $time; ?></td>
 		<td><?php echo $event['name']; ?></td>
 		<td><?php echo $event['location']; ?></td>
 		<td><?php echo $event['game_type']; ?></td>

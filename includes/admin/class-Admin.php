@@ -25,6 +25,7 @@ class Admin {
 	public function __construct() {
 		add_filter( 'display_post_states', array( $this, 'post_states' ), 10, 2 );
 		new \SchoolAthletics\Admin\Menus();
+		new \SchoolAthletics\Admin\MetaBoxes();
 		add_filter('pre_get_posts', array( $this, 'sa_pages_admin' ));
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_init', array( $this, 'permalinks') );
@@ -69,15 +70,14 @@ class Admin {
 	 * Customize sa_pages Admin
 	 */
 	public static function sa_pages_admin(){
-		global $wp_query;
-		if (is_admin()) {
+		//global $wp_query;
+		//if (is_admin()) {
 			// Get the post type from the query
-			$post_type = $wp_query->query['post_type'];
-			if ( $post_type == 'sa_page') {
-				$wp_query->set('orderby', 'menu_order');
-				$wp_query->set('order', 'DESC');
-			}
-		}
+		//	if ( $wp_query->query['post_type'] == 'sa_page') {
+		//		$wp_query->set('orderby', 'menu_order');
+		//		$wp_query->set('order', 'DESC');
+		//	}
+		//}
 	}
 
 	public function permalinks(){

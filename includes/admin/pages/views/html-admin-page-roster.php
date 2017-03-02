@@ -203,6 +203,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 </div>
 
 <?php 
+\SchoolAthletics\Debug::content($roster);
 
 }else{
 	echo '<h1 class="wp-heading-inline">'.__('Select a Roster.','school-athletics').'</h1>';
@@ -212,4 +213,3 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-roster.php');
 \SchoolAthletics\Debug::content($_REQUEST); 
-\SchoolAthletics\Debug::content($roster);
