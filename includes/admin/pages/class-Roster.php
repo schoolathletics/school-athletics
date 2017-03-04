@@ -108,9 +108,10 @@ class Roster extends Page{
 			'ID' => $data['ID'],
 			'_thumbnail_id'=>$data['photo'] ,//Not documented but nice to know
 			'post_content' => $data['roster_content'],
-			'post_title' => $season->name .' '. $sport->name .' Roster',
-			'post_type' => 'sa_roster',
+			'post_title' => $season->name,
+			'post_type' => 'sa_page',
 			'post_status' => 'publish',//publish
+			'post_parent' => \SchoolAthletics\Sport::get_sport_page_id($sport,'roster'),
 			'tax_input' => array(
 				'sa_sport' => $sport->name,
 				'sa_season' => $season->name,

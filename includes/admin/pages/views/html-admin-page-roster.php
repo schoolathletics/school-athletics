@@ -44,7 +44,7 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			<td>
 				<?php \SchoolAthletics\Debug::content('Roster ID = '.$roster->ID); ?>
 				<p><code><?php echo get_permalink($roster->ID); ?></code></p>
-				<input type="hidden" name="ID" value="<?php echo $roster_id; ?>" />
+				<input type="hidden" name="ID" value="<?php echo $roster->ID; ?>" />
 			</td>
 		</tr>
 		<tr>
