@@ -3,7 +3,7 @@
  * Plugin Name: School Athletics
  * Plugin URI: https://schoolathletics.org/
  * Description: High School, Collegiate, and University Athletics for Wordpress.
- * Version: 1.5
+ * Version: 1.6
  * Author: Dwayne Parton
  * Author URI: https://dwayneparton.com
  * Requires at least: 4.4
@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'SA__PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'SA__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'SA_VERSION', '1.6');
 
 spl_autoload_register(function( $class) {
 	//if ( strpos( $class, 'SchoolAthletics' ) ) {

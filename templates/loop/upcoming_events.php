@@ -10,10 +10,17 @@ $time = date_format($datetime,"h:i a");
 $location = get_the_terms($post,'sa_location');
 $location = (is_array($location)) ? array_pop($location) : null;
 $location = ($location) ? $location->name : '- - -';
+$terms = wp_get_post_terms($post->ID, 'sa_sport' );
+foreach ($terms as $term) {
+	$sport_name = $term->name;
+}
 ?>
-	<div>
-		<h3><?php echo $post->post_title; ?></h3>
-		<p><?php echo $date; ?></p>
-		<p><?php echo $time; ?></p>
-		<p><?php echo $location; ?></p>
+	<div class="event">
+		<ul>
+			<h3><?php echo $post->post_title; ?></h3>
+			<li><b>Sport:</b> <?php echo $sport_name; ?></li>
+			<li><b>Date:</b> <?php echo $date; ?></li>
+			<li><b>Time:</b> <?php echo $time; ?></li>
+			<li><b>Location:</b> <?php echo $location; ?></li>
+		</ul>
 	</div>

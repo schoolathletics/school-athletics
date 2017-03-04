@@ -63,13 +63,13 @@ class Menus {
 		add_submenu_page( 'sa_debug', 'Staff', 'Staff', 'manage_options', 'edit.php?post_type=sa_staff');
 		add_submenu_page( 'sa_debug', 'Athlete Terms', 'Person Terms', 'manage_options', 'edit-tags.php?taxonomy=sa_person');
 		add_submenu_page( 'sa_debug', 'Athlete Status', 'Athlete Status', 'manage_options', 'edit-tags.php?taxonomy=sa_athlete_status');
-		add_submenu_page( 'sa_debug', 'Schedules', 'Schedules', 'manage_options', 'edit.php?post_type=sa_schedule');
+		//add_submenu_page( 'sa_debug', 'Schedules', 'Schedules', 'manage_options', 'edit.php?post_type=sa_schedule');
 		add_submenu_page( 'sa_debug', 'Events', 'Events', 'manage_options', 'edit.php?post_type=sa_event');
 		add_submenu_page( 'sa_debug', 'Event Types', 'Event Types', 'manage_options', 'edit-tags.php?taxonomy=sa_event_type');
 		add_submenu_page( 'sa_debug', 'Game Types', 'Game Types', 'manage_options', 'edit-tags.php?taxonomy=sa_game_type');
 		add_submenu_page( 'sa_debug', 'Outcomes', 'Outcomes', 'manage_options', 'edit-tags.php?taxonomy=sa_outcome');
 		add_submenu_page( 'sa_debug', 'Locations', 'Locations', 'manage_options', 'edit-tags.php?taxonomy=sa_location');
-		add_submenu_page( 'sa_debug', 'Organizations', 'Organizations', 'manage_options', 'edit-tags.php?taxonomy=sa_organization');
+		add_submenu_page( 'sa_debug', 'Opponents', 'Opponents', 'manage_options', 'edit-tags.php?taxonomy=sa_opponent');
 	}
 
 	/**

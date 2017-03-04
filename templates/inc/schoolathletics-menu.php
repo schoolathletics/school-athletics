@@ -13,6 +13,11 @@
 				'field' => 'id',
 				'terms' => $term->term_id, // Where term_id of Term 1 is "1".
 			),
+			array(
+				'taxonomy' => 'sa_page_type',
+				'terms'    => get_terms('sa_page_type', array( 'fields' => 'ids'  ) ),
+				'operator' => 'NOT IN'
+			)
 		),
 	);
 	$pages = get_posts($args);

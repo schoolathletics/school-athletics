@@ -30,7 +30,7 @@ class TemplateLoader {
 	}
 
 	public static function template_enqueue_scripts(){
-		wp_enqueue_style( 'school-athletics', SA__PLUGIN_URL.'assets/css/schoolathletics.css');
+		wp_enqueue_style( 'school-athletics', SA__PLUGIN_URL.'assets/css/schoolathletics.css', array(), SA_VERSION);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class TemplateLoader {
 		/*
 		 * Roster Template
 		 */
-		if ( is_single() && get_post_type() == 'sa_roster' ) {
+		if ( is_single() && has_term( 'roster', 'sa_page_type')  ) {
 			$file 	= 'single-sa_roster.php';
 			$find[] = $file;
 			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;
@@ -89,7 +89,7 @@ class TemplateLoader {
 		/*
 		 * Schedule Template
 		 */
-		if ( is_single() && get_post_type() == 'sa_schedule' ) {
+		if ( is_single() && has_term( 'schedule', 'sa_page_type') ) {
 			$file 	= 'single-sa_schedule.php';
 			$find[] = $file;
 			$find[] = SA__PLUGIN_DIR . 'templates/'. $file;

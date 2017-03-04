@@ -92,6 +92,9 @@ class Roster {
 			$this->season = $season;
 			$this->athletes = $this->get_athletes($sport->term_id,$season->term_id);
 			$this->rosters = $this->get_rosters($sport->term_id);
+		}else{
+			$this->sport = get_term($_REQUEST['sport']);
+			$this->season =  get_term($_REQUEST['season']);
 		}
 	}
 
@@ -104,7 +107,7 @@ class Roster {
 
 		$args = array(
 			'posts_per_page' => 1,
-			'post_type' => 'sa_roster',
+			'post_type' => 'sa_page',
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'sa_sport',
@@ -118,8 +121,14 @@ class Roster {
 				)
 			),
 	    );
-		$roster = get_posts($args);
-		return $roster[0];
+		$rosters = get_posts($args);
+		foreach ($rosters as $roster) {
+			if(is_object($roster)){
+				return $roster;
+			}else{
+				return false;
+			}
+		}
 	}
 
 	/**
@@ -128,15 +137,20 @@ class Roster {
 	public static function get_rosters($sport){
 		$args = array(
 			'posts_per_page' => -1,
-			'post_type' => 'sa_roster',
+			'post_type' => 'sa_page',
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'sa_sport',
 					'field' => 'id',
 					'terms' => $sport,
 				),
+				array(
+					'taxonomy' => 'sa_page_type',
+					'field' => 'name',
+					'terms' => 'Roster',
+				),
 			),
-			'orderby' => 'taxonomy_sa_season',
+			'orderby' => 'title',
 			'order'   => 'DESC',
 		);
 		$posts = get_posts($args);
@@ -193,7 +207,22 @@ class Roster {
 					'status' => $status,
 				);
 		}
-		return $athletes;
+		if(empty($athletes)){
+			return array(
+					array(
+						'ID'     => 0,
+						'photo'  => '',
+						'jersey' => '',
+						'name'   => '',
+						'height' => '',
+						'weight' => '',
+						'status' => '',
+						'order' => '',
+					),
+				);
+		}else{
+			return $athletes;
+		}
 	}
 
 	/**

@@ -8,7 +8,7 @@ $athletes = $roster->athletes;
 
 ?>
 <h1>
-	<?php the_title(); ?>
+	<?php the_title(); ?> <?php echo $roster->sport->name; ?> <?php _e('Roster', 'school-athletics')?>
 </h1>
 <div class="roster dropdown">
 	<?php $roster->dropdown(); ?>

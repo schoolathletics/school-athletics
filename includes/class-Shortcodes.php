@@ -79,16 +79,21 @@ class Shortcodes {
 		$sport = \SchoolAthletics::get_sport($post);
 		//$season = \SchoolAthletics::get_season($post);
 		$args = array(
-					  'post_type' => 'sa_roster',
+					  'post_type' => 'sa_page',
 					  'posts_per_page' => 1,
 					  'tax_query' => array(
 					    array(
 					      'taxonomy' => 'sa_sport',
 					      'field' => 'id',
 					      'terms' => $sport->term_id, // Where term_id of Term 1 is "1".
-					    )
+					    ),
+					  	array(
+							'taxonomy' => 'sa_page_type',
+							'field' => 'name',
+							'terms' => 'Roster',
+						),
 					  ),
-					  'orderby' => 'taxonomy_sa_season',
+					  'orderby' => 'title',
 					  'order'   => 'DESC',
 					);
 		query_posts($args);
@@ -109,16 +114,21 @@ class Shortcodes {
 		$sport = \SchoolAthletics::get_sport($post);
 		//$season = \SchoolAthletics::get_season($post);
 		$args = array(
-					  'post_type' => 'sa_schedule',
+					  'post_type' => 'sa_page',
 					  'posts_per_page' => 1,
 					  'tax_query' => array(
 					    array(
 					      'taxonomy' => 'sa_sport',
 					      'field' => 'id',
 					      'terms' => $sport->term_id, // Where term_id of Term 1 is "1".
-					    )
+					    ),
+					    array(
+							'taxonomy' => 'sa_page_type',
+							'field' => 'name',
+							'terms' => 'Schedule',
+						),
 					  ),
-					  'orderby' => 'taxonomy_sa_season',
+					  'orderby' => 'title',
 					  'order'   => 'DESC',
 					);
 		query_posts($args);
@@ -137,7 +147,8 @@ class Shortcodes {
 		global $post;
 
 		$sport = \SchoolAthletics::get_sport($post);
-		//$season = \SchoolAthletics::get_season($post);
+		$todaysDate = date('d-m-y');
+		$todaysString = strtotime($todaysDate);
 		$args = array(
 					  'post_type' => 'sa_event',
 					  'posts_per_page' => 5,
@@ -148,15 +159,29 @@ class Shortcodes {
 					      'terms' => $sport->term_id, // Where term_id of Term 1 is "1".
 					    )
 					  ),
-					  'order'   => 'ASC',
+					  'meta_query' => array(
+							array(
+								'key' => 'sa_start',
+								'value' => date("Y-m-d"), // Set today's date (note the similar format)
+								'compare' => '>=',
+								'type' => 'DATE'
+							)
+					   ),
+					  'meta_key' => 'sa_start',
+					  'orderby' => 'meta_value',
+					  'order' => 'ASC',
 					);
 		query_posts($args);
 		
-		while ( have_posts() ) : the_post();
+		if ( have_posts() ) : while ( have_posts() ) : the_post();
 
 			include(SA__PLUGIN_DIR .'templates/loop/upcoming_events.php');
 
-		endwhile; // end of the loop. 
+		endwhile; else:
+   
+			_e('No Upcoming Events ','school-athletics');
+      
+		endif; // end of the loop. 
 
 		 wp_reset_query();
 	}

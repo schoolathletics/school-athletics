@@ -33,6 +33,12 @@ if(isset($_REQUEST['opponent'])){
 			</td>
 		</tr>
 		<tr>
+			<th><label for="mascot"><?php _e( 'Mascot', 'school-athletics' ); ?></th>
+			<td>
+				<p><input type="text" name="sa_opponent_options[mascot]" value="<?php echo (isset($sa_opponent_options['mascot'])) ? $sa_opponent_options['mascot'] : ''; ?>"></p>
+			</td>
+		</tr>
+		<tr>
 			<th><label for="sa_opponent_options[logo]"><?php _e( 'Logo', 'school-athletics' ); ?></th>
 			<td>
 				<div class="photo <?php echo ($sa_opponent_options['logo']) ? 'yes' : 'no';?>">

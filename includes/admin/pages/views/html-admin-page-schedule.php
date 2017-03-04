@@ -47,12 +47,11 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 		</tr>
 	</tbody>
 	</table>
-	<p><?php wp_editor( $schedule->content, 'schedule_content', array('teeny'=>1,'media_buttons'=> 0) ); ?> </p>
+	<p><?php //wp_editor( $schedule->content, 'schedule_content', array('teeny'=>1,'media_buttons'=> 0) ); ?> </p>
 	<h2>Events</h2>
 	<table class="wp-list-table widefat striped pages">
 	<thead>
 		<tr>
-			<th></th>
 			<th><?php _e( 'Date', 'school-athletics' ); ?></th>
 			<th><?php _e( 'Name', 'school-athletics' ); ?></th>
 			<th><?php _e( 'Location', 'school-athletics' ); ?></th>
@@ -62,18 +61,16 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 			<th><?php _e( 'Actions', 'school-athletics' ); ?></th>
 		</tr>
 	</thead>
-	<tbody id="sortable" class="ui-sortable">
+	<tbody>
 		<?php
 		$id = 0;
 		foreach ($events as $event) {
 		?>
 		<tr class="clonable">
-			<td class="ui-sortable-handle handle">
-				<span class="dashicons dashicons-move"></span>
-				<input type="hidden" class="order" name="event[<?php echo $id; ?>][order]" value="<?php echo $event['order']; ?>" >
+			<td>
 				<input class="object_id" type="hidden" name="event[<?php echo $id; ?>][ID]" value="<?php echo $event['ID']; ?>" >
+				<input class="datetime" type="text" name="event[<?php echo $id; ?>][date]" value="<?php echo $event['date']; ?>" size="16">
 			</td>
-			<td><input class="datetime" type="text" name="event[<?php echo $id; ?>][date]" value="<?php echo $event['date']; ?>" size="16"></td>
 			<td>
 				<input class="autocomplete" type="text" name="event[<?php echo $id; ?>][name]" value="<?php echo $event['name']; ?>" size="24">
 			</td>
@@ -136,7 +133,6 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	</tbody>
 	<tfoot>
 		<tr>
-			<th></th>
 			<th><?php _e( 'Date', 'school-athletics' ); ?></th>
 			<th><?php _e( 'Name', 'school-athletics' ); ?></th>
 			<th><?php _e( 'Location', 'school-athletics' ); ?></th>

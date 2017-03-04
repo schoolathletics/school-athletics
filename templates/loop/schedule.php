@@ -9,7 +9,7 @@ $events = $schedule->events;
 
 ?>
 <h1>
-	<?php the_title(); ?>
+	<?php the_title(); ?> <?php echo $schedule->sport->name; ?> <?php _e('Schedule', 'school-athletics')?>
 </h1>
 <div class="schedule dropdown">
 	<?php $schedule->dropdown(); ?>

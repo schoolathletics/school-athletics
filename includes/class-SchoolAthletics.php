@@ -25,6 +25,7 @@ class SchoolAthletics {
 	 */
 	public function __construct() {
 		add_action('init', array( $this, 'init' ), 0 );
+		add_action( 'widgets_init', array( $this, 'widgets') );
 	}
 
 	/**
@@ -43,6 +44,11 @@ class SchoolAthletics {
 		new \SchoolAthletics\Debug();
 		\SchoolAthletics\TemplateLoader::init();
 		\SchoolAthletics\Shortcodes::init();
+	}
+
+	public static function widgets(){
+		include(SA__PLUGIN_DIR .'includes/widgets/class-UpcomingEvents.php');
+  		register_widget( 'SA_Upcoming_Events_Widget' );
 	}
 
 

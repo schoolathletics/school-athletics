@@ -89,6 +89,9 @@ class Schedule {
 			$this->season = $season;
 			$this->events = $this->get_events($sport->term_id,$season->term_id);
 			$this->schedules = $this->get_schedules($sport->term_id);
+		}else{
+			$this->sport = get_term($_REQUEST['sport']);
+			$this->season =  get_term($_REQUEST['season']);
 		}
 	}
 
@@ -101,7 +104,7 @@ class Schedule {
 
 		$args = array(
 			'posts_per_page' => 1,
-			'post_type' => 'sa_schedule',
+			'post_type' => 'sa_page',
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'sa_sport',
@@ -115,8 +118,14 @@ class Schedule {
 				)
 			),
 	    );
-		$roster = get_posts($args);
-		return $roster[0];
+		$rosters = get_posts($args);
+		foreach ($rosters as $roster) {
+			if(is_object($roster)){
+				return $roster;
+			}else{
+				return false;
+			}
+		}
 	}
 
 	/**
@@ -125,15 +134,20 @@ class Schedule {
 	public static function get_schedules($sport){
 		$args = array(
 			'posts_per_page' => -1,
-			'post_type' => 'sa_schedule',
+			'post_type' => 'sa_page',
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'sa_sport',
 					'field' => 'id',
 					'terms' => $sport,
 				),
+				array(
+					'taxonomy' => 'sa_page_type',
+					'field' => 'name',
+					'terms' => 'Schedule',
+				),
 			),
-			'orderby' => 'taxonomy_sa_season',
+			'orderby' => 'title',
 			'order'   => 'DESC',
 		);
 		$posts = get_posts($args);
@@ -170,8 +184,8 @@ class Schedule {
 					'terms' => $season,
 				)
 			),
-			'meta_key' => 'sa_order',
-			'orderby' => 'meta_value_num',
+			'meta_key' => 'sa_start',
+			'orderby' => 'meta_value',
 			'order' => 'ASC',
 		);
 		$_events = get_posts($args);
@@ -201,8 +215,22 @@ class Schedule {
 					'order' => get_post_meta( $event->ID, 'sa_order', true ),
 				);
 		}
-
-		return $events;
+		if(empty($events)){
+			return array(
+				array(
+							'ID'	 => 0,
+							'date'  => '',
+							'name'   => '',
+							'result' => '',
+							'location' => '',
+							'game_type' => '',
+							'outcome' => '',
+							'order' => '',
+						)
+				);
+		}else{
+			return $events;
+		}
 
 	}
 
