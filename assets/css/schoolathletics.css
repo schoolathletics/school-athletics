@@ -8,6 +8,8 @@
 .schoolathletics.news .thumbnail {float:left; padding:0px 15px;}
 
 .roster.dropdown, .schedule.dropdown{float:right;}
+.event ul{padding-left:15px;}
+.event li{list-style: none; color:#555;}
 
 /* Column Classes
 --------------------------------------------- */
@@ -29,4 +31,8 @@
 .first {
 	clear: both;
 	margin-left: 0;
+}
+
+@media only screen and (max-width:550px) {
+	.one-third, .two-thirds{width:100%;}
 }
