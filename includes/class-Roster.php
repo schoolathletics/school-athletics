@@ -93,8 +93,11 @@ class Roster {
 			$this->athletes = $this->get_athletes($sport->term_id,$season->term_id);
 			$this->rosters = $this->get_rosters($sport->term_id);
 		}else{
-			$this->sport = get_term($_REQUEST['sport']);
-			$this->season =  get_term($_REQUEST['season']);
+			$sport = get_term($_REQUEST['sport']);
+			$season = get_term($_REQUEST['season']);
+			$this->sport = $sport;
+			$this->season =  $season;
+			$this->athletes = $this->get_athletes($sport->term_id,$season->term_id);
 		}
 	}
 
@@ -118,6 +121,11 @@ class Roster {
 					'taxonomy' => 'sa_season',
 					'field' => 'id',
 					'terms' => $season,
+				),
+				array(
+					'taxonomy' => 'sa_page_type',
+					'field' => 'name',
+					'terms' => 'Roster',
 				)
 			),
 	    );

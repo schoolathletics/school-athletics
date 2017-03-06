@@ -32,5 +32,4 @@ class SchoolAthletics extends Page{
 		include_once( 'views/html-admin-page-schoolathletics.php' );
 	}
 
-
 }

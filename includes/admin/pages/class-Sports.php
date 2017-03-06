@@ -318,17 +318,22 @@ class Sports extends Page{
 	 */
 	public static function get_current_roster($sport){
 		$pages = get_posts(array(
-		  'post_type' => 'sa_roster',
+		  'post_type' => 'sa_page',
 		  'numberposts' => -1,
 		  'tax_query' => array(
 		    array(
 		      'taxonomy' => 'sa_sport',
 		      'field' => 'id',
 		      'terms' => $sport->term_id, // Where term_id of Term 1 is "1".
-		    )
+		    ),
+		    array(
+				'taxonomy' => 'sa_page_type',
+				'field' => 'name',
+				'terms' => 'Roster',
+			),
 		  ),
-		  'orderby' => 'taxonomy_sa_season',
-		  'order'   => 'ASC',
+		  'orderby' => 'title',
+		  'order'   => 'DESC',
 		));
 		$content = '';
 		foreach ($pages as $page) {
@@ -362,8 +367,8 @@ class Sports extends Page{
 				'terms' => 'Schedule',
 			),
 		  ),
-		  'orderby' => 'taxonomy_sa_season',
-		  'order'   => 'ASC',
+		  'orderby' => 'title',
+		  'order'   => 'DESC',
 		));
 		$content = '';
 		foreach ($pages as $page) {

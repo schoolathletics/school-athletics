@@ -21,7 +21,7 @@ class Page {
 
 	public function __construct(){
 		$this->header();
-		add_filter( 'admin_footer_text', array( $this, 'footer_text' ), 1 );
+		add_filter( 'admin_footer_text', array( $this, 'footer_text' ), 10 );
 
 		wp_enqueue_media();
 		wp_enqueue_script('jquery-ui-core');

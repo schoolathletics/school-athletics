@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	$schedule = new \SchoolAthletics\Schedule();
 	$schedule_thumbnail = get_post_thumbnail_id( $schedule->ID);
-	$title = $schedule->season->name.' '.$schedule->sport->name.' '.__('Roster','school-athletics');
+	$title = $schedule->season->name.' '.$schedule->sport->name.' '.__('Schedule','school-athletics');
 	$events = $schedule->events;
 
 	if(!empty($import) && is_array($import)){
