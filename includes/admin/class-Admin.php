@@ -26,7 +26,16 @@ class Admin {
 		add_filter( 'display_post_states', array( $this, 'post_states' ), 10, 2 );
 		new \SchoolAthletics\Admin\Menus();
 		new \SchoolAthletics\Admin\MetaBoxes();
+
+		// Don't show Rosters, Athetes, or Schedules in page list
 		add_filter('pre_get_posts', array( $this, 'sa_pages_admin' ));
+
+		// Only show parent pages when editing page  
+		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'top_level_pages_only') );
+
+		// Also perform the same filter when doing a 'Quick Edit'  
+		add_filter( 'quick_edit_dropdown_pages_args', array( $this, 'top_level_pages_only') );  
+
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_init', array( $this, 'permalinks') );
 		add_action( 'admin_init', array( $this, 'save_permalink_settings') );
@@ -49,6 +58,16 @@ class Admin {
 		return $states;
 	}
 
+
+	/**
+	 * Hide Child Pages
+	 */
+    public static function top_level_pages_only( $args )  
+    {  
+        $args['depth'] = '1';  
+        return $args;  
+    }  
+
 	/**
 	 * Advanced Options
 	 */
@@ -66,17 +85,38 @@ class Admin {
 		register_setting( 'schoolathletics_your_school_fields', 'schoolathletics_your_school_options'); 
 	} 
 
+
 	/**
 	 * Customize sa_pages Admin
 	 */
 	public static function sa_pages_admin(){
-		//global $wp_query;
-		//if (is_admin()) {
+		global $wp_query;
+		//if () {
 			// Get the post type from the query
-		//	if ( $wp_query->query['post_type'] == 'sa_page') {
-		//		$wp_query->set('orderby', 'menu_order');
-		//		$wp_query->set('order', 'DESC');
-		//	}
+			if ( $wp_query->query['post_type'] == 'sa_page' && !\SchoolAthletics\Debug::status()) {
+				$tax_query =  array(
+						'relation' => 'AND',
+						array(
+							'taxonomy' => 'sa_page_type',
+							'field'    => 'slug',
+							'terms'    => 'athlete',
+							'operator' => 'NOT IN'
+						),
+						array(
+							'taxonomy' => 'sa_page_type',
+							'field'    => 'slug',
+							'terms'    => 'roster',
+							'operator' => 'NOT IN'
+						),
+						array(
+							'taxonomy' => 'sa_page_type',
+							'field'    => 'slug',
+							'terms'    => 'schedule',
+							'operator' => 'NOT IN'
+						),
+					);
+				$wp_query->set('tax_query', $tax_query);
+			}
 		//}
 	}
 

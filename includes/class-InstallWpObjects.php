@@ -49,7 +49,7 @@ class InstallWpObjects {
 				'sa_staff',
 				'sa_event',
 				//'sa_roster',
-				'sa_roster_member',
+				//'sa_roster_member',
 				//'sa_schedule'
 			),
 			array(
@@ -84,7 +84,7 @@ class InstallWpObjects {
 		register_taxonomy_for_object_type( 'sa_sport', 'sa_event' );
 		//register_taxonomy_for_object_type( 'sa_sport', 'sa_roster' );
 		//register_taxonomy_for_object_type( 'sa_sport', 'sa_schedule' );
-		register_taxonomy_for_object_type( 'sa_sport', 'sa_roster_member' );
+		//register_taxonomy_for_object_type( 'sa_sport', 'sa_roster_member' );
 
 		// Register People Taxonomy
 		register_taxonomy( 'sa_page_type',
@@ -108,9 +108,9 @@ class InstallWpObjects {
 			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => false,
-			'show_admin_column'     => true,
+			'show_admin_column'     => \SchoolAthletics\Debug::status(),
 			'show_tagcloud'         => false,
-			'show_in_quick_edit'    => true,
+			'show_in_quick_edit'    => \SchoolAthletics\Debug::status(),
 			'update_count_callback' => '_update_post_term_count',
 			'query_var'             => false,
 			'public'                => false,
@@ -122,7 +122,7 @@ class InstallWpObjects {
 		// Register People Taxonomy
 		register_taxonomy( 'sa_athlete_status',
 			array(
-				'sa_roster_member',
+				'sa_page',
 			),
 			array(
 			'hierarchical'          => false,
@@ -141,16 +141,16 @@ class InstallWpObjects {
 			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => false,
-			'show_admin_column'     => true,
+			'show_admin_column'     => \SchoolAthletics\Debug::status(),
 			'show_tagcloud'         => false,
-			'show_in_quick_edit'    => true,
+			'show_in_quick_edit'    => \SchoolAthletics\Debug::status(),
 			'update_count_callback' => '_update_post_term_count',
 			'query_var'             => false,
 			'public'                => false,
 	        'rewrite'               => false,
 			)
 		);
-		register_taxonomy_for_object_type( 'sa_athlete_status', 'sa_roster_member' );
+		register_taxonomy_for_object_type( 'sa_athlete_status', 'sa_page' );
 
 		// Register People Taxonomy
 		register_taxonomy( 'sa_person',
@@ -159,7 +159,7 @@ class InstallWpObjects {
 				'sa_staff',
 				//'sa_roster',
 				'sa_page',
-				'sa_roster_member',
+				//'sa_roster_member',
 			),
 			array(
 			'hierarchical'          => false,
@@ -175,10 +175,10 @@ class InstallWpObjects {
 						'new_item_name'     => __( 'New Person Name', 'school-athletics' ),
 						'not_found'         => __( 'No Persons found', 'school-athletics' ),
 			),
-			'show_ui'               => true,
+			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => false,
-			'show_admin_column'     => true,
+			'show_admin_column'     => \SchoolAthletics\Debug::status(),
 			'show_tagcloud'         => false,
 			'show_in_quick_edit'    => false,
 			'update_count_callback' => '_update_post_term_count',
@@ -189,7 +189,7 @@ class InstallWpObjects {
 		);
 		register_taxonomy_for_object_type( 'sa_person', 'post' );
 		register_taxonomy_for_object_type( 'sa_person', 'sa_staff' );
-		register_taxonomy_for_object_type( 'sa_person', 'sa_roster_member' );
+		//register_taxonomy_for_object_type( 'sa_person', 'sa_roster_member' );
 		register_taxonomy_for_object_type( 'sa_person', 'sa_page' );
 		//register_taxonomy_for_object_type( 'sa_person', 'sa_roster' );
 
@@ -199,7 +199,7 @@ class InstallWpObjects {
 				//'sa_schedule',
 				'sa_page',
 				//'sa_roster',
-				'sa_roster_member',
+				//'sa_roster_member',
 				'sa_event',
 			),
 			array(
@@ -219,16 +219,16 @@ class InstallWpObjects {
 			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => false,
 			'show_in_nav_menus'     => false,
-			'show_admin_column'     => true,
+			'show_admin_column'     => \SchoolAthletics\Debug::status(),
 			'show_tagcloud'         => false,
-			'show_in_quick_edit'    => true,
+			'show_in_quick_edit'    => \SchoolAthletics\Debug::status(),
 			'update_count_callback' => '_update_post_term_count',
 			'query_var'             => false,
 			'public'                => false,
 	        'rewrite'               => false,
 			)
 		);
-		register_taxonomy_for_object_type( 'sa_season', 'sa_roster_member' );
+		//register_taxonomy_for_object_type( 'sa_season', 'sa_roster_member' );
 		register_taxonomy_for_object_type( 'sa_season', 'sa_event' );
 		//register_taxonomy_for_object_type( 'sa_season', 'sa_roster' );
 		register_taxonomy_for_object_type( 'sa_season', 'sa_page' );
@@ -256,9 +256,9 @@ class InstallWpObjects {
 			'show_ui'               => \SchoolAthletics\Debug::status(),
 			'show_in_menu'          => 'sa_debug',
 			'show_in_nav_menus'     => false,
-			'show_admin_column'     => true,
+			'show_admin_column'     => \SchoolAthletics\Debug::status(),
 			'show_tagcloud'         => false,
-			'show_in_quick_edit'    => true,
+			'show_in_quick_edit'    => \SchoolAthletics\Debug::status(),
 			'update_count_callback' => '_update_post_term_count',
 			'query_var'             => false,
 			'public'                => false,
@@ -489,7 +489,7 @@ class InstallWpObjects {
 		);*/
 
 		// Register Roster
-		$member_permalink = empty( $permalinks['roster_base'] ) ? untrailingslashit($roster_permalink).'/%sa_season%/' : $permalinks['roster_base'];
+		/*$member_permalink = empty( $permalinks['roster_base'] ) ? untrailingslashit($roster_permalink).'/%sa_season%/' : $permalinks['roster_base'];
 		register_post_type( 'sa_roster_member',
 			array(
 				'label'               => __( 'sa_roster_member', 'school-athletics' ),
@@ -524,7 +524,7 @@ class InstallWpObjects {
 		        'query_var'           => true,
 		        'capability_type'     => 'post',
 			)
-		);
+		);*/
 
 		// Register Event
 		/*$schedule_permalink = empty( $permalinks['schedule_base'] ) ? untrailingslashit( $page_permalink ).'/%sa_sport%/'._x( 'schedule', 'slug', 'school-athletics' ) : $permalinks['schedule_base'];
@@ -649,6 +649,8 @@ class InstallWpObjects {
 			$sport_home_id = get_term_meta( $term->term_id, 'sa_sport_home_id', true );
 			$url = get_permalink($sport_home_id);
 			return $url;
+		}else{
+			return $url;
 		}
 	}
 
@@ -691,7 +693,7 @@ class InstallWpObjects {
 			if ( ! empty( $seasons ) ) {
 				$permalink =  str_replace( '%sa_season%' , $seasons[0]->slug , $permalink );
 			}else{
-				$permalink =  str_replace( '%sa_season%' ,'no-sa_season', $permalink );
+				$permalink =  str_replace( '%sa_season%' ,'no-season', $permalink );
 			}
 
 		}
@@ -706,10 +708,11 @@ class InstallWpObjects {
 		add_rewrite_tag( '%sa_sport%', '([^&]+)');
 		add_rewrite_tag( '%sa_season%', '([^&]+)');
 		$permalinks = get_option( 'schoolathletics_permalinks' );
+		$permalink_base = empty( $permalinks['base'] ) ? _x( 'sports', 'slug', 'school-athletics' ) : $permalinks['base'];
 		//add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('schedule', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_schedule=$matches[2]','top');
-		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('roster', 'slug', 'school-athletics').'/([^&]+)/([^&]+)/?$','index.php?sa_roster_member=$matches[3]','top');
+		//add_rewrite_rule($permalink_base.'/([^/]*)/'._x('roster', 'slug', 'school-athletics').'/([^&]+)/([^&]+)/?$','index.php?sa_roster_member=$matches[3]','top');
 		//add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('roster', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_roster=$matches[2]','top');
-		add_rewrite_rule($permalinks['base'].'/([^/]*)/'._x('staff', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_staff=$matches[2]','top');
+		add_rewrite_rule($permalink_base.'/([^/]*)/'._x('staff', 'slug', 'school-athletics').'/([^&]+)/?$','index.php?sa_staff=$matches[2]','top');
 	}	
 
 }

@@ -181,7 +181,7 @@ class Roster {
 	public static function get_athletes($sport,$season){
 		$args = array(
 			'posts_per_page' => -1,
-			'post_type' => 'sa_roster_member',
+			'post_type' => 'sa_page',
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'sa_sport',
@@ -192,6 +192,11 @@ class Roster {
 					'taxonomy' => 'sa_season',
 					'field' => 'id',
 					'terms' => $season,
+				),
+				array(
+					'taxonomy' => 'sa_page_type',
+					'field' => 'name',
+					'terms' => 'Athlete',
 				)
 			),
 			'meta_key' => 'sa_order',
