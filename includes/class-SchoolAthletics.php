@@ -19,6 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  */
 class SchoolAthletics {
+
+	public $version = SA_VERSION;
 	
 	/**
 	 * School Athletics Constructor.
@@ -42,7 +44,7 @@ class SchoolAthletics {
 			new \SchoolAthletics\Admin\Admin();
 		}
 		new \SchoolAthletics\Debug();
-		\SchoolAthletics\TemplateLoader::init();
+		\SchoolAthletics\Templates::init();
 		\SchoolAthletics\Shortcodes::init();
 	}
 

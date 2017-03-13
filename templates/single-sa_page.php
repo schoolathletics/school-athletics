@@ -7,22 +7,17 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+?>
+<?php get_header(); ?>
 
-get_header(); ?>
-
-		<?php include(SA__PLUGIN_DIR .'templates/inc/schoolathletics-menu.php'); ?>
+<?php do_action( 'schoolathletics_before_content' ); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<h1>
-			<?php the_title(); ?>
-			</h1>
-			<?php the_content(); ?>
-			<?php 
-			\SchoolAthletics\Debug::file_path(SA__PLUGIN_DIR .'includes/templates/single-sa_page.php');
-			\SchoolAthletics\Debug::content($_REQUEST); 
-			?>
+			<?php do_action( 'schoolathletics_content' ); ?>
 
 		<?php endwhile; // end of the loop. ?>
+
+<?php do_action( 'schoolathletics_after_content' ); ?>
 
 <?php get_footer(); ?>

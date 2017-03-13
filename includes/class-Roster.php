@@ -19,6 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Roster Class.
  */
 class Roster {
+
+	public $page_type = 'roster';
+
 	/** @var int post ID for roster page. */
 	public $ID = '';
 
@@ -28,115 +31,107 @@ class Roster {
 	/** @var string post ID for roster page. */
 	public $content = '';
 
-	/** @var object sport that roster belongs to. */
-	public $sport = array();
+	/** @var int thumbnail ID. */
+	public $thumbnail = '';
+
+	/** @var string sport that roster belongs to. */
+	public $sport = '';
+
+	/** @var int sport that roster belongs to. */
+	public $sport_id = '';
 
 	/** @var object season that roster belongs to. */
-	public $season = array();
+	public $season = '';
+
+	/** @var object season that roster belongs to. */
+	public $season_id = '';
+
+	/** @var object season that roster belongs to. */
+	public $permalink = '';
 
 	/** @var array options */
 	public $options = array();
 
-	/** @var object Roster page object */
-	public $roster = array();
-
-	/** @var array List of sport Rosters */
-	public $rosters = array(
-			array(
-				'ID' => '',
-				'season' => '', 
-				'title' => '', 
-				'permalink' => '',
-			),
-		);
-
-	/** @var array Contains roster athletes */
-	public $athletes = array(
-		array(
-				'ID'     => 0,
-				'photo'  => '',
-				'jersey' => '',
-				'name'   => '',
-				'height' => '',
-				'weight' => '',
-				'status' => '',
-				'order' => '',
-			),
-	);
-
-	/** @var array Contains roster coaches */
-	public $coaches = array();
-
 	/** @var array Contains roster errors */
 	public $errors = array();
-
 
 	/**
 	 * Constructor
 	 */
 	public function __construct($post = null) {
-		if(!$post){
-			$post = $this->get_roster();
-		}
+		$season = null;
 
 		if(is_object($post)){
 			$sports = get_the_terms($post,'sa_sport');
-			$sport = $sports[0];
-			$seasons = get_the_terms($post,'sa_season');
-			$season = $seasons[0];
-			$this->ID = $post->ID;
-			$this->title = $post->post_title;
-			$this->content = $post->post_content;
-			$this->roster = $post;
-			$this->sport = $sport;
-			$this->season = $season;
-			$this->athletes = $this->get_athletes($sport->term_id,$season->term_id);
-			$this->rosters = $this->get_rosters($sport->term_id);
+			$sport = $sports[0]->term_id;
 		}else{
-			$sport = get_term($_REQUEST['sport']);
-			$season = get_term($_REQUEST['season']);
-			$this->sport = $sport;
-			$this->season =  $season;
-			$this->athletes = $this->get_athletes($sport->term_id,$season->term_id);
+			$sport = $_REQUEST['sport'];
+			$season = $_REQUEST['season'];
 		}
+
+		if(is_object($post) && has_term('roster','sa_page_type')){
+			$seasons = get_the_terms($post,'sa_season');
+			$season = $seasons[0]->term_id;
+		}
+		
+		$this->get_roster($sport, $season);
 	}
 
 	/**
 	 * Get members for admin
 	 */
-	public function get_roster(){
-		$sport = $_REQUEST['sport'];
-		$season = $_REQUEST['season'];
-
-		$args = array(
-			'posts_per_page' => 1,
-			'post_type' => 'sa_page',
-			'tax_query' => array(
-				array(
-					'taxonomy' => 'sa_sport',
-					'field' => 'id',
-					'terms' => $sport, // Where term_id of Term 1 is "1".
-				),
-				array(
-					'taxonomy' => 'sa_season',
-					'field' => 'id',
-					'terms' => $season,
-				),
-				array(
-					'taxonomy' => 'sa_page_type',
-					'field' => 'name',
-					'terms' => 'Roster',
-				)
-			),
-	    );
+	public function get_roster($sport, $season = null){
+		$args = array();
+		$args['posts_per_page'] = 1;
+		$args['post_type'] = 'sa_page';
+		$args['orderby'] = 'title';
+		$args['order'] = 'DESC';
+		$args['tax_query'] = array();
+		$args['tax_query'][] = array(
+								'taxonomy' => 'sa_sport',
+								'field' => 'id',
+								'terms' => $sport, // Where term_id of Term 1 is "1".
+							);
+		$args['tax_query'][] = array(
+								'taxonomy' => 'sa_page_type',
+								'field' => 'name',
+								'terms' => 'Roster',
+							);
+		if(isset($season)){
+		$args['tax_query'][] = array(
+								'taxonomy' => 'sa_season',
+								'field' => 'id',
+								'terms' => $season, // Where term_id of Term 1 is "1".
+							);
+		}
 		$rosters = get_posts($args);
 		foreach ($rosters as $roster) {
 			if(is_object($roster)){
-				return $roster;
+				$sports = get_the_terms($roster,'sa_sport');
+				$sport = $sports[0];
+				$seasons = get_the_terms($roster,'sa_season');
+				$season = $seasons[0];
+				$this->ID = $roster->ID;
+				$this->title = $roster->post_title.' '.$sport->name.' '.__('Roster', 'school-athletics');
+				$this->content = $roster->post_content;
+				$this->season = $season->name;
+				$this->season_id = $season->term_id;
+				$this->sport = $sport->name;
+				$this->sport_id = $sport->term_id;
+				$this->thumbnail = get_post_thumbnail_id($roster->ID);
+				$this->permalink = get_permalink($roster->ID);
+				return true;
 			}else{
 				return false;
 			}
 		}
+		$sport = get_term($sport);
+		$season = get_term($season);
+		$this->title = $season->name.' '.$sport->name.' '.__('Roster', 'school-athletics');
+		$this->season = $season->name;
+		$this->season_id = $season->term_id;
+		$this->sport = $sport->name;
+		$this->sport_id = $sport->term_id;
 	}
 
 	/**
@@ -178,7 +173,7 @@ class Roster {
 	/**
 	 * Get Athletes
 	 */
-	public static function get_athletes($sport,$season){
+	public function get_athletes(){
 		$args = array(
 			'posts_per_page' => -1,
 			'post_type' => 'sa_page',
@@ -186,12 +181,12 @@ class Roster {
 				array(
 					'taxonomy' => 'sa_sport',
 					'field' => 'id',
-					'terms' => $sport,
+					'terms' => $this->sport_id,
 				),
 				array(
 					'taxonomy' => 'sa_season',
 					'field' => 'id',
-					'terms' => $season,
+					'terms' => $this->season_id,
 				),
 				array(
 					'taxonomy' => 'sa_page_type',
@@ -239,21 +234,14 @@ class Roster {
 	}
 
 	/**
-	 * Get Coaches
-	 */
-	public static function get_coaches($sport,$season){
-
-	}
-
-	/**
 	 * Creates a roster list from the roster object.
 	 */
 	public function dropdown(){
 
 		if(is_object($this)){
-
+			$rosters = $this::get_rosters($this->sport_id);
 			echo '<select class="select" onChange="window.location.href=this.value">';
-				foreach ($this->rosters as $roster) {
+				foreach ($rosters as $roster) {
 					if($this->ID == $roster['ID']){
 						$selected = 'selected';
 					}else{

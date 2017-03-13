@@ -12,11 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(!empty($_GET['sport']) && !empty($_GET['season'])){
 
 	$roster = new \SchoolAthletics\Roster();
-	$roster_thumbnail = get_post_thumbnail_id( $roster->ID);
+	$roster_thumbnail = $roster->thumbnail;
 
-	$title = $roster->season->name.' '.$roster->sport->name.' '.__('Roster','school-athletics');
+	$title = $roster->title;
 
-	$athletes = $roster->athletes;
+	$athletes = $roster->get_athletes();
 
 	if(!empty($import) && is_array($import)){
 		if(!empty($import) && is_array($import)){

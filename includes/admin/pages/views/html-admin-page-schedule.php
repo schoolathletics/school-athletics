@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if(!empty($_GET['sport']) && !empty($_GET['season'])){
 	$schedule = new \SchoolAthletics\Schedule();
-	$schedule_thumbnail = get_post_thumbnail_id( $schedule->ID);
-	$title = $schedule->season->name.' '.$schedule->sport->name.' '.__('Schedule','school-athletics');
-	$events = $schedule->events;
+	//$schedule_thumbnail = get_post_thumbnail_id( $schedule->ID);
+	$title = $schedule->title;
+	$events = $schedule->get_events();
 
 	if(!empty($import) && is_array($import)){
 		if(!empty($import) && is_array($import)){
@@ -197,4 +197,4 @@ if(!empty($_GET['sport']) && !empty($_GET['season'])){
 }
 
 \SchoolAthletics\Debug::file_path('includes/admin/pages/views/html-admin-page-schedule.php');
-\SchoolAthletics\Debug::content($_REQUEST); 
+\SchoolAthletics\Debug::content($schedule); 

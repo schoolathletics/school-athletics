@@ -74,7 +74,7 @@ class Shortcodes {
 	}
 
 	public static function roster(){
-		global $post;
+		/*global $post;
 
 		$sport = \SchoolAthletics::get_sport($post);
 		//$season = \SchoolAthletics::get_season($post);
@@ -100,16 +100,16 @@ class Shortcodes {
 		
 		while ( have_posts() ) : the_post();
 
-			include(SA__PLUGIN_DIR .'templates/loop/roster.php');
+			include(SA__PLUGIN_DIR .'templates/shortcodes/roster.php');
 
 		endwhile; // end of the loop. 
 
-		 wp_reset_query();
+		 wp_reset_query();*/
 
 	}
 
 	public static function schedule(){
-		global $post;
+		/*global $post;
 
 		$sport = \SchoolAthletics::get_sport($post);
 		//$season = \SchoolAthletics::get_season($post);
@@ -135,11 +135,11 @@ class Shortcodes {
 		
 		while ( have_posts() ) : the_post();
 
-			include(SA__PLUGIN_DIR .'templates/loop/schedule.php');
+			include(SA__PLUGIN_DIR .'templates/shortcodes/schedule.php');
 
 		endwhile; // end of the loop. 
 
-		 wp_reset_query();
+		 wp_reset_query();*/
 
 	}
 
@@ -175,7 +175,7 @@ class Shortcodes {
 		
 		if ( have_posts() ) : while ( have_posts() ) : the_post();
 
-			include(SA__PLUGIN_DIR .'templates/loop/upcoming_events.php');
+			include(SA__PLUGIN_DIR .'templates/shortcodes/upcoming_events.php');
 
 		endwhile; else:
    
@@ -206,7 +206,7 @@ class Shortcodes {
 		
 		while ( have_posts() ) : the_post();
 
-			include(SA__PLUGIN_DIR .'templates/loop/staff.php');
+			include(SA__PLUGIN_DIR .'templates/shortcodes/staff.php');
 
 		endwhile; // end of the loop. 
 
@@ -244,7 +244,7 @@ class Shortcodes {
    
 		if ( have_posts() ) : while ( have_posts() ) : the_post();
 		
-			include(SA__PLUGIN_DIR .'templates/loop/news.php');
+			include(SA__PLUGIN_DIR .'templates/shortcodes/news.php');
 
 		endwhile; else:
    
@@ -285,7 +285,7 @@ class Shortcodes {
    
 		if ( have_posts() ) : while ( have_posts() ) : the_post();
 		
-			include(SA__PLUGIN_DIR .'templates/loop/featured.php');
+			include(SA__PLUGIN_DIR .'templates/shortcodes/featured.php');
 
 		endwhile; else:
    
@@ -299,7 +299,7 @@ class Shortcodes {
 
 	public static function home(){
 
-			include(SA__PLUGIN_DIR .'templates/loop/home.php');
+			//include(SA__PLUGIN_DIR .'templates/shortcodes/home.php');
 
 	}
 

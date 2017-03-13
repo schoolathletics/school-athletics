@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Schedule {
 
+	public $page_type = 'schedule';
+
 	/** @var int post ID for roster page. */
 	public $ID = '';
 
@@ -27,113 +29,109 @@ class Schedule {
 	public $title = '';
 
 	/** @var string post ID for roster page. */
-	public $content = '';
+	//public $content = '';
 
-	/** @var object sport that roster belongs to. */
-	public $sport = array();
+	/** @var int thumbnail ID. */
+	//public $thumbnail = '';
+
+	/** @var string sport that roster belongs to. */
+	public $sport = '';
+
+	/** @var int sport that roster belongs to. */
+	public $sport_id = '';
 
 	/** @var object season that roster belongs to. */
-	public $season = array();
+	public $season = '';
+
+	/** @var object season that roster belongs to. */
+	public $season_id = '';
+
+	/** @var object season that roster belongs to. */
+	public $permalink = '';
 
 	/** @var array options */
 	public $options = array();
 
-	/** @var array schedule page object */
-	public $schedule = array();
-
-	/** @var array List of sport schedules */
-	public $schedules = array(
-			array(
-				'ID' => '',
-				'season' => '', 
-				'title' => '', 
-				'permalink' => '',
-			),
-		);
-
-	/** @var array Contains schedule events */
-	public $events = array(
-		array(
-					'ID'	 => 0,
-					'date'  => '',
-					'name'   => '',
-					'result' => '',
-					'location' => '',
-					'game_type' => '',
-					'outcome' => '',
-					'order' => '',
-				)
-		);
-
-	/** @var array Contains events errors */
+	/** @var array Contains roster errors */
 	public $errors = array();
 
 	/**
 	 * Hook in methods.
 	 */
 	public function __construct($post = null) {
-		if(!$post){
-			$post = $this->get_schedule();
-		}
+		$season = null;
 
 		if(is_object($post)){
 			$sports = get_the_terms($post,'sa_sport');
-			$sport = $sports[0];
-			$seasons = get_the_terms($post,'sa_season');
-			$season = $seasons[0];
-			$this->ID = $post->ID;
-			$this->title = $post->post_title;
-			$this->content = $post->post_content;
-			$this->schedule = $post;
-			$this->sport = $sport;
-			$this->season = $season;
-			$this->events = $this->get_events($sport->term_id,$season->term_id);
-			$this->schedules = $this->get_schedules($sport->term_id);
+			$sport = $sports[0]->term_id;
 		}else{
-			$sport = get_term($_REQUEST['sport']);
-			$season = get_term($_REQUEST['season']);
-			$this->sport = $sport;
-			$this->season =  $season;
-			$this->events = $this->get_events($sport->term_id,$season->term_id);
+			$sport = $_REQUEST['sport'];
+			$season = $_REQUEST['season'];
 		}
+
+		if(is_object($post) && has_term('schedule','sa_page_type')){
+			$seasons = get_the_terms($post,'sa_season');
+			$season = $seasons[0]->term_id;
+		}
+		
+		$this->get_schedule($sport, $season);
 	}
 
 	/**
 	 * Get schedule
 	 */
-	public function get_schedule(){
-		$sport = $_REQUEST['sport'];
-		$season = $_REQUEST['season'];
-
-		$args = array(
-			'posts_per_page' => 1,
-			'post_type' => 'sa_page',
-			'tax_query' => array(
-				array(
-					'taxonomy' => 'sa_sport',
-					'field' => 'id',
-					'terms' => $sport, // Where term_id of Term 1 is "1".
-				),
-				array(
-					'taxonomy' => 'sa_season',
-					'field' => 'id',
-					'terms' => $season,
-				),
-				array(
-					'taxonomy' => 'sa_page_type',
-					'field' => 'name',
-					'terms' => 'Schedule',
-				)
-			),
-	    );
-		$rosters = get_posts($args);
-		foreach ($rosters as $roster) {
-			if(is_object($roster)){
-				return $roster;
+	public function get_schedule($sport, $season = null){
+		$args = array();
+		$args['posts_per_page'] = 1;
+		$args['post_type'] = 'sa_page';
+		$args['orderby'] = 'title';
+		$args['order'] = 'DESC';
+		$args['tax_query'] = array();
+		$args['tax_query'][] = array(
+								'taxonomy' => 'sa_sport',
+								'field' => 'id',
+								'terms' => $sport, // Where term_id of Term 1 is "1".
+							);
+		$args['tax_query'][] = array(
+								'taxonomy' => 'sa_page_type',
+								'field' => 'name',
+								'terms' => 'Schedule',
+							);
+		if(isset($season)){
+		$args['tax_query'][] = array(
+								'taxonomy' => 'sa_season',
+								'field' => 'id',
+								'terms' => $season, // Where term_id of Term 1 is "1".
+							);
+		}
+		$schedules = get_posts($args);
+		foreach ($schedules as $schedule) {
+			if(is_object($schedule)){
+				$sports = get_the_terms($schedule,'sa_sport');
+				$sport = $sports[0];
+				$seasons = get_the_terms($schedule,'sa_season');
+				$season = $seasons[0];
+				$this->ID = $schedule->ID;
+				$this->title = $schedule->post_title.' '.$sport->name.' '.__('Schedule', 'school-athletics');
+				//$this->content = $roster->post_content;
+				$this->season = $season->name;
+				$this->season_id = $season->term_id;
+				$this->sport = $sport->name;
+				$this->sport_id = $sport->term_id;
+				//$this->thumbnail = get_post_thumbnail_id($schedule->ID);
+				$this->permalink = get_permalink($schedule->ID);
+				return true;
 			}else{
 				return false;
 			}
 		}
+		$sport = get_term($sport);
+		$season = get_term($season);
+		$this->title = $season->name.' '.$sport->name.' '.__('Schedule', 'school-athletics');
+		$this->season = $season->name;
+		$this->season_id = $season->term_id;
+		$this->sport = $sport->name;
+		$this->sport_id = $sport->term_id;
 	}
 
 	/**
@@ -175,7 +173,7 @@ class Schedule {
 	/**
 	 * Get Schedule Events
 	 */
-	public static function get_events($sport,$season){
+	public function get_events(){
 		
 		$args = array(
 			'post_type' => 'sa_event',
@@ -184,12 +182,12 @@ class Schedule {
 				array(
 					'taxonomy' => 'sa_sport',
 					'field' => 'id',
-					'terms' => $sport, // Where term_id of Term 1 is "1".
+					'terms' => $this->sport_id, // Where term_id of Term 1 is "1".
 				),
 				array(
 					'taxonomy' => 'sa_season',
 					'field' => 'id',
-					'terms' => $season,
+					'terms' => $this->season_id,
 				)
 			),
 			'meta_key' => 'sa_start',
@@ -248,9 +246,9 @@ class Schedule {
 	public function dropdown(){
 
 		if(is_object($this)){
-
+			$schedules = $this::get_schedules($this->sport_id);
 			echo '<select class="select" onChange="window.location.href=this.value">';
-				foreach ($this->schedules as $schedule) {
+				foreach ($schedules as $schedule) {
 					if($this->ID == $schedule['ID']){
 						$selected = 'selected';
 					}else{
