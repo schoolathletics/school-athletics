@@ -40,14 +40,17 @@ class Roster {
 	/** @var int sport that roster belongs to. */
 	public $sport_id = '';
 
-	/** @var object season that roster belongs to. */
+	/** @var string season that roster belongs to. */
 	public $season = '';
 
-	/** @var object season that roster belongs to. */
+	/** @var int season that roster belongs to. */
 	public $season_id = '';
 
-	/** @var object season that roster belongs to. */
+	/** @var string season that roster belongs to. */
 	public $permalink = '';
+
+	/** @var object season that roster belongs to. */
+	//public $athletes = '';
 
 	/** @var array options */
 	public $options = array();

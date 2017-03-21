@@ -23,6 +23,9 @@ class Person {
 	/** @var object sport that roster belongs to. */
 	public $ID = '';
 
+	/** @var object sport that roster belongs to. */
+	public $name = '';
+
 	/** @var array options */
 	public $attributes = array();
 
@@ -33,7 +36,5 @@ class Person {
 		//$this->staff = $this->get_staff($sport->term_id);;
 		//$this->sport = $sport;
 	}
-
-
 
 }

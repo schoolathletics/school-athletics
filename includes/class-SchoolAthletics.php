@@ -44,6 +44,7 @@ class SchoolAthletics {
 			new \SchoolAthletics\Admin\Admin();
 		}
 		new \SchoolAthletics\Debug();
+		new \SchoolAthletics\Api();
 		\SchoolAthletics\Templates::init();
 		\SchoolAthletics\Shortcodes::init();
 	}
